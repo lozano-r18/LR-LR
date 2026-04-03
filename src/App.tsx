@@ -287,17 +287,9 @@ const Properties = () => {
   }, [selectedProperty]);
 
   return (
-    <section id="properties" className="py-32 bg-sand-50">
+    <section id="properties" className="pb-32 bg-sand-50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-20">
-          <div className="max-w-2xl mb-12">
-            <h2 className="text-4xl md:text-5xl font-serif text-ocean-900 mb-6">
-              Exclusive <span className="italic font-light">Properties and Projects</span>
-            </h2>
-            <p className="text-ocean-600 font-light italic">
-              At Lozano Realty we get what you are looking for. Mastery in service and property.
-            </p>
-          </div>
           
           <div className="bg-white/40 backdrop-blur-xl p-4 md:p-6 rounded-[2rem] shadow-2xl border border-white/50 -mt-24 relative z-20 mx-auto max-w-6xl">
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
@@ -652,101 +644,107 @@ const Properties = () => {
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-32 bg-ocean-900 text-white">
+    <section id="contact" className="py-40 bg-white">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-          <div>
-            <h2 className="text-4xl md:text-5xl font-serif mb-8">
-              Begin Your <br />
-              <span className="italic font-light">Acquisition Journey</span>
-            </h2>
-            <p className="text-white/60 font-light leading-relaxed mb-12 max-w-md">
-              Whether you are looking for a primary residence, a holiday home, or a strategic investment, our team is ready to assist you with absolute discretion.
-            </p>
+        <div className="bg-sand-50 rounded-[3rem] p-8 md:p-20 shadow-2xl border border-ocean-50">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
+            <div>
+              <span className="text-[11px] uppercase tracking-[0.4em] text-sand-500 font-bold mb-6 block">Inquiries</span>
+              <h2 className="text-5xl md:text-6xl font-serif text-ocean-900 mb-8 leading-tight">
+                Begin Your <br />
+                <span className="italic font-light">Acquisition</span> Journey
+              </h2>
+              <p className="text-ocean-600 font-light leading-relaxed mb-16 max-w-sm">
+                Whether you are looking for a primary residence, a holiday home, or a strategic investment, our team is ready to assist you with absolute discretion.
+              </p>
 
-            <div className="space-y-8">
-              <div className="flex items-center gap-6">
-                <div className="w-12 h-12 glass-dark flex items-center justify-center">
-                  <Phone size={20} />
+              <div className="space-y-10">
+                <div className="flex items-start gap-8">
+                  <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg text-ocean-900">
+                    <Phone size={24} />
+                  </div>
+                  <div>
+                    <div className="text-[10px] text-ocean-300 uppercase tracking-widest font-bold mb-2">Direct Line</div>
+                    <div className="text-xl text-ocean-900 font-medium">+34 672 119 634</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-xs text-white/40 uppercase tracking-widest mb-1">Phone</div>
-                  <div className="text-lg">+34 672 119 634</div>
+                
+                <div className="flex items-start gap-8">
+                  <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg text-ocean-900">
+                    <Mail size={24} />
+                  </div>
+                  <div>
+                    <div className="text-[10px] text-ocean-300 uppercase tracking-widest font-bold mb-2">Email Concierge</div>
+                    <div className="text-xl text-ocean-900 font-medium">contact@lozanorealty.uk</div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-6">
-                <div className="w-12 h-12 glass-dark flex items-center justify-center">
-                  <Mail size={20} />
-                </div>
-                <div>
-                  <div className="text-xs text-white/40 uppercase tracking-widest mb-1">Email</div>
-                  <div className="text-lg">contact@lozanorealty.uk</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-6">
-                <div className="w-12 h-12 glass-dark flex items-center justify-center">
-                  <MapPin size={20} />
-                </div>
-                <div>
-                  <div className="text-xs text-white/40 uppercase tracking-widest mb-1">Address</div>
-                  <div className="text-lg leading-snug">
-                    Urb. Cancela de la Quinta<br />
-                    Calle Agua Marina<br />
-                    Local 1-2<br />
-                    29670 Marbella, Malaga
+
+                <div className="flex items-start gap-8">
+                  <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg text-ocean-900">
+                    <MapPin size={24} />
+                  </div>
+                  <div>
+                    <div className="text-[10px] text-ocean-300 uppercase tracking-widest font-bold mb-2">Privileged Office</div>
+                    <div className="text-lg text-ocean-900 font-medium leading-relaxed">
+                      Urb. Cancela de la Quinta, <br />
+                      Calle Agua Marina, Local 1-2 <br />
+                      29670 Marbella, Malaga
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="flex gap-6 mt-16">
-              <a href="#" className="w-10 h-10 glass-dark flex items-center justify-center hover:bg-sand-500 transition-colors">
-                <Instagram size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 glass-dark flex items-center justify-center hover:bg-sand-500 transition-colors">
-                <Linkedin size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 glass-dark flex items-center justify-center hover:bg-sand-500 transition-colors">
-                <Facebook size={18} />
-              </a>
+            <div className="relative">
+              <div className="bg-white rounded-[2.5rem] p-10 md:p-14 shadow-xl border border-ocean-50">
+                <form className="space-y-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] uppercase tracking-widest text-ocean-400 font-bold ml-4">Full Name</label>
+                    <input 
+                      type="text" 
+                      placeholder="Jane Doe"
+                      className="w-full bg-sand-50 rounded-full px-8 py-5 text-ocean-900 outline-none focus:ring-2 ring-sand-200 transition-all placeholder:text-ocean-100" 
+                    />
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <label className="text-[10px] uppercase tracking-widest text-ocean-400 font-bold ml-4">Email Address</label>
+                    <input 
+                      type="email" 
+                      placeholder="jane@example.com"
+                      className="w-full bg-sand-50 rounded-full px-8 py-5 text-ocean-900 outline-none focus:ring-2 ring-sand-200 transition-all placeholder:text-ocean-100" 
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <label className="text-[10px] uppercase tracking-widest text-ocean-400 font-bold ml-4">Inquiry Type</label>
+                    <div className="relative">
+                      <select className="w-full bg-sand-50 rounded-full px-8 py-5 text-ocean-900 outline-none focus:ring-2 ring-sand-200 transition-all appearance-none cursor-pointer">
+                        <option>Exclusive Property Search</option>
+                        <option>Investment Opportunity</option>
+                        <option>Property Management</option>
+                        <option>Other / Bespoke Request</option>
+                      </select>
+                      <ChevronDown size={18} className="absolute right-6 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <label className="text-[10px] uppercase tracking-widest text-ocean-400 font-bold ml-4">Your Message</label>
+                    <textarea 
+                      rows={4} 
+                      placeholder="How can we assist you today?"
+                      className="w-full bg-sand-50 rounded-[2rem] px-8 py-6 text-ocean-900 outline-none focus:ring-2 ring-sand-200 transition-all resize-none placeholder:text-ocean-100"
+                    />
+                  </div>
+
+                  <button className="w-full py-6 bg-ocean-900 text-white rounded-full font-bold tracking-[0.2em] uppercase hover:bg-sand-500 transition-all shadow-xl hover:shadow-2xl">
+                    Submit Inquiry
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
-
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="glass p-10 md:p-16"
-          >
-            <form className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-white/40">Full Name</label>
-                  <input type="text" className="w-full bg-transparent border-b border-white/20 py-2 focus:border-sand-500 outline-none transition-colors" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-white/40">Email Address</label>
-                  <input type="email" className="w-full bg-transparent border-b border-white/20 py-2 focus:border-sand-500 outline-none transition-colors" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-white/40">Interested In</label>
-                <select className="w-full bg-transparent border-b border-white/20 py-2 focus:border-sand-500 outline-none transition-colors appearance-none">
-                  <option className="bg-ocean-900">Marbella Golden Mile</option>
-                  <option className="bg-ocean-900">La Zagaleta</option>
-                  <option className="bg-ocean-900">Sotogrande</option>
-                  <option className="bg-ocean-900">Benahavís</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-white/40">Message</label>
-                <textarea rows={4} className="w-full bg-transparent border-b border-white/20 py-2 focus:border-sand-500 outline-none transition-colors resize-none"></textarea>
-              </div>
-              <button className="w-full py-5 bg-sand-500 text-white font-medium tracking-widest uppercase hover:bg-sand-600 transition-all">
-                Send Inquiry
-              </button>
-            </form>
-          </motion.div>
         </div>
       </div>
     </section>
