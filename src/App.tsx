@@ -198,18 +198,18 @@ const Properties = () => {
             const getText = (selector: string) => node.querySelector(selector)?.textContent || '';
             const type = getText('type') || 'Property';
             const town = getText('town') || 'Costa del Sol';
-            const development = getText('development') || getText('urbanization') || '';
+            const development = getText('development') || getText('urbanization') || getText('urbanisation') || getText('complex_name') || '';
             const priceVal = getText('price');
             const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
             
             const imagesNodes = Array.from(node.querySelectorAll('images image url'));
             const images = imagesNodes.map(img => img.textContent || '').filter(Boolean);
             
-            // Variate imagery if available in same development
-            let image = images[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
-            if (development && index % 2 === 1 && images[1]) {
-              image = images[1];
-            }
+            // Variate imagery if available in same development by using a hash of the ID
+            const propertyId = getText('id') || getText('ref') || '0';
+            const idNumber = propertyId.replace(/\D/g, '');
+            const imageIndex = idNumber ? parseInt(idNumber) % images.length : 0;
+            let image = images[imageIndex] || images[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
 
             const plansNodes = Array.from(node.querySelectorAll('plans plan url'));
             const plans = plansNodes.map(p => p.textContent || '').filter(Boolean);
