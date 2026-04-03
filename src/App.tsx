@@ -139,26 +139,26 @@ const Hero = () => {
         <div className="absolute inset-0 bg-ocean-900/40 backdrop-blur-[1px]" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full text-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full h-full flex flex-col justify-center">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="max-w-4xl mx-auto"
+          className="w-full flex flex-col pt-20"
         >
-          <h1 className="text-7xl md:text-9xl font-serif text-white tracking-[0.1em] leading-none mb-10">
-            LOZANO <br />
-            <span className="italic font-light opacity-90">REALTY</span>
+          <h1 className="text-[12vw] md:text-[14vw] font-black text-white/90 tracking-[-0.05em] leading-[0.8] mb-12 uppercase select-none">
+            LOZANO REALTY
           </h1>
-          <p className="text-white/80 text-lg md:text-xl font-light italic tracking-[0.2em] uppercase">
-            Exclusive Properties & Projects
-          </p>
           
-          <div className="flex justify-center">
-            <button className="group relative px-12 py-5 overflow-hidden border border-white/30 text-white font-medium tracking-[0.3em] uppercase transition-all hover:border-white">
-              <span className="relative z-10">Discover Collection</span>
-              <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-              <span className="absolute inset-0 flex items-center justify-center text-ocean-900 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">Discover Collection</span>
+          <div className="flex flex-col md:flex-row items-start md:items-end gap-10 mt-4 px-4">
+            <div className="max-w-xs">
+              <p className="text-white/70 text-sm md:text-base font-medium leading-relaxed tracking-wide">
+                Premium properties handpicked for living, investing, and pure coastal bliss.
+              </p>
+            </div>
+            <button className="group flex items-center gap-4 bg-white/20 backdrop-blur-xl border border-white/30 text-white px-10 py-5 rounded-xl hover:bg-white hover:text-ocean-900 transition-all duration-500 shadow-2xl">
+              <span className="text-sm font-bold tracking-widest uppercase">Get My Curated Selection</span>
+              <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         </motion.div>
@@ -287,7 +287,7 @@ const Properties = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-20">
           
-          <div className="bg-white/40 backdrop-blur-xl p-4 md:p-6 rounded-[2rem] shadow-2xl border border-white/50 -mt-24 relative z-20 mx-auto max-w-6xl">
+          <div className="bg-white/40 backdrop-blur-xl p-4 md:p-6 rounded-[2rem] shadow-2xl border border-white/50 -mt-16 relative z-20 mx-auto max-w-6xl">
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
               <div className="relative group">
                 <select 
