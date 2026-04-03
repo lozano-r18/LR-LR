@@ -638,6 +638,38 @@ const Properties = () => {
 };
 
 
+const About = () => {
+  return (
+    <section id="about" className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="bg-ocean-50/30 rounded-[2.5rem] overflow-hidden border border-ocean-50/50">
+          <div className="flex flex-col md:flex-row items-center">
+            <div className="w-full md:w-1/2 h-[400px]">
+              <img 
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000" 
+                alt="Luxury Estate" 
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            <div className="w-full md:w-1/2 p-10 md:p-16">
+              <span className="text-[10px] uppercase tracking-[0.4em] text-ocean-300 font-bold mb-4 block">Our Philosophy</span>
+              <h2 className="text-3xl font-serif text-ocean-900 mb-6 italic">Personal, not procedural.</h2>
+              <p className="text-ocean-600 font-light leading-relaxed mb-6 text-sm">
+                As Costa del Sol exclusive property advisors, we take a bespoke approach to every client, combining deep local expertise with a genuine commitment to your lifestyle and aspirations.
+              </p>
+              <p className="text-ocean-900 font-medium text-sm leading-relaxed italic">
+                "We're here to find more than a property — we're here to find your home and your best investment."
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
 const Contact = () => {
   return (
     <section id="contact" className="py-24 bg-white border-t border-ocean-50">
@@ -742,6 +774,7 @@ export default function App() {
       <Navbar />
       <Hero />
       <Properties />
+      <About />
       <Contact />
       <Footer />
     </div>
