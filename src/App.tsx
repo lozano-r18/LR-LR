@@ -15,6 +15,7 @@ import {
   Facebook, 
   Linkedin, 
   ChevronRight, 
+  ChevronDown,
   Menu, 
   X,
   Home,
@@ -130,16 +131,16 @@ const Navbar = () => {
 
 const Hero = () => {
   return (
-    <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Scenic Costa del Sol Background */}
+    <section id="hero" className="relative h-[85vh] flex items-center justify-center overflow-hidden">
+      {/* High-End Villa Background */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?auto=format&fit=crop&q=80&w=2000" 
-          alt="Scenic Costa del Sol View" 
+          src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=2000" 
+          alt="Luxury Villa Costa del Sol" 
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-ocean-900/40 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-ocean-900/40 backdrop-blur-[1px]" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full text-center">
@@ -298,120 +299,120 @@ const Properties = () => {
             </p>
           </div>
           
-          <div className="bg-white p-8 shadow-sm border border-ocean-100">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-              {/* Row 1 */}
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Area</label>
+          <div className="bg-white/40 backdrop-blur-xl p-4 md:p-6 rounded-[2rem] shadow-2xl border border-white/50 -mt-24 relative z-20 mx-auto max-w-6xl">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+              <div className="relative group">
                 <select 
-                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
                   value={filters.area}
                   onChange={(e) => setFilters({...filters, area: e.target.value})}
                 >
-                  <option value="">Any Area</option>
+                  <option value="">Area</option>
                   {areas.map(a => <option key={a} value={a}>{a}</option>)}
                 </select>
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Property Type</label>
+              <div className="relative group">
                 <select 
-                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
                   value={filters.type}
                   onChange={(e) => setFilters({...filters, type: e.target.value})}
                 >
-                  <option value="">Any Type</option>
+                  <option value="">Type</option>
                   {types.map(t => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
                 </select>
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Bedrooms</label>
+              <div className="relative group">
                 <select 
-                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
                   value={filters.beds}
                   onChange={(e) => setFilters({...filters, beds: e.target.value})}
                 >
-                  <option value="">Any Bedrooms</option>
-                  {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n}+ Beds</option>)}
+                  <option value="">Beds</option>
+                  {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n}+</option>)}
                 </select>
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Bathrooms</label>
+              <div className="relative group">
                 <select 
-                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
                   value={filters.baths}
                   onChange={(e) => setFilters({...filters, baths: e.target.value})}
                 >
-                  <option value="">Any Bathrooms</option>
-                  {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}+ Baths</option>)}
+                  <option value="">Baths</option>
+                  {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}+</option>)}
                 </select>
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
               </div>
 
-              {/* Row 2 */}
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Price Min</label>
+              <div className="relative group">
                 <select 
-                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
                   value={filters.priceMin}
                   onChange={(e) => setFilters({...filters, priceMin: e.target.value})}
                 >
-                  <option value="">Min Price</option>
-                  {[100000, 250000, 500000, 750000, 1000000, 2000000, 5000000].map(p => (
-                    <option key={p} value={p}>€{p.toLocaleString()}</option>
+                  <option value="">Min €</option>
+                  {[100000, 250000, 500000, 1000000, 2000000, 5000000].map(p => (
+                    <option key={p} value={p}>€{(p/1000).toFixed(0)}k</option>
                   ))}
                 </select>
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Price Max</label>
+              <div className="relative group">
                 <select 
-                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
                   value={filters.priceMax}
                   onChange={(e) => setFilters({...filters, priceMax: e.target.value})}
                 >
-                  <option value="">Max Price</option>
+                  <option value="">Max €</option>
                   {[500000, 1000000, 2000000, 5000000, 10000000, 20000000].map(p => (
-                    <option key={p} value={p}>€{p.toLocaleString()}</option>
+                    <option key={p} value={p}>€{(p/1000000).toFixed(1)}M</option>
                   ))}
                 </select>
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Search by Ref</label>
+              <div className="relative group lg:col-span-1">
                 <input 
                   type="text" 
-                  placeholder="Reference No."
-                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm"
+                  placeholder="REF"
+                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 shadow-sm focus:shadow-md transition-all placeholder:text-ocean-200"
                   value={filters.ref}
                   onChange={(e) => setFilters({...filters, ref: e.target.value})}
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Sort By</label>
+              <div className="relative group lg:col-span-1">
+                 <button 
+                  className="w-full h-full py-4 bg-ocean-900 text-white rounded-full flex items-center justify-center hover:bg-sand-500 transition-all shadow-lg"
+                  onClick={() => setFilters({area:'', type:'', beds:'', baths:'', priceMin:'', priceMax:'', ref:'', sortBy:'newest'})}
+                  title="Reset Filters"
+                >
+                  <Search size={18} />
+                </button>
+              </div>
+            </div>
+            
+            <div className="mt-4 flex justify-between items-center px-6">
+              <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-ocean-400">
+                {filteredProperties.length} Properties Matching
+              </div>
+              <div className="flex gap-4 items-center">
+                <span className="text-[10px] uppercase tracking-widest text-ocean-300">Sort:</span>
                 <select 
-                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  className="bg-transparent border-none outline-none text-[10px] uppercase tracking-widest font-bold text-ocean-900 cursor-pointer"
                   value={filters.sortBy}
                   onChange={(e) => setFilters({...filters, sortBy: e.target.value})}
                 >
-                  <option value="newest">Newest First</option>
-                  <option value="price-asc">Price: Low to High</option>
-                  <option value="price-desc">Price: High to Low</option>
+                  <option value="newest">Recent</option>
+                  <option value="price-asc">Price ↑</option>
+                  <option value="price-desc">Price ↓</option>
                 </select>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center text-[10px] uppercase tracking-[0.2em] font-bold">
-              <button 
-                className="text-ocean-400 hover:text-ocean-900 transition-colors"
-                onClick={() => setFilters({area:'', type:'', beds:'', baths:'', priceMin:'', priceMax:'', ref:'', sortBy:'newest'})}
-              >
-                Refresh Search
-              </button>
-              <div className="text-sand-500">
-                {filteredProperties.length} Properties Found
               </div>
             </div>
           </div>
