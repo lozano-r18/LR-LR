@@ -85,6 +85,11 @@ const Navbar = () => {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-4 glass' : 'py-8 bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center gap-4">
+          <img 
+            src={isScrolled ? "/assets/logo-blue.png" : "/assets/logo-white.png"} 
+            alt="Lozano Realty Logo" 
+            className="h-14 w-auto"
+          />
           <div className={`flex flex-col border-l border-current pl-4 ${isScrolled ? 'text-ocean-900 border-ocean-200' : 'text-white border-white/20'}`}>
             <span className="text-xl font-serif font-bold tracking-[0.2em] leading-none mb-1">LOZANO</span>
             <span className="text-[11px] uppercase tracking-[0.4em] font-light leading-none">REALTY</span>
@@ -752,7 +757,7 @@ const Footer = () => {
     <footer className="py-20 bg-sand-50 border-t border-ocean-100 text-ocean-900 text-xs tracking-widest uppercase">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-12 mb-16">
-          <img src="/assets/blue-logo.png" alt="Lozano Realty Logo" className="h-16 w-auto" />
+          <img src="/assets/logo-blue.png" alt="Lozano Realty Logo" className="h-24 w-auto" />
           <div className="flex gap-10">
             <a href="#" className="hover:text-sand-500 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-sand-500 transition-colors">Legal Notice</a>
