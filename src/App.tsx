@@ -204,7 +204,20 @@ const Properties = () => {
             const getText = (selector: string) => node.querySelector(selector)?.textContent || '';
             const type = getText('type') || 'Property';
             const town = getText('town') || 'Costa del Sol';
-            const development = getText('development') || getText('urbanization') || getText('urbanisation') || getText('complex_name') || '';
+            // Improve development name extraction
+            const devCandidate = (
+              getText('development') || 
+              getText('urbanization') || 
+              getText('urbanisation') || 
+              getText('complex_name') || 
+              getText('project') || 
+              getText('residence') || 
+              ''
+            ).trim();
+
+            const isTownName = [town, 'marbella', 'mijas', 'fuengirola', 'estepona', 'benahavis'].some(t => devCandidate.toLowerCase() === t.toLowerCase());
+            const development = !isTownName ? devCandidate : '';
+
             const priceVal = getText('price');
             const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
 
@@ -230,7 +243,10 @@ const Properties = () => {
 
             const descEn = node.querySelector('desc en')?.textContent || '';
             const descEs = node.querySelector('desc es')?.textContent || '';
-            const description = descEn || descEs || '';
+            const rawDescription = descEn || descEs || '';
+            
+            // Standardize/cut down description to first 2 sentences
+            const description = rawDescription.split(/(?<=[.!?])\s+/).slice(0, 2).join(' ');
 
             const title = development
               ? `${type.charAt(0).toUpperCase() + type.slice(1)} in ${development}`
@@ -493,7 +509,7 @@ const Properties = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 100 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="relative w-full h-[100vh] bg-white overflow-y-auto"
+                className="relative w-full h-[90vh] bg-white overflow-y-auto rounded-t-[3rem] shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header Actions */}
@@ -602,19 +618,19 @@ const Properties = () => {
                           </p>
                         </section>
 
-                        {/* Brochure Link */}
+                        {/* Floor Plans Link */}
                         {selectedProperty.plans && selectedProperty.plans.length > 0 && (
                           <div className="bg-ocean-900 text-white p-12 rounded-[2rem] flex flex-col md:flex-row justify-between items-center gap-8">
                             <div>
-                              <h3 className="text-2xl font-serif italic mb-2 text-white">Project Brochure</h3>
-                              <p className="text-white/60 text-sm font-light">Download the full technical documentation and floor plans.</p>
+                              <h3 className="text-2xl font-serif italic mb-2 text-white">Floor Plans</h3>
+                              <p className="text-white/60 text-sm font-light">Download the full technical documentation and architectural layouts.</p>
                             </div>
                             <a
                               href={selectedProperty.plans[0]}
                               target="_blank"
                               className="px-10 py-5 bg-white text-ocean-900 rounded-xl text-xs font-bold tracking-[0.2em] uppercase hover:bg-sand-500 hover:text-white transition-all shadow-xl"
                             >
-                              Get Brochure
+                              Get Floor Plans
                             </a>
                           </div>
                         )}
