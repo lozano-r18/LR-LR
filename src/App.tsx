@@ -25,7 +25,7 @@ import {
 
 // --- Types ---
 interface Property {
-  id: number;
+  id: number | string;
   title: string;
   location: string;
   price: string;
@@ -208,6 +208,59 @@ const Hero = () => {
 };
 
 const Properties = () => {
+  const [properties, setProperties] = useState<Property[]>(PROPERTIES);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHabiHubProperties = async () => {
+      try {
+        const res = await fetch('/api/feed');
+        if (!res.ok) throw new Error('Network response not ok');
+        const xmlText = await res.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+        
+        const propertyNodes = Array.from(xmlDoc.querySelectorAll('property'));
+        if (propertyNodes.length > 0) {
+          const parsedProperties: Property[] = propertyNodes.map(node => {
+            const getText = (selector: string) => node.querySelector(selector)?.textContent || '';
+            const type = getText('type') || 'Property';
+            const town = getText('town') || 'Costa del Sol';
+            const priceVal = getText('price');
+            const formattedPrice = priceVal ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
+            
+            let image = 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
+            const urlNode = node.querySelector('images image url');
+            if (urlNode && urlNode.textContent) {
+              image = urlNode.textContent;
+            }
+
+            return {
+              id: getText('ref') || Math.random().toString(),
+              title: `${type} in ${town}`,
+              location: `${town}, ${getText('province')}`,
+              price: formattedPrice,
+              beds: parseInt(getText('beds')) || 0,
+              baths: parseInt(getText('baths')) || 0,
+              sqft: `${getText('surface_area built')} m²`,
+              image: image,
+              tag: "New Build"
+            };
+          });
+          
+          // Display top 6 properties
+          setProperties(parsedProperties.slice(0, 6));
+        }
+      } catch (error) {
+        console.error("Error fetching HabiHub feed:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHabiHubProperties();
+  }, []);
+
   return (
     <section id="properties" className="py-32 bg-sand-50">
       <div className="max-w-7xl mx-auto px-6">
@@ -221,12 +274,12 @@ const Properties = () => {
             </p>
           </div>
           <button className="text-ocean-900 font-medium tracking-widest uppercase flex items-center gap-2 group">
-            Explore All <ArrowRight className="group-hover:translate-x-2 transition-transform" size={18} />
+            {loading ? 'Updating Feed...' : 'Explore All'} <ArrowRight className="group-hover:translate-x-2 transition-transform" size={18} />
           </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {PROPERTIES.map((prop, idx) => (
+          {properties.map((prop, idx) => (
             <motion.div 
               key={prop.id}
               initial={{ opacity: 0, y: 20 }}
