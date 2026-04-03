@@ -5,24 +5,30 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  MapPin, 
-  Search, 
-  Users, 
-  Phone, 
-  Mail, 
-  Instagram, 
-  Facebook, 
-  Linkedin, 
-  ChevronRight, 
+import {
+  MapPin,
+  Search,
+  Users,
+  Phone,
+  Mail,
+  Instagram,
+  Facebook,
+  Linkedin,
+  ChevronRight,
   ChevronDown,
-  Menu, 
+  Menu,
   X,
   Home,
   Award,
   ShieldCheck,
-  ArrowRight
+  ArrowRight,
+  Globe,
+  Heart,
+  Layout,
+  Share,
+  Shield
 } from 'lucide-react';
+import { div, section } from 'motion/react-client';
 
 // --- Types ---
 interface Property {
@@ -86,9 +92,9 @@ const Navbar = () => {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-4 glass' : 'py-8 bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center">
-          <img 
-            src={isScrolled ? "/assets/logo-blue.png" : "/assets/logo-white.png"} 
-            alt="Lozano Realty Logo" 
+          <img
+            src={isScrolled ? "/assets/logo-blue.png" : "/assets/logo-white.png"}
+            alt="Lozano Realty Logo"
             className="h-20 w-auto"
           />
         </div>
@@ -109,7 +115,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -130,9 +136,9 @@ const Hero = () => {
     <section id="hero" className="relative h-[85vh] flex items-center justify-center overflow-hidden">
       {/* High-End Villa Background */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=2000" 
-          alt="Luxury Villa Costa del Sol" 
+        <img
+          src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=2000"
+          alt="Luxury Villa Costa del Sol"
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
@@ -140,7 +146,7 @@ const Hero = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full h-full flex flex-col justify-center">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -149,7 +155,7 @@ const Hero = () => {
           <h1 className="text-[7.5vw] md:text-[9vw] font-serif text-white/95 tracking-[0.02em] leading-none mb-14 uppercase select-none font-medium whitespace-nowrap">
             LOZANO REALTY
           </h1>
-          
+
           <div className="flex flex-col md:flex-row items-start md:items-end gap-10 mt-4 px-4">
             <div className="max-w-xs">
               <p className="text-white/70 text-sm md:text-base font-medium leading-relaxed tracking-wide">
@@ -191,7 +197,7 @@ const Properties = () => {
         const xmlText = await res.text();
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xmlText, "application/xml");
-        
+
         const propertyNodes = Array.from(xmlDoc.querySelectorAll('property'));
         if (propertyNodes.length > 0) {
           const parsedProperties: Property[] = propertyNodes.map((node, index) => {
@@ -201,10 +207,10 @@ const Properties = () => {
             const development = getText('development') || getText('urbanization') || getText('urbanisation') || getText('complex_name') || '';
             const priceVal = getText('price');
             const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
-            
+
             const imagesNodes = Array.from(node.querySelectorAll('images image url'));
             const images = imagesNodes.map(img => img.textContent || '').filter(Boolean);
-            
+
             // Variate imagery if available in same development by using a hash of the ID
             // Limit to first 10 images to avoid low-quality/utility shots like gyms
             const propertyId = getText('id') || getText('ref') || '0';
@@ -226,7 +232,7 @@ const Properties = () => {
             const descEs = node.querySelector('desc es')?.textContent || '';
             const description = descEn || descEs || '';
 
-            const title = development 
+            const title = development
               ? `${type.charAt(0).toUpperCase() + type.slice(1)} in ${development}`
               : `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`;
 
@@ -254,7 +260,7 @@ const Properties = () => {
               url: getText('url es') || getText('url en') || ''
             };
           });
-          
+
           setProperties(parsedProperties);
         }
       } catch (error) {
@@ -275,7 +281,7 @@ const Properties = () => {
     const matchPriceMin = !filters.priceMin || prop.priceNumeric >= parseInt(filters.priceMin);
     const matchPriceMax = !filters.priceMax || prop.priceNumeric <= parseInt(filters.priceMax);
     const matchRef = !filters.ref || prop.ref.toLowerCase().includes(filters.ref.toLowerCase()) || prop.id.toString().includes(filters.ref);
-    
+
     return matchArea && matchType && matchBeds && matchBaths && matchPriceMin && matchPriceMax && matchRef;
   }).sort((a, b) => {
     if (filters.sortBy === 'price-asc') return a.priceNumeric - b.priceNumeric;
@@ -298,14 +304,14 @@ const Properties = () => {
     <section id="properties" className="pb-32 bg-white">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-20">
-          
+
           <div className="bg-white/40 backdrop-blur-xl p-4 md:p-6 rounded-[2rem] shadow-2xl border border-white/50 -mt-16 relative z-20 mx-auto max-w-6xl">
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
               <div className="relative group">
-                <select 
+                <select
                   className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
                   value={filters.area}
-                  onChange={(e) => setFilters({...filters, area: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, area: e.target.value })}
                 >
                   <option value="">Area</option>
                   {areas.map(a => <option key={a} value={a}>{a}</option>)}
@@ -314,10 +320,10 @@ const Properties = () => {
               </div>
 
               <div className="relative group">
-                <select 
+                <select
                   className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
                   value={filters.type}
-                  onChange={(e) => setFilters({...filters, type: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, type: e.target.value })}
                 >
                   <option value="">Type</option>
                   {types.map(t => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
@@ -326,88 +332,88 @@ const Properties = () => {
               </div>
 
               <div className="relative group">
-                <select 
+                <select
                   className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
                   value={filters.beds}
-                  onChange={(e) => setFilters({...filters, beds: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, beds: e.target.value })}
                 >
                   <option value="">Beds</option>
-                  {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n}+</option>)}
+                  {[1, 2, 3, 4, 5, 6].map(n => <option key={n} value={n}>{n}+</option>)}
                 </select>
                 <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
               </div>
 
               <div className="relative group">
-                <select 
+                <select
                   className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
                   value={filters.baths}
-                  onChange={(e) => setFilters({...filters, baths: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, baths: e.target.value })}
                 >
                   <option value="">Baths</option>
-                  {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}+</option>)}
+                  {[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}+</option>)}
                 </select>
                 <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
               </div>
 
               <div className="relative group">
-                <select 
+                <select
                   className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
                   value={filters.priceMin}
-                  onChange={(e) => setFilters({...filters, priceMin: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, priceMin: e.target.value })}
                 >
                   <option value="">Min €</option>
                   {[100000, 250000, 500000, 1000000, 2000000, 5000000].map(p => (
-                    <option key={p} value={p}>€{(p/1000).toFixed(0)}k</option>
+                    <option key={p} value={p}>€{(p / 1000).toFixed(0)}k</option>
                   ))}
                 </select>
                 <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
               </div>
 
               <div className="relative group">
-                <select 
+                <select
                   className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
                   value={filters.priceMax}
-                  onChange={(e) => setFilters({...filters, priceMax: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, priceMax: e.target.value })}
                 >
                   <option value="">Max €</option>
                   {[500000, 1000000, 2000000, 5000000, 10000000, 20000000].map(p => (
-                    <option key={p} value={p}>€{(p/1000000).toFixed(1)}M</option>
+                    <option key={p} value={p}>€{(p / 1000000).toFixed(1)}M</option>
                   ))}
                 </select>
                 <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
               </div>
 
               <div className="relative group lg:col-span-1">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder="REF"
                   className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 shadow-sm focus:shadow-md transition-all placeholder:text-ocean-200"
                   value={filters.ref}
-                  onChange={(e) => setFilters({...filters, ref: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, ref: e.target.value })}
                 />
               </div>
 
               <div className="relative group lg:col-span-1">
-                 <button 
+                <button
                   className="w-full h-full py-4 bg-ocean-900 text-white rounded-full flex items-center justify-center hover:bg-sand-500 transition-all shadow-lg"
-                  onClick={() => setFilters({area:'', type:'', beds:'', baths:'', priceMin:'', priceMax:'', ref:'', sortBy:'newest'})}
+                  onClick={() => setFilters({ area: '', type: '', beds: '', baths: '', priceMin: '', priceMax: '', ref: '', sortBy: 'newest' })}
                   title="Reset Filters"
                 >
                   <Search size={18} />
                 </button>
               </div>
             </div>
-            
+
             <div className="mt-4 flex justify-between items-center px-6">
               <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-ocean-400">
                 {filteredProperties.length} Properties Matching
               </div>
               <div className="flex gap-4 items-center">
                 <span className="text-[10px] uppercase tracking-widest text-ocean-300">Sort:</span>
-                <select 
+                <select
                   className="bg-transparent border-none outline-none text-[10px] uppercase tracking-widest font-bold text-ocean-900 cursor-pointer"
                   value={filters.sortBy}
-                  onChange={(e) => setFilters({...filters, sortBy: e.target.value})}
+                  onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
                 >
                   <option value="newest">Recent</option>
                   <option value="price-asc">Price ↑</option>
@@ -420,7 +426,7 @@ const Properties = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {displayedProperties.map((prop, idx) => (
-            <motion.div 
+            <motion.div
               key={prop.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -430,9 +436,9 @@ const Properties = () => {
               onClick={() => setSelectedProperty(prop)}
             >
               <div className="relative aspect-[4/5] overflow-hidden">
-                <img 
-                  src={prop.image} 
-                  alt={prop.title} 
+                <img
+                  src={prop.image}
+                  alt={prop.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   referrerPolicy="no-referrer"
                 />
@@ -462,7 +468,7 @@ const Properties = () => {
 
         {!showAll && filteredProperties.length > 9 && (
           <div className="mt-20 text-center">
-            <button 
+            <button
               onClick={() => setShowAll(true)}
               className="px-12 py-5 border border-ocean-900 text-ocean-900 font-medium tracking-widest uppercase hover:bg-ocean-900 hover:text-white transition-all flex items-center gap-3 mx-auto"
             >
@@ -475,14 +481,14 @@ const Properties = () => {
         <AnimatePresence>
           {selectedProperty && (
             <div className="fixed inset-0 z-[100] flex items-center justify-center">
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setSelectedProperty(null)}
                 className="absolute inset-0 bg-ocean-900/40 backdrop-blur-md"
               />
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 100 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 100 }}
@@ -500,13 +506,13 @@ const Properties = () => {
                       <Share size={18} /> Share
                     </button>
                   </div>
-                  
+
                   <div className="flex items-center gap-2 text-xs text-ocean-400">
                     <MapPin size={14} className="text-ocean-900" />
                     <span className="uppercase tracking-widest">{selectedProperty.location}</span>
                   </div>
 
-                  <button 
+                  <button
                     onClick={() => setSelectedProperty(null)}
                     className="w-10 h-10 rounded-full bg-ocean-50 flex items-center justify-center text-ocean-900 hover:bg-ocean-900 hover:text-white transition-all"
                   >
@@ -530,10 +536,10 @@ const Properties = () => {
                     </div>
                     <div className="hidden md:block col-span-3 h-full relative overflow-hidden cursor-pointer">
                       <img src={selectedProperty.images[3] || selectedProperty.image} className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000" referrerPolicy="no-referrer" />
-                      
-                      <button 
-                         className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-xl border border-white px-6 py-4 rounded-xl text-xs font-bold tracking-widest uppercase text-ocean-900 shadow-2xl hover:bg-ocean-900 hover:text-white transition-all flex items-center gap-3"
-                         onClick={() => setActiveImageIndex(0)}
+
+                      <button
+                        className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-xl border border-white px-6 py-4 rounded-xl text-xs font-bold tracking-widest uppercase text-ocean-900 shadow-2xl hover:bg-ocean-900 hover:text-white transition-all flex items-center gap-3"
+                        onClick={() => setActiveImageIndex(0)}
                       >
                         Show All Photos <span className="opacity-40">{selectedProperty.images.length || 1}</span>
                       </button>
@@ -552,7 +558,7 @@ const Properties = () => {
                             Calculate potential returns
                           </button>
                         </div>
-                        
+
                         <div className="flex gap-12 text-right">
                           <div>
                             <div className="text-3xl md:text-5xl font-light text-ocean-900">{selectedProperty.sqftNumeric} <span className="text-base text-ocean-300">m²</span></div>
@@ -598,19 +604,19 @@ const Properties = () => {
 
                         {/* Brochure Link */}
                         {selectedProperty.plans && selectedProperty.plans.length > 0 && (
-                           <div className="bg-ocean-900 text-white p-12 rounded-[2rem] flex flex-col md:flex-row justify-between items-center gap-8">
-                             <div>
-                               <h3 className="text-2xl font-serif italic mb-2 text-white">Project Brochure</h3>
-                               <p className="text-white/60 text-sm font-light">Download the full technical documentation and floor plans.</p>
-                             </div>
-                             <a 
-                               href={selectedProperty.plans[0]} 
-                               target="_blank" 
-                               className="px-10 py-5 bg-white text-ocean-900 rounded-xl text-xs font-bold tracking-[0.2em] uppercase hover:bg-sand-500 hover:text-white transition-all shadow-xl"
-                             >
-                               Get Brochure
-                             </a>
-                           </div>
+                          <div className="bg-ocean-900 text-white p-12 rounded-[2rem] flex flex-col md:flex-row justify-between items-center gap-8">
+                            <div>
+                              <h3 className="text-2xl font-serif italic mb-2 text-white">Project Brochure</h3>
+                              <p className="text-white/60 text-sm font-light">Download the full technical documentation and floor plans.</p>
+                            </div>
+                            <a
+                              href={selectedProperty.plans[0]}
+                              target="_blank"
+                              className="px-10 py-5 bg-white text-ocean-900 rounded-xl text-xs font-bold tracking-[0.2em] uppercase hover:bg-sand-500 hover:text-white transition-all shadow-xl"
+                            >
+                              Get Brochure
+                            </a>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -642,15 +648,6 @@ const Properties = () => {
             </div>
           )}
         </AnimatePresence>
-                        <ChevronRight size={18} />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
       </div>
     </section>
   );
@@ -664,9 +661,9 @@ const About = () => {
         <div className="bg-ocean-50/30 rounded-[2.5rem] overflow-hidden border border-ocean-50/50">
           <div className="flex flex-col md:flex-row items-center">
             <div className="w-full md:w-1/2 h-[400px]">
-              <img 
-                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000" 
-                alt="Luxury Estate" 
+              <img
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000"
+                alt="Luxury Estate"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
@@ -700,7 +697,7 @@ const Contact = () => {
                 Acquisition <br />
                 <span className="italic font-light opacity-70">Inquiry</span>
               </h2>
-              
+
               <div className="space-y-6">
                 <div className="flex items-center gap-4 text-ocean-900/60">
                   <Phone size={18} />
@@ -721,17 +718,17 @@ const Contact = () => {
               <form className="space-y-10 group">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   <div className="relative">
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       placeholder="NAME"
-                      className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all placeholder:text-ocean-200" 
+                      className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all placeholder:text-ocean-200"
                     />
                   </div>
                   <div className="relative">
-                    <input 
-                      type="email" 
+                    <input
+                      type="email"
                       placeholder="EMAIL"
-                      className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all placeholder:text-ocean-200" 
+                      className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all placeholder:text-ocean-200"
                     />
                   </div>
                 </div>
@@ -747,8 +744,8 @@ const Contact = () => {
                 </div>
 
                 <div className="relative">
-                  <textarea 
-                    rows={2} 
+                  <textarea
+                    rows={2}
                     placeholder="MESSAGE"
                     className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all resize-none placeholder:text-ocean-200"
                   />
