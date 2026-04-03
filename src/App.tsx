@@ -85,16 +85,12 @@ const Navbar = () => {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-4 glass' : 'py-8 bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center">
           <img 
             src={isScrolled ? "/assets/logo-blue.png" : "/assets/logo-white.png"} 
             alt="Lozano Realty Logo" 
-            className="h-14 w-auto"
+            className="h-20 w-auto"
           />
-          <div className={`flex flex-col border-l border-current pl-4 ${isScrolled ? 'text-ocean-900 border-ocean-200' : 'text-white border-white/20'}`}>
-            <span className="text-xl font-serif font-bold tracking-[0.2em] leading-none mb-1">LOZANO</span>
-            <span className="text-[11px] uppercase tracking-[0.4em] font-light leading-none">REALTY</span>
-          </div>
         </div>
 
         {/* Desktop Menu */}
