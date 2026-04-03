@@ -146,12 +146,12 @@ const Hero = () => {
           transition={{ duration: 1 }}
           className="max-w-4xl mx-auto"
         >
-          <h1 className="text-6xl md:text-8xl font-serif text-white leading-tight mb-8">
-            Exclusive <span className="italic font-light">Properties</span> <br />
-            <span className="italic font-light">and</span> Projects
+          <h1 className="text-7xl md:text-9xl font-serif text-white tracking-[0.1em] leading-none mb-10">
+            LOZANO <br />
+            <span className="italic font-light opacity-90">REALTY</span>
           </h1>
-          <p className="text-white/90 text-lg md:text-xl mb-12 font-light italic tracking-wide">
-            At Lozano Realty we get what you are looking for. Mastery in service and property.
+          <p className="text-white/80 text-lg md:text-xl font-light italic tracking-[0.2em] uppercase">
+            Exclusive Properties & Projects
           </p>
           
           <div className="flex justify-center">
@@ -283,7 +283,7 @@ const Properties = () => {
   }, [selectedProperty]);
 
   return (
-    <section id="properties" className="pb-32 bg-sand-50">
+    <section id="properties" className="pb-32 bg-white">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-20">
           
@@ -417,7 +417,7 @@ const Properties = () => {
               className="group cursor-pointer"
               onClick={() => setSelectedProperty(prop)}
             >
-              <div className="relative aspect-[4/5] overflow-hidden mb-6">
+              <div className="relative aspect-[4/5] overflow-hidden">
                 <img 
                   src={prop.image} 
                   alt={prop.title} 
@@ -640,105 +640,73 @@ const Properties = () => {
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-40 bg-white">
+    <section id="contact" className="py-24 bg-white border-t border-ocean-50">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="bg-sand-50 rounded-[3rem] p-8 md:p-20 shadow-2xl border border-ocean-50">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
+        <div className="bg-ocean-50/30 rounded-[2.5rem] p-8 md:p-16 border border-ocean-50/50">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
-              <span className="text-[11px] uppercase tracking-[0.4em] text-sand-500 font-bold mb-6 block">Inquiries</span>
-              <h2 className="text-5xl md:text-6xl font-serif text-ocean-900 mb-8 leading-tight">
-                Begin Your <br />
-                <span className="italic font-light">Acquisition</span> Journey
+              <h2 className="text-4xl md:text-5xl font-serif text-ocean-900 mb-8 leading-tight">
+                Acquisition <br />
+                <span className="italic font-light opacity-70">Inquiry</span>
               </h2>
-              <p className="text-ocean-600 font-light leading-relaxed mb-16 max-w-sm">
-                Whether you are looking for a primary residence, a holiday home, or a strategic investment, our team is ready to assist you with absolute discretion.
-              </p>
-
-              <div className="space-y-10">
-                <div className="flex items-start gap-8">
-                  <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg text-ocean-900">
-                    <Phone size={24} />
-                  </div>
-                  <div>
-                    <div className="text-[10px] text-ocean-300 uppercase tracking-widest font-bold mb-2">Direct Line</div>
-                    <div className="text-xl text-ocean-900 font-medium">+34 672 119 634</div>
-                  </div>
+              
+              <div className="space-y-6">
+                <div className="flex items-center gap-4 text-ocean-900/60">
+                  <Phone size={18} />
+                  <span className="text-sm tracking-widest font-medium uppercase">+34 672 119 634</span>
                 </div>
-                
-                <div className="flex items-start gap-8">
-                  <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg text-ocean-900">
-                    <Mail size={24} />
-                  </div>
-                  <div>
-                    <div className="text-[10px] text-ocean-300 uppercase tracking-widest font-bold mb-2">Email Concierge</div>
-                    <div className="text-xl text-ocean-900 font-medium">contact@lozanorealty.uk</div>
-                  </div>
+                <div className="flex items-center gap-4 text-ocean-900/60">
+                  <Mail size={18} />
+                  <span className="text-sm tracking-widest font-medium uppercase text-lowercase">contact@lozanorealty.uk</span>
                 </div>
-
-                <div className="flex items-start gap-8">
-                  <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg text-ocean-900">
-                    <MapPin size={24} />
-                  </div>
-                  <div>
-                    <div className="text-[10px] text-ocean-300 uppercase tracking-widest font-bold mb-2">Privileged Office</div>
-                    <div className="text-lg text-ocean-900 font-medium leading-relaxed">
-                      Urb. Cancela de la Quinta, <br />
-                      Calle Agua Marina, Local 1-2 <br />
-                      29670 Marbella, Malaga
-                    </div>
-                  </div>
+                <div className="flex items-center gap-4 text-ocean-900/60">
+                  <MapPin size={18} />
+                  <span className="text-sm tracking-widest font-medium uppercase">Marbella, Malaga</span>
                 </div>
               </div>
             </div>
 
             <div className="relative">
-              <div className="bg-white rounded-[2.5rem] p-10 md:p-14 shadow-xl border border-ocean-50">
-                <form className="space-y-8">
-                  <div className="space-y-3">
-                    <label className="text-[10px] uppercase tracking-widest text-ocean-400 font-bold ml-4">Full Name</label>
+              <form className="space-y-10 group">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div className="relative">
                     <input 
                       type="text" 
-                      placeholder="Jane Doe"
-                      className="w-full bg-sand-50 rounded-full px-8 py-5 text-ocean-900 outline-none focus:ring-2 ring-sand-200 transition-all placeholder:text-ocean-100" 
+                      placeholder="NAME"
+                      className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all placeholder:text-ocean-200" 
                     />
                   </div>
-                  
-                  <div className="space-y-3">
-                    <label className="text-[10px] uppercase tracking-widest text-ocean-400 font-bold ml-4">Email Address</label>
+                  <div className="relative">
                     <input 
                       type="email" 
-                      placeholder="jane@example.com"
-                      className="w-full bg-sand-50 rounded-full px-8 py-5 text-ocean-900 outline-none focus:ring-2 ring-sand-200 transition-all placeholder:text-ocean-100" 
+                      placeholder="EMAIL"
+                      className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all placeholder:text-ocean-200" 
                     />
                   </div>
+                </div>
 
-                  <div className="space-y-3">
-                    <label className="text-[10px] uppercase tracking-widest text-ocean-400 font-bold ml-4">Inquiry Type</label>
-                    <div className="relative">
-                      <select className="w-full bg-sand-50 rounded-full px-8 py-5 text-ocean-900 outline-none focus:ring-2 ring-sand-200 transition-all appearance-none cursor-pointer">
-                        <option>Exclusive Property Search</option>
-                        <option>Investment Opportunity</option>
-                        <option>Property Management</option>
-                        <option>Other / Bespoke Request</option>
-                      </select>
-                      <ChevronDown size={18} className="absolute right-6 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
-                    </div>
-                  </div>
+                <div className="relative">
+                  <select className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all appearance-none cursor-pointer">
+                    <option>GOLDEN MILE</option>
+                    <option>LA ZAGALETA</option>
+                    <option>SOTOGRANDE</option>
+                    <option>OTHER</option>
+                  </select>
+                  <ChevronDown size={14} className="absolute right-0 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
+                </div>
 
-                  <div className="space-y-3">
-                    <label className="text-[10px] uppercase tracking-widest text-ocean-400 font-bold ml-4">Your Message</label>
-                    <textarea 
-                      rows={4} 
-                      placeholder="How can we assist you today?"
-                      className="w-full bg-sand-50 rounded-[2rem] px-8 py-6 text-ocean-900 outline-none focus:ring-2 ring-sand-200 transition-all resize-none placeholder:text-ocean-100"
-                    />
-                  </div>
+                <div className="relative">
+                  <textarea 
+                    rows={2} 
+                    placeholder="MESSAGE"
+                    className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all resize-none placeholder:text-ocean-200"
+                  />
+                </div>
 
-                  <button className="w-full py-6 bg-ocean-900 text-white rounded-full font-bold tracking-[0.2em] uppercase hover:bg-sand-500 transition-all shadow-xl hover:shadow-2xl">
-                    Submit Inquiry
-                  </button>
-                </form>
-              </div>
+                <button className="w-full py-5 bg-ocean-900 text-white rounded-full text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-ocean-800 transition-all shadow-xl">
+                  Send Inquiry
+                </button>
+              </form>
             </div>
           </div>
         </div>
