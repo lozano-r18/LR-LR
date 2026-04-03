@@ -146,7 +146,7 @@ const Hero = () => {
           transition={{ duration: 1 }}
           className="w-full flex flex-col pt-20"
         >
-          <h1 className="text-[8vw] md:text-[10vw] font-serif text-white/95 tracking-[0.05em] leading-none mb-12 uppercase select-none font-light">
+          <h1 className="text-[7.5vw] md:text-[9vw] font-serif text-white/95 tracking-[0.02em] leading-none mb-14 uppercase select-none font-medium whitespace-nowrap">
             LOZANO REALTY
           </h1>
           
@@ -157,7 +157,7 @@ const Hero = () => {
               </p>
             </div>
             <button className="group flex items-center gap-4 bg-white/20 backdrop-blur-xl border border-white/30 text-white px-10 py-5 rounded-xl hover:bg-white hover:text-ocean-900 transition-all duration-500 shadow-2xl">
-              <span className="text-sm font-bold tracking-widest uppercase">Get My Curated Selection</span>
+              <span className="text-sm font-bold tracking-widest uppercase text-nowrap">GET IN TOUCH</span>
               <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
