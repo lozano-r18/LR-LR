@@ -206,9 +206,11 @@ const Properties = () => {
             const images = imagesNodes.map(img => img.textContent || '').filter(Boolean);
             
             // Variate imagery if available in same development by using a hash of the ID
+            // Limit to first 10 images to avoid low-quality/utility shots like gyms
             const propertyId = getText('id') || getText('ref') || '0';
             const idNumber = propertyId.replace(/\D/g, '');
-            const imageIndex = idNumber ? parseInt(idNumber) % images.length : 0;
+            const availableGalleryCount = Math.min(images.length, 10);
+            const imageIndex = idNumber && availableGalleryCount > 0 ? parseInt(idNumber) % availableGalleryCount : 0;
             let image = images[imageIndex] || images[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
 
             const plansNodes = Array.from(node.querySelectorAll('plans plan url'));
@@ -472,167 +474,174 @@ const Properties = () => {
         {/* Property Detail Modal */}
         <AnimatePresence>
           {selectedProperty && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10">
+            <div className="fixed inset-0 z-[100] flex items-center justify-center">
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setSelectedProperty(null)}
-                className="absolute inset-0 bg-ocean-900/90 backdrop-blur-sm"
+                className="absolute inset-0 bg-ocean-900/40 backdrop-blur-md"
               />
               <motion.div 
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="relative w-full max-w-7xl max-h-full bg-white overflow-hidden flex flex-col md:flex-row shadow-2xl"
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 100 }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="relative w-full h-[100vh] bg-white overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
               >
-                <button 
-                  onClick={() => setSelectedProperty(null)}
-                  className="absolute top-6 right-6 z-20 w-12 h-12 glass flex items-center justify-center text-ocean-900 hover:bg-white transition-colors"
-                >
-                  <X size={24} />
-                </button>
-
-                {/* Left Side: Image Carousel */}
-                <div className="w-full md:w-3/5 h-80 md:h-auto relative bg-ocean-900">
-                  <AnimatePresence mode="wait">
-                    <motion.img 
-                      key={activeImageIndex}
-                      src={selectedProperty.images[activeImageIndex] || selectedProperty.image} 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.5 }}
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  </AnimatePresence>
+                {/* Header Actions */}
+                <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-ocean-50 px-6 py-4 flex justify-between items-center">
+                  <div className="flex items-center gap-6 text-sm font-medium text-ocean-900">
+                    <button className="flex items-center gap-2 hover:opacity-60 transition-opacity">
+                      <Heart size={18} /> Save
+                    </button>
+                    <button className="flex items-center gap-2 hover:opacity-60 transition-opacity">
+                      <Share size={18} /> Share
+                    </button>
+                  </div>
                   
-                  {selectedProperty.images.length > 1 && (
-                    <div className="absolute inset-0 flex items-center justify-between px-6 pointer-events-none">
-                      <button 
-                        onClick={() => setActiveImageIndex(prev => (prev > 0 ? prev - 1 : selectedProperty.images.length - 1))}
-                        className="w-12 h-12 glass flex items-center justify-center text-ocean-900 hover:bg-white transition-all pointer-events-auto shadow-lg"
-                      >
-                        <ChevronRight size={24} className="rotate-180" />
-                      </button>
-                      <button 
-                        onClick={() => setActiveImageIndex(prev => (prev < selectedProperty.images.length - 1 ? prev + 1 : 0))}
-                        className="w-12 h-12 glass flex items-center justify-center text-ocean-900 hover:bg-white transition-all pointer-events-auto shadow-lg"
-                      >
-                        <ChevronRight size={24} />
-                      </button>
-                    </div>
-                  )}
-
-                  <div className="absolute bottom-6 left-6 right-6 flex justify-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                    {selectedProperty.images.map((img, idx) => (
-                      <button 
-                        key={idx}
-                        onClick={() => setActiveImageIndex(idx)}
-                        className={`w-16 h-12 flex-shrink-0 border-2 transition-all ${activeImageIndex === idx ? 'border-sand-500 scale-105' : 'border-transparent opacity-60'}`}
-                      >
-                        <img src={img} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                      </button>
-                    ))}
+                  <div className="flex items-center gap-2 text-xs text-ocean-400">
+                    <MapPin size={14} className="text-ocean-900" />
+                    <span className="uppercase tracking-widest">{selectedProperty.location}</span>
                   </div>
 
-                  <div className="absolute top-6 left-6 flex gap-2">
-                    <span className="glass px-4 py-2 text-xs uppercase tracking-widest font-bold text-ocean-900">
-                      {selectedProperty.tag}
-                    </span>
-                    {selectedProperty.ref && (
-                      <span className="glass px-4 py-2 text-xs uppercase tracking-widest font-bold text-ocean-900">
-                        REF: {selectedProperty.ref}
-                      </span>
-                    )}
-                  </div>
+                  <button 
+                    onClick={() => setSelectedProperty(null)}
+                    className="w-10 h-10 rounded-full bg-ocean-50 flex items-center justify-center text-ocean-900 hover:bg-ocean-900 hover:text-white transition-all"
+                  >
+                    <X size={20} />
+                  </button>
                 </div>
 
-                {/* Right Side: Content */}
-                <div className="w-full md:w-2/5 p-8 md:p-12 overflow-y-auto bg-sand-50">
-                  <div className="mb-8">
-                    <div className="flex items-center gap-2 text-sand-500 text-xs uppercase tracking-widest mb-3">
-                      <MapPin size={14} />
-                      <span>{selectedProperty.location}</span>
+                <div className="max-w-[1400px] mx-auto px-6 py-8">
+                  {/* Gallery Grid - 'URBN' Aesthetic */}
+                  <div className="grid grid-cols-12 gap-2 h-[60vh] md:h-[75vh] mb-12 rounded-[2.5rem] overflow-hidden group/gallery relative">
+                    <div className="col-span-12 md:col-span-6 h-full relative cursor-pointer overflow-hidden">
+                      <img src={selectedProperty.images[0] || selectedProperty.image} className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000" referrerPolicy="no-referrer" />
                     </div>
-                    <h2 className="text-3xl md:text-4xl font-serif text-ocean-900 mb-3">{selectedProperty.title}</h2>
-                    <div className="text-2xl font-light text-ocean-700">{selectedProperty.price}</div>
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-6 py-6 border-y border-ocean-100 mb-8">
-                    <div className="text-center">
-                      <div className="text-[10px] text-ocean-400 uppercase tracking-widest mb-1">Beds</div>
-                      <div className="text-lg text-ocean-900 font-medium">{selectedProperty.beds}</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-[10px] text-ocean-400 uppercase tracking-widest mb-1">Baths</div>
-                      <div className="text-lg text-ocean-900 font-medium">{selectedProperty.baths}</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-[10px] text-ocean-400 uppercase tracking-widest mb-1">Area</div>
-                      <div className="text-lg text-ocean-900 font-medium">{selectedProperty.sqft}</div>
-                    </div>
-                  </div>
-
-                  {selectedProperty.description && (
-                    <div className="mb-8">
-                      <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-ocean-900 mb-3">About this property</h4>
-                      <p className="text-ocean-600 font-light leading-relaxed text-sm h-48 overflow-y-auto pr-2 custom-scrollbar">
-                        {selectedProperty.description}
-                      </p>
-                    </div>
-                  )}
-
-                  {selectedProperty.features && selectedProperty.features.length > 0 && (
-                    <div className="mb-8">
-                      <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-ocean-900 mb-3">Key Features</h4>
-                      <div className="grid grid-cols-2 gap-y-2">
-                        {selectedProperty.features.slice(0, 10).map(f => (
-                          <div key={f} className="flex items-center gap-2 text-xs text-ocean-500">
-                            <div className="w-1 h-1 bg-sand-400 rotate-45" />
-                            {f}
-                          </div>
-                        ))}
+                    <div className="hidden md:flex flex-col col-span-3 gap-2 h-full">
+                      <div className="h-1/2 overflow-hidden cursor-pointer">
+                        <img src={selectedProperty.images[1] || selectedProperty.image} className="w-full h-full object-cover hover:scale-110 transition-transform duration-1000" referrerPolicy="no-referrer" />
+                      </div>
+                      <div className="h-1/2 overflow-hidden cursor-pointer">
+                        <img src={selectedProperty.images[2] || selectedProperty.image} className="w-full h-full object-cover hover:scale-110 transition-transform duration-1000" referrerPolicy="no-referrer" />
                       </div>
                     </div>
-                  )}
-
-                  {/* Floor Plans & Brochures */}
-                  {selectedProperty.plans && selectedProperty.plans.length > 0 && (
-                    <div className="mb-10">
-                      <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-ocean-900 mb-4">Documents</h4>
-                      <div className="space-y-2">
-                        {selectedProperty.plans.map((plan, idx) => (
-                          <a 
-                            key={idx}
-                            href={plan} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-between p-4 bg-white border border-ocean-50 hover:border-sand-500 transition-colors group"
-                          >
-                            <span className="text-xs uppercase tracking-widest font-medium text-ocean-600 group-hover:text-ocean-900">
-                              {plan.toLowerCase().includes('pdf') ? 'Digital Brochure / Floor Plan' : `Document ${idx + 1}`}
-                            </span>
-                            <ChevronRight size={16} className="text-sand-500" />
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex gap-4">
-                    <button className="flex-1 py-5 bg-ocean-900 text-white text-xs font-medium tracking-widest uppercase hover:bg-ocean-800 transition-all flex items-center justify-center gap-3">
-                      Inquire Now <Mail size={16} />
-                    </button>
-                    {selectedProperty.url && (
-                      <a 
-                        href={selectedProperty.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="p-5 border border-ocean-200 text-ocean-900 hover:bg-sand-500 hover:text-white transition-all"
+                    <div className="hidden md:block col-span-3 h-full relative overflow-hidden cursor-pointer">
+                      <img src={selectedProperty.images[3] || selectedProperty.image} className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000" referrerPolicy="no-referrer" />
+                      
+                      <button 
+                         className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-xl border border-white px-6 py-4 rounded-xl text-xs font-bold tracking-widest uppercase text-ocean-900 shadow-2xl hover:bg-ocean-900 hover:text-white transition-all flex items-center gap-3"
+                         onClick={() => setActiveImageIndex(0)}
                       >
+                        Show All Photos <span className="opacity-40">{selectedProperty.images.length || 1}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 item-start">
+                    {/* Main Content */}
+                    <div className="lg:col-span-8">
+                      <div className="flex items-end justify-between mb-12">
+                        <div>
+                          <h2 className="text-6xl md:text-8xl font-serif text-ocean-900 mb-6 leading-none">
+                            {selectedProperty.price}
+                          </h2>
+                          <button className="text-sm font-bold text-ocean-500 uppercase tracking-widest border-b border-ocean-100 pb-1">
+                            Calculate potential returns
+                          </button>
+                        </div>
+                        
+                        <div className="flex gap-12 text-right">
+                          <div>
+                            <div className="text-3xl md:text-5xl font-light text-ocean-900">{selectedProperty.sqftNumeric} <span className="text-base text-ocean-300">m²</span></div>
+                            <div className="text-[10px] text-ocean-400 uppercase tracking-widest font-bold mt-2">Surface</div>
+                          </div>
+                          <div>
+                            <div className="text-3xl md:text-5xl font-light text-ocean-900">{selectedProperty.beds}</div>
+                            <div className="text-[10px] text-ocean-400 uppercase tracking-widest font-bold mt-2">Bedrooms</div>
+                          </div>
+                          <div>
+                            <div className="text-3xl md:text-5xl font-light text-ocean-900">{selectedProperty.baths}</div>
+                            <div className="text-[10px] text-ocean-400 uppercase tracking-widest font-bold mt-2">Bathrooms</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="border-t border-ocean-50 pt-12 space-y-12">
+                        <section>
+                          <h4 className="text-sm font-bold text-ocean-900 uppercase tracking-[0.2em] mb-6 flex items-center gap-4">
+                            All Technical Specifications <div className="h-px flex-1 bg-ocean-50" />
+                          </h4>
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 text-sm">
+                            <div className="flex items-center gap-3 text-ocean-600">
+                              <Layout size={18} className="text-ocean-300" />
+                              <span>Pool available</span>
+                            </div>
+                            <div className="flex items-center gap-3 text-ocean-600">
+                              <Shield size={18} className="text-ocean-300" />
+                              <span>24h Security</span>
+                            </div>
+                            <div className="flex items-center gap-3 text-ocean-600">
+                              <Globe size={18} className="text-ocean-300" />
+                              <span>Ocean Views</span>
+                            </div>
+                          </div>
+                        </section>
+
+                        <section className="prose prose-ocean max-w-none">
+                          <p className="text-lg text-ocean-700 font-light leading-relaxed">
+                            {selectedProperty.description}
+                          </p>
+                        </section>
+
+                        {/* Brochure Link */}
+                        {selectedProperty.plans && selectedProperty.plans.length > 0 && (
+                           <div className="bg-ocean-900 text-white p-12 rounded-[2rem] flex flex-col md:flex-row justify-between items-center gap-8">
+                             <div>
+                               <h3 className="text-2xl font-serif italic mb-2 text-white">Project Brochure</h3>
+                               <p className="text-white/60 text-sm font-light">Download the full technical documentation and floor plans.</p>
+                             </div>
+                             <a 
+                               href={selectedProperty.plans[0]} 
+                               target="_blank" 
+                               className="px-10 py-5 bg-white text-ocean-900 rounded-xl text-xs font-bold tracking-[0.2em] uppercase hover:bg-sand-500 hover:text-white transition-all shadow-xl"
+                             >
+                               Get Brochure
+                             </a>
+                           </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Contact Sidebar */}
+                    <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit">
+                      <div className="bg-ocean-50/50 rounded-[2.5rem] p-10 border border-ocean-50">
+                        <div className="flex items-center gap-6 mb-10">
+                          <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center shadow-sm">
+                            <img src="/assets/logo-blue.png" className="w-10 h-auto" />
+                          </div>
+                          <div>
+                            <div className="text-[10px] text-ocean-400 uppercase tracking-widest font-bold mb-1">Estate Agency</div>
+                            <div className="text-lg font-serif">Lozano Realty</div>
+                          </div>
+                        </div>
+
+                        <button className="w-full py-6 bg-ocean-900 text-white rounded-2xl font-bold tracking-[0.3em] uppercase hover:bg-ocean-800 transition-all shadow-xl mb-4">
+                          Contact Agent
+                        </button>
+                        <p className="text-[10px] text-center text-ocean-300 uppercase tracking-widest leading-loose">
+                          Bespoke Acquisition & <br /> Investment Advisory
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
                         <ChevronRight size={18} />
                       </a>
                     )}
