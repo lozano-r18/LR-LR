@@ -84,12 +84,16 @@ const Navbar = () => {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-4 glass' : 'py-8 bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <img 
             src={isScrolled ? "/assets/blue-logo.png" : "/assets/white-logo.png"} 
             alt="Lozano Realty Logo" 
-            className="h-12 w-auto"
+            className="h-10 w-auto"
           />
+          <div className={`flex flex-col border-l border-current pl-4 ${isScrolled ? 'text-ocean-900 border-ocean-200' : 'text-white border-white/20'}`}>
+            <span className="text-lg font-serif font-bold tracking-[0.2em] leading-none mb-1">LOZANO</span>
+            <span className="text-[10px] uppercase tracking-[0.4em] font-light leading-none">REALTY</span>
+          </div>
         </div>
 
         {/* Desktop Menu */}
@@ -126,68 +130,39 @@ const Navbar = () => {
 
 const Hero = () => {
   return (
-    <section id="hero" className="relative h-screen flex items-center overflow-hidden">
-      {/* Background Image with Overlay */}
+    <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
+      {/* Scenic Costa del Sol Background */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=2000" 
-          alt="Luxury Villa Costa del Sol" 
-          className="w-full h-full object-cover scale-105"
+          src="https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?auto=format&fit=crop&q=80&w=2000" 
+          alt="Scenic Costa del Sol View" 
+          className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-ocean-900/60 via-ocean-900/40 to-sand-50/100" />
+        <div className="absolute inset-0 bg-ocean-900/40 backdrop-blur-[2px]" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full text-center">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-3xl"
+          transition={{ duration: 1 }}
+          className="max-w-4xl mx-auto"
         >
-          <span className="inline-block text-sand-300 font-medium tracking-[0.3em] uppercase mb-6 text-sm">
-            Costa del Sol • Spain
-          </span>
           <h1 className="text-6xl md:text-8xl font-serif text-white leading-tight mb-8">
-            Your Private <br />
-            <span className="italic font-light">Luxury Shoppers</span>
+            Exclusive <span className="italic font-light">Properties</span> <br />
+            <span className="italic font-light">and</span> Projects
           </h1>
-          <p className="text-white/80 text-lg md:text-xl mb-12 font-light leading-relaxed max-w-xl">
-            We don't just find houses; we curate lifestyles. Lozano Realty provides exclusive access to off-market properties and bespoke investment opportunities in the Mediterranean's most prestigious coast.
+          <p className="text-white/90 text-lg md:text-xl mb-12 font-light italic tracking-wide">
+            At Lozano Realty we get what you are looking for. Mastery in service and property.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6">
-            <button className="px-10 py-5 bg-sand-500 text-white font-medium tracking-widest uppercase hover:bg-sand-600 transition-all flex items-center gap-3 shadow-xl">
-              View Portfolio <ChevronRight size={18} />
+          <div className="flex justify-center">
+            <button className="group relative px-12 py-5 overflow-hidden border border-white/30 text-white font-medium tracking-[0.3em] uppercase transition-all hover:border-white">
+              <span className="relative z-10">Discover Collection</span>
+              <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+              <span className="absolute inset-0 flex items-center justify-center text-ocean-900 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">Discover Collection</span>
             </button>
-            <button className="px-10 py-5 glass-dark text-white font-medium tracking-widest uppercase hover:bg-white/20 transition-all">
-              Our Services
-            </button>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Floating Stats */}
-      <div className="absolute bottom-10 right-10 hidden lg:block">
-        <motion.div 
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-          className="glass p-8 flex gap-12"
-        >
-          <div>
-            <div className="text-3xl font-serif text-ocean-900">15+</div>
-            <div className="text-xs text-ocean-500 uppercase tracking-widest mt-1">Years Experience</div>
-          </div>
-          <div className="w-px h-12 bg-ocean-100" />
-          <div>
-            <div className="text-3xl font-serif text-ocean-900">€500M+</div>
-            <div className="text-xs text-ocean-500 uppercase tracking-widest mt-1">Assets Managed</div>
-          </div>
-          <div className="w-px h-12 bg-ocean-100" />
-          <div>
-            <div className="text-3xl font-serif text-ocean-900">100%</div>
-            <div className="text-xs text-ocean-500 uppercase tracking-widest mt-1">Discretion</div>
           </div>
         </motion.div>
       </div>
