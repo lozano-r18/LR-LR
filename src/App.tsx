@@ -108,7 +108,6 @@ const Navbar = () => {
         <div className={`hidden md:flex items-center gap-10 font-medium text-sm uppercase tracking-widest ${isScrolled ? 'text-ocean-900' : 'text-white'}`}>
           <a href="#hero" className="hover:text-sand-500 transition-colors">Home</a>
           <a href="#properties" className="hover:text-sand-500 transition-colors">Properties</a>
-          <a href="#team" className="hover:text-sand-500 transition-colors">Personal Shoppers</a>
           <a href="#contact" className="px-6 py-2 border border-current hover:bg-white hover:text-ocean-900 transition-all">Contact</a>
         </div>
 
@@ -129,7 +128,6 @@ const Navbar = () => {
           >
             <a href="#hero" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
             <a href="#properties" onClick={() => setIsMobileMenuOpen(false)}>Properties</a>
-            <a href="#team" onClick={() => setIsMobileMenuOpen(false)}>Personal Shoppers</a>
             <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
           </motion.div>
         )}
@@ -272,105 +270,6 @@ const Properties = () => {
   );
 };
 
-const Team = () => {
-  return (
-    <section id="team" className="py-32 relative overflow-hidden">
-      {/* Decorative Background */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-ocean-900/5 -z-10" />
-      
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          <div className="relative">
-            <div className="aspect-[3/4] overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=1000" 
-                alt="Founder Lozano Realty" 
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-            <div className="absolute -bottom-10 -right-10 glass p-10 max-w-xs hidden md:block">
-              <p className="text-ocean-900 italic font-serif text-lg mb-4">
-                "We don't sell real estate. We facilitate the acquisition of dreams for the most discerning clients."
-              </p>
-              <div className="font-bold text-ocean-900 uppercase tracking-widest text-xs">
-                Alejandro Lozano
-              </div>
-              <div className="text-sand-500 text-[10px] uppercase tracking-widest">
-                Founder & Lead Shopper
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <span className="text-sand-500 font-medium tracking-[0.3em] uppercase mb-6 block text-sm">
-              Personal Shopping Excellence
-            </span>
-            <h2 className="text-4xl md:text-5xl font-serif text-ocean-900 mb-10 leading-tight">
-              The Lozano <span className="italic font-light">Advantage</span>
-            </h2>
-            
-            <div className="space-y-10">
-              <div className="flex gap-6">
-                <div className="w-14 h-14 bg-ocean-100 flex items-center justify-center shrink-0">
-                  <Search className="text-ocean-900" size={24} />
-                </div>
-                <div>
-                  <h4 className="text-xl font-serif text-ocean-900 mb-2">Off-Market Access</h4>
-                  <p className="text-ocean-600 font-light leading-relaxed">
-                    Our deep-rooted connections in Costa del Sol grant our clients access to properties that never hit the public market.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-6">
-                <div className="w-14 h-14 bg-ocean-100 flex items-center justify-center shrink-0">
-                  <ShieldCheck className="text-ocean-900" size={24} />
-                </div>
-                <div>
-                  <h4 className="text-xl font-serif text-ocean-900 mb-2">Full Legal Protection</h4>
-                  <p className="text-ocean-600 font-light leading-relaxed">
-                    We manage the entire due diligence process, ensuring your investment is secure and compliant with Spanish regulations.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-6">
-                <div className="w-14 h-14 bg-ocean-100 flex items-center justify-center shrink-0">
-                  <Award className="text-ocean-900" size={24} />
-                </div>
-                <div>
-                  <h4 className="text-xl font-serif text-ocean-900 mb-2">Bespoke Concierge</h4>
-                  <p className="text-ocean-600 font-light leading-relaxed">
-                    From interior design to property management, we provide a seamless transition into your new Mediterranean life.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Collaborations */}
-        <div className="mt-40 pt-20 border-t border-ocean-100">
-          <p className="text-center text-ocean-400 uppercase tracking-[0.3em] text-xs mb-12">
-            Global Network & Collaborations
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-16 opacity-50 grayscale hover:grayscale-0 transition-all">
-            {COLLABORATIONS.map((collab) => (
-              <img 
-                key={collab.name} 
-                src={collab.logo} 
-                alt={collab.name} 
-                className="h-8 md:h-10 object-contain"
-                referrerPolicy="no-referrer"
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
 
 const Contact = () => {
   return (
@@ -492,7 +391,6 @@ export default function App() {
       <Navbar />
       <Hero />
       <Properties />
-      <Team />
       <Contact />
       <Footer />
     </div>
