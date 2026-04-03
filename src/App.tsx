@@ -26,59 +26,41 @@ import {
 // --- Types ---
 interface Property {
   id: number | string;
+  ref: string;
   title: string;
   location: string;
+  town: string;
+  province: string;
   price: string;
+  priceNumeric: number;
   beds: number;
   baths: number;
   sqft: string;
+  sqftNumeric: number;
   image: string;
+  images: string[];
   tag: string;
   type: string;
-  description?: string;
-  features?: string[];
-  pool?: boolean;
+  description: string;
+  features: string[];
+  pool: boolean;
+  plans: string[];
+  url: string;
+}
+
+interface SearchFilters {
+  area: string;
+  type: string;
+  beds: string;
+  baths: string;
+  priceMin: string;
+  priceMax: string;
+  ref: string;
+  sortBy: string;
 }
 
 // --- Mock Data ---
-const PROPERTIES: Property[] = [
-  {
-    id: 1,
-    title: "Villa Seraphina",
-    location: "Marbella Golden Mile",
-    price: "€12,500,000",
-    beds: 6,
-    baths: 7,
-    sqft: "1,200 m²",
-    image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000",
-    tag: "Exclusive",
-    type: "Villa"
-  },
-  {
-    id: 2,
-    title: "The Azure Penthouse",
-    location: "Puerto Banús",
-    price: "€4,800,000",
-    beds: 3,
-    baths: 4,
-    sqft: "450 m²",
-    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000",
-    tag: "New Build",
-    type: "Penthouse"
-  },
-  {
-    id: 3,
-    title: "Finca Los Olivos",
-    location: "Benahavís",
-    price: "€8,950,000",
-    beds: 5,
-    baths: 5,
-    sqft: "850 m²",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000",
-    tag: "Investment",
-    type: "Villa"
-  }
-];
+const PROPERTIES: Property[] = [];
 
 const COLLABORATIONS = [
   { name: "Sotheby's International", logo: "https://logo.clearbit.com/sothebysrealty.com" },
@@ -217,7 +199,16 @@ const Hero = () => {
 const Properties = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [filters, setFilters] = useState<SearchFilters>({
+    area: '',
+    type: '',
+    beds: '',
+    baths: '',
+    priceMin: '',
+    priceMax: '',
+    ref: '',
+    sortBy: 'newest'
+  });
   const [showAll, setShowAll] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
@@ -239,11 +230,12 @@ const Properties = () => {
             const priceVal = getText('price');
             const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
             
-            let image = 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
-            const imageUrlNode = node.querySelector('images image url');
-            if (imageUrlNode && imageUrlNode.textContent) {
-              image = imageUrlNode.textContent;
-            }
+            const imagesNodes = Array.from(node.querySelectorAll('images image url'));
+            const images = imagesNodes.map(img => img.textContent || '').filter(Boolean);
+            const image = images[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
+
+            const plansNodes = Array.from(node.querySelectorAll('plans plan url'));
+            const plans = plansNodes.map(p => p.textContent || '').filter(Boolean);
 
             const builtArea = node.querySelector('surface_area built')?.textContent || '0';
             const sqft = builtArea !== '0' ? `${builtArea} m²` : 'Contact for area';
@@ -251,20 +243,32 @@ const Properties = () => {
             const featuresNodes = Array.from(node.querySelectorAll('features feature'));
             const features = featuresNodes.map(f => f.textContent || '').filter(Boolean);
 
+            const descEn = node.querySelector('desc en')?.textContent || '';
+            const descEs = node.querySelector('desc es')?.textContent || '';
+            const description = descEn || descEs || '';
+
             return {
               id: getText('id') || getText('ref') || Math.random().toString(),
+              ref: getText('ref'),
               title: `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`,
               location: `${town}, ${getText('province')}`,
+              town: town,
+              province: getText('province'),
               price: formattedPrice,
+              priceNumeric: Number(priceVal) || 0,
               beds: parseInt(getText('beds')) || 0,
               baths: parseInt(getText('baths')) || 0,
               sqft: sqft,
+              sqftNumeric: Number(builtArea) || 0,
               image: image,
+              images: images,
               tag: getText('new_build') === '1' ? "New Build" : "Exclusive",
               type: type,
               features: features,
               pool: getText('pool') === '1',
-              description: node.querySelector('desc es')?.textContent || node.querySelector('desc en')?.textContent || ''
+              plans: plans,
+              description: description,
+              url: getText('url es') || getText('url en') || ''
             };
           });
           
@@ -280,36 +284,162 @@ const Properties = () => {
     fetchHabiHubProperties();
   }, []);
 
-  const filteredProperties = properties.filter(prop => 
-    prop.location.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    prop.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    prop.type.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProperties = properties.filter(prop => {
+    const matchArea = !filters.area || prop.town === filters.area;
+    const matchType = !filters.type || prop.type === filters.type;
+    const matchBeds = !filters.beds || prop.beds >= parseInt(filters.beds);
+    const matchBaths = !filters.baths || prop.baths >= parseInt(filters.baths);
+    const matchPriceMin = !filters.priceMin || prop.priceNumeric >= parseInt(filters.priceMin);
+    const matchPriceMax = !filters.priceMax || prop.priceNumeric <= parseInt(filters.priceMax);
+    const matchRef = !filters.ref || prop.ref.toLowerCase().includes(filters.ref.toLowerCase()) || prop.id.toString().includes(filters.ref);
+    
+    return matchArea && matchType && matchBeds && matchBaths && matchPriceMin && matchPriceMax && matchRef;
+  }).sort((a, b) => {
+    if (filters.sortBy === 'price-asc') return a.priceNumeric - b.priceNumeric;
+    if (filters.sortBy === 'price-desc') return b.priceNumeric - a.priceNumeric;
+    return 0; // Default newest (assuming feed order)
+  });
+
+  const areas = Array.from(new Set(properties.map(p => p.town))).sort();
+  const types = Array.from(new Set(properties.map(p => p.type))).sort();
 
   const displayedProperties = showAll ? filteredProperties : filteredProperties.slice(0, 9);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  // Reset image index when modal opens
+  useEffect(() => {
+    if (selectedProperty) setActiveImageIndex(0);
+  }, [selectedProperty]);
 
   return (
     <section id="properties" className="py-32 bg-sand-50">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
-          <div className="max-w-2xl">
+        <div className="mb-20">
+          <div className="max-w-2xl mb-12">
             <h2 className="text-4xl md:text-5xl font-serif text-ocean-900 mb-6">
-              Exclusive <span className="italic font-light">Listings</span>
+              Exclusive <span className="italic font-light">Properties and Projects</span>
             </h2>
-            <p className="text-ocean-600 font-light leading-relaxed">
-              Browse our complete HabiHub collection of premium properties across the Costa del Sol.
+            <p className="text-ocean-600 font-light italic">
+              At Lozano Realty we get what you are looking for. Mastery in service and property.
             </p>
           </div>
           
-          <div className="relative w-full md:w-80">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-ocean-300" size={18} />
-            <input 
-              type="text" 
-              placeholder="Search location or type..."
-              className="w-full pl-12 pr-4 py-4 bg-white border border-ocean-100 focus:border-sand-500 outline-none transition-all text-sm"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+          <div className="bg-white p-8 shadow-sm border border-ocean-100">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+              {/* Row 1 */}
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Area</label>
+                <select 
+                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  value={filters.area}
+                  onChange={(e) => setFilters({...filters, area: e.target.value})}
+                >
+                  <option value="">Any Area</option>
+                  {areas.map(a => <option key={a} value={a}>{a}</option>)}
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Property Type</label>
+                <select 
+                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  value={filters.type}
+                  onChange={(e) => setFilters({...filters, type: e.target.value})}
+                >
+                  <option value="">Any Type</option>
+                  {types.map(t => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Bedrooms</label>
+                <select 
+                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  value={filters.beds}
+                  onChange={(e) => setFilters({...filters, beds: e.target.value})}
+                >
+                  <option value="">Any Bedrooms</option>
+                  {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n}+ Beds</option>)}
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Bathrooms</label>
+                <select 
+                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  value={filters.baths}
+                  onChange={(e) => setFilters({...filters, baths: e.target.value})}
+                >
+                  <option value="">Any Bathrooms</option>
+                  {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}+ Baths</option>)}
+                </select>
+              </div>
+
+              {/* Row 2 */}
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Price Min</label>
+                <select 
+                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  value={filters.priceMin}
+                  onChange={(e) => setFilters({...filters, priceMin: e.target.value})}
+                >
+                  <option value="">Min Price</option>
+                  {[100000, 250000, 500000, 750000, 1000000, 2000000, 5000000].map(p => (
+                    <option key={p} value={p}>€{p.toLocaleString()}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Price Max</label>
+                <select 
+                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  value={filters.priceMax}
+                  onChange={(e) => setFilters({...filters, priceMax: e.target.value})}
+                >
+                  <option value="">Max Price</option>
+                  {[500000, 1000000, 2000000, 5000000, 10000000, 20000000].map(p => (
+                    <option key={p} value={p}>€{p.toLocaleString()}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Search by Ref</label>
+                <input 
+                  type="text" 
+                  placeholder="Reference No."
+                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm"
+                  value={filters.ref}
+                  onChange={(e) => setFilters({...filters, ref: e.target.value})}
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-widest text-ocean-400 ml-1">Sort By</label>
+                <select 
+                  className="w-full p-4 bg-sand-50 border border-ocean-50 outline-none text-sm appearance-none cursor-pointer"
+                  value={filters.sortBy}
+                  onChange={(e) => setFilters({...filters, sortBy: e.target.value})}
+                >
+                  <option value="newest">Newest First</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center text-[10px] uppercase tracking-[0.2em] font-bold">
+              <button 
+                className="text-ocean-400 hover:text-ocean-900 transition-colors"
+                onClick={() => setFilters({area:'', type:'', beds:'', baths:'', priceMin:'', priceMax:'', ref:'', sortBy:'newest'})}
+              >
+                Refresh Search
+              </button>
+              <div className="text-sand-500">
+                {filteredProperties.length} Properties Found
+              </div>
+            </div>
           </div>
         </div>
 
@@ -381,77 +511,114 @@ const Properties = () => {
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="relative w-full max-w-6xl max-h-full bg-white overflow-hidden flex flex-col md:flex-row shadow-2xl"
+                className="relative w-full max-w-7xl max-h-full bg-white overflow-hidden flex flex-col md:flex-row shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
               >
                 <button 
                   onClick={() => setSelectedProperty(null)}
-                  className="absolute top-6 right-6 z-10 w-12 h-12 glass flex items-center justify-center text-ocean-900 hover:bg-white transition-colors"
+                  className="absolute top-6 right-6 z-20 w-12 h-12 glass flex items-center justify-center text-ocean-900 hover:bg-white transition-colors"
                 >
                   <X size={24} />
                 </button>
 
-                {/* Left Side: Image */}
-                <div className="w-full md:w-1/2 h-64 md:h-auto relative">
-                  <img 
-                    src={selectedProperty.image} 
-                    alt={selectedProperty.title} 
-                    className="w-full h-full object-cover"
-                    referrerPolicy="no-referrer"
-                  />
+                {/* Left Side: Image Carousel */}
+                <div className="w-full md:w-3/5 h-80 md:h-auto relative bg-ocean-900">
+                  <AnimatePresence mode="wait">
+                    <motion.img 
+                      key={activeImageIndex}
+                      src={selectedProperty.images[activeImageIndex] || selectedProperty.image} 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </AnimatePresence>
+                  
+                  {selectedProperty.images.length > 1 && (
+                    <div className="absolute inset-0 flex items-center justify-between px-6 pointer-events-none">
+                      <button 
+                        onClick={() => setActiveImageIndex(prev => (prev > 0 ? prev - 1 : selectedProperty.images.length - 1))}
+                        className="w-12 h-12 glass flex items-center justify-center text-ocean-900 hover:bg-white transition-all pointer-events-auto shadow-lg"
+                      >
+                        <ChevronRight size={24} className="rotate-180" />
+                      </button>
+                      <button 
+                        onClick={() => setActiveImageIndex(prev => (prev < selectedProperty.images.length - 1 ? prev + 1 : 0))}
+                        className="w-12 h-12 glass flex items-center justify-center text-ocean-900 hover:bg-white transition-all pointer-events-auto shadow-lg"
+                      >
+                        <ChevronRight size={24} />
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="absolute bottom-6 left-6 right-6 flex justify-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                    {selectedProperty.images.map((img, idx) => (
+                      <button 
+                        key={idx}
+                        onClick={() => setActiveImageIndex(idx)}
+                        className={`w-16 h-12 flex-shrink-0 border-2 transition-all ${activeImageIndex === idx ? 'border-sand-500 scale-105' : 'border-transparent opacity-60'}`}
+                      >
+                        <img src={img} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      </button>
+                    ))}
+                  </div>
+
                   <div className="absolute top-6 left-6 flex gap-2">
                     <span className="glass px-4 py-2 text-xs uppercase tracking-widest font-bold text-ocean-900">
                       {selectedProperty.tag}
                     </span>
-                    {selectedProperty.pool && (
+                    {selectedProperty.ref && (
                       <span className="glass px-4 py-2 text-xs uppercase tracking-widest font-bold text-ocean-900">
-                        Pool
+                        REF: {selectedProperty.ref}
                       </span>
                     )}
                   </div>
                 </div>
 
                 {/* Right Side: Content */}
-                <div className="w-full md:w-1/2 p-8 md:p-16 overflow-y-auto bg-sand-50">
-                  <div className="mb-10">
-                    <div className="flex items-center gap-2 text-sand-500 text-sm uppercase tracking-widest mb-4">
-                      <MapPin size={16} />
+                <div className="w-full md:w-2/5 p-8 md:p-12 overflow-y-auto bg-sand-50">
+                  <div className="mb-8">
+                    <div className="flex items-center gap-2 text-sand-500 text-xs uppercase tracking-widest mb-3">
+                      <MapPin size={14} />
                       <span>{selectedProperty.location}</span>
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-serif text-ocean-900 mb-4">{selectedProperty.title}</h2>
-                    <div className="text-3xl font-light text-ocean-700">{selectedProperty.price}</div>
+                    <h2 className="text-3xl md:text-4xl font-serif text-ocean-900 mb-3">{selectedProperty.title}</h2>
+                    <div className="text-2xl font-light text-ocean-700">{selectedProperty.price}</div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-8 py-8 border-y border-ocean-100 mb-10">
-                    <div>
-                      <div className="text-sm text-ocean-400 uppercase tracking-widest mb-1">Beds</div>
-                      <div className="text-xl text-ocean-900 font-medium">{selectedProperty.beds}</div>
+                  <div className="grid grid-cols-3 gap-6 py-6 border-y border-ocean-100 mb-8">
+                    <div className="text-center">
+                      <div className="text-[10px] text-ocean-400 uppercase tracking-widest mb-1">Beds</div>
+                      <div className="text-lg text-ocean-900 font-medium">{selectedProperty.beds}</div>
                     </div>
-                    <div>
-                      <div className="text-sm text-ocean-400 uppercase tracking-widest mb-1">Baths</div>
-                      <div className="text-xl text-ocean-900 font-medium">{selectedProperty.baths}</div>
+                    <div className="text-center">
+                      <div className="text-[10px] text-ocean-400 uppercase tracking-widest mb-1">Baths</div>
+                      <div className="text-lg text-ocean-900 font-medium">{selectedProperty.baths}</div>
                     </div>
-                    <div>
-                      <div className="text-sm text-ocean-400 uppercase tracking-widest mb-1">Area</div>
-                      <div className="text-xl text-ocean-900 font-medium">{selectedProperty.sqft}</div>
+                    <div className="text-center">
+                      <div className="text-[10px] text-ocean-400 uppercase tracking-widest mb-1">Area</div>
+                      <div className="text-lg text-ocean-900 font-medium">{selectedProperty.sqft}</div>
                     </div>
                   </div>
 
                   {selectedProperty.description && (
-                    <div className="mb-10">
-                      <h4 className="text-xs uppercase tracking-[0.2em] font-bold text-ocean-900 mb-4">Description</h4>
-                      <p className="text-ocean-600 font-light leading-relaxed">
+                    <div className="mb-8">
+                      <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-ocean-900 mb-3">About this property</h4>
+                      <p className="text-ocean-600 font-light leading-relaxed text-sm h-48 overflow-y-auto pr-2 custom-scrollbar">
                         {selectedProperty.description}
                       </p>
                     </div>
                   )}
 
                   {selectedProperty.features && selectedProperty.features.length > 0 && (
-                    <div className="mb-12">
-                      <h4 className="text-xs uppercase tracking-[0.2em] font-bold text-ocean-900 mb-4">Key Features</h4>
-                      <div className="grid grid-cols-2 gap-y-3">
-                        {selectedProperty.features.map(f => (
-                          <div key={f} className="flex items-center gap-2 text-sm text-ocean-500">
-                            <div className="w-1.5 h-1.5 bg-sand-400 rotate-45" />
+                    <div className="mb-8">
+                      <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-ocean-900 mb-3">Key Features</h4>
+                      <div className="grid grid-cols-2 gap-y-2">
+                        {selectedProperty.features.slice(0, 10).map(f => (
+                          <div key={f} className="flex items-center gap-2 text-xs text-ocean-500">
+                            <div className="w-1 h-1 bg-sand-400 rotate-45" />
                             {f}
                           </div>
                         ))}
@@ -459,9 +626,44 @@ const Properties = () => {
                     </div>
                   )}
 
-                  <button className="w-full py-5 bg-ocean-900 text-white font-medium tracking-widest uppercase hover:bg-ocean-800 transition-all flex items-center justify-center gap-4">
-                    Inquire for Details <Mail size={18} />
-                  </button>
+                  {/* Floor Plans & Brochures */}
+                  {selectedProperty.plans && selectedProperty.plans.length > 0 && (
+                    <div className="mb-10">
+                      <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-ocean-900 mb-4">Documents</h4>
+                      <div className="space-y-2">
+                        {selectedProperty.plans.map((plan, idx) => (
+                          <a 
+                            key={idx}
+                            href={plan} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between p-4 bg-white border border-ocean-50 hover:border-sand-500 transition-colors group"
+                          >
+                            <span className="text-xs uppercase tracking-widest font-medium text-ocean-600 group-hover:text-ocean-900">
+                              {plan.toLowerCase().includes('pdf') ? 'Digital Brochure / Floor Plan' : `Document ${idx + 1}`}
+                            </span>
+                            <ChevronRight size={16} className="text-sand-500" />
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex gap-4">
+                    <button className="flex-1 py-5 bg-ocean-900 text-white text-xs font-medium tracking-widest uppercase hover:bg-ocean-800 transition-all flex items-center justify-center gap-3">
+                      Inquire Now <Mail size={16} />
+                    </button>
+                    {selectedProperty.url && (
+                      <a 
+                        href={selectedProperty.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="p-5 border border-ocean-200 text-ocean-900 hover:bg-sand-500 hover:text-white transition-all"
+                      >
+                        <ChevronRight size={18} />
+                      </a>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             </div>
