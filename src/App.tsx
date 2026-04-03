@@ -146,7 +146,7 @@ const Hero = () => {
           transition={{ duration: 1 }}
           className="w-full flex flex-col pt-20"
         >
-          <h1 className="text-[12vw] md:text-[14vw] font-black text-white/90 tracking-[-0.05em] leading-[0.8] mb-12 uppercase select-none">
+          <h1 className="text-[8vw] md:text-[10vw] font-serif text-white/95 tracking-[0.05em] leading-none mb-12 uppercase select-none font-light">
             LOZANO REALTY
           </h1>
           
@@ -194,16 +194,22 @@ const Properties = () => {
         
         const propertyNodes = Array.from(xmlDoc.querySelectorAll('property'));
         if (propertyNodes.length > 0) {
-          const parsedProperties: Property[] = propertyNodes.map(node => {
+          const parsedProperties: Property[] = propertyNodes.map((node, index) => {
             const getText = (selector: string) => node.querySelector(selector)?.textContent || '';
             const type = getText('type') || 'Property';
             const town = getText('town') || 'Costa del Sol';
+            const development = getText('development') || getText('urbanization') || '';
             const priceVal = getText('price');
             const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
             
             const imagesNodes = Array.from(node.querySelectorAll('images image url'));
             const images = imagesNodes.map(img => img.textContent || '').filter(Boolean);
-            const image = images[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
+            
+            // Variate imagery if available in same development
+            let image = images[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
+            if (development && index % 2 === 1 && images[1]) {
+              image = images[1];
+            }
 
             const plansNodes = Array.from(node.querySelectorAll('plans plan url'));
             const plans = plansNodes.map(p => p.textContent || '').filter(Boolean);
@@ -218,10 +224,14 @@ const Properties = () => {
             const descEs = node.querySelector('desc es')?.textContent || '';
             const description = descEn || descEs || '';
 
+            const title = development 
+              ? `${type.charAt(0).toUpperCase() + type.slice(1)} in ${development}`
+              : `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`;
+
             return {
               id: getText('id') || getText('ref') || Math.random().toString(),
               ref: getText('ref'),
-              title: `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`,
+              title: title,
               location: `${town}, ${getText('province')}`,
               town: town,
               province: getText('province'),
