@@ -34,6 +34,10 @@ interface Property {
   sqft: string;
   image: string;
   tag: string;
+  type: string;
+  description?: string;
+  features?: string[];
+  pool?: boolean;
 }
 
 // --- Mock Data ---
@@ -47,7 +51,8 @@ const PROPERTIES: Property[] = [
     baths: 7,
     sqft: "1,200 m²",
     image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000",
-    tag: "Exclusive"
+    tag: "Exclusive",
+    type: "Villa"
   },
   {
     id: 2,
@@ -58,7 +63,8 @@ const PROPERTIES: Property[] = [
     baths: 4,
     sqft: "450 m²",
     image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000",
-    tag: "New Build"
+    tag: "New Build",
+    type: "Penthouse"
   },
   {
     id: 3,
@@ -69,7 +75,8 @@ const PROPERTIES: Property[] = [
     baths: 5,
     sqft: "850 m²",
     image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000",
-    tag: "Investment"
+    tag: "Investment",
+    type: "Villa"
   }
 ];
 
@@ -208,8 +215,11 @@ const Hero = () => {
 };
 
 const Properties = () => {
-  const [properties, setProperties] = useState<Property[]>(PROPERTIES);
+  const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showAll, setShowAll] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
   useEffect(() => {
     const fetchHabiHubProperties = async () => {
@@ -227,29 +237,38 @@ const Properties = () => {
             const type = getText('type') || 'Property';
             const town = getText('town') || 'Costa del Sol';
             const priceVal = getText('price');
-            const formattedPrice = priceVal ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
+            const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
             
             let image = 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
-            const urlNode = node.querySelector('images image url');
-            if (urlNode && urlNode.textContent) {
-              image = urlNode.textContent;
+            const imageUrlNode = node.querySelector('images image url');
+            if (imageUrlNode && imageUrlNode.textContent) {
+              image = imageUrlNode.textContent;
             }
 
+            const builtArea = node.querySelector('surface_area built')?.textContent || '0';
+            const sqft = builtArea !== '0' ? `${builtArea} m²` : 'Contact for area';
+
+            const featuresNodes = Array.from(node.querySelectorAll('features feature'));
+            const features = featuresNodes.map(f => f.textContent || '').filter(Boolean);
+
             return {
-              id: getText('ref') || Math.random().toString(),
-              title: `${type} in ${town}`,
+              id: getText('id') || getText('ref') || Math.random().toString(),
+              title: `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`,
               location: `${town}, ${getText('province')}`,
               price: formattedPrice,
               beds: parseInt(getText('beds')) || 0,
               baths: parseInt(getText('baths')) || 0,
-              sqft: `${getText('surface_area built')} m²`,
+              sqft: sqft,
               image: image,
-              tag: "New Build"
+              tag: getText('new_build') === '1' ? "New Build" : "Exclusive",
+              type: type,
+              features: features,
+              pool: getText('pool') === '1',
+              description: node.querySelector('desc es')?.textContent || node.querySelector('desc en')?.textContent || ''
             };
           });
           
-          // Display top 6 properties
-          setProperties(parsedProperties.slice(0, 6));
+          setProperties(parsedProperties);
         }
       } catch (error) {
         console.error("Error fetching HabiHub feed:", error);
@@ -261,32 +280,49 @@ const Properties = () => {
     fetchHabiHubProperties();
   }, []);
 
+  const filteredProperties = properties.filter(prop => 
+    prop.location.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    prop.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    prop.type.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const displayedProperties = showAll ? filteredProperties : filteredProperties.slice(0, 9);
+
   return (
     <section id="properties" className="py-32 bg-sand-50">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
           <div className="max-w-2xl">
             <h2 className="text-4xl md:text-5xl font-serif text-ocean-900 mb-6">
-              Featured <span className="italic font-light">Collections</span>
+              Exclusive <span className="italic font-light">Listings</span>
             </h2>
             <p className="text-ocean-600 font-light leading-relaxed">
-              A handpicked selection of the most exclusive villas, penthouses, and estates currently available in Marbella, Zagaleta, and Sotogrande.
+              Browse our complete HabiHub collection of premium properties across the Costa del Sol.
             </p>
           </div>
-          <button className="text-ocean-900 font-medium tracking-widest uppercase flex items-center gap-2 group">
-            {loading ? 'Updating Feed...' : 'Explore All'} <ArrowRight className="group-hover:translate-x-2 transition-transform" size={18} />
-          </button>
+          
+          <div className="relative w-full md:w-80">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-ocean-300" size={18} />
+            <input 
+              type="text" 
+              placeholder="Search location or type..."
+              className="w-full pl-12 pr-4 py-4 bg-white border border-ocean-100 focus:border-sand-500 outline-none transition-all text-sm"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {properties.map((prop, idx) => (
+          {displayedProperties.map((prop, idx) => (
             <motion.div 
               key={prop.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
+              transition={{ delay: (idx % 3) * 0.1 }}
               className="group cursor-pointer"
+              onClick={() => setSelectedProperty(prop)}
             >
               <div className="relative aspect-[4/5] overflow-hidden mb-6">
                 <img 
@@ -303,12 +339,12 @@ const Properties = () => {
                 </div>
               </div>
               <div className="flex justify-between items-start mb-2">
-                <h3 className="text-xl font-serif text-ocean-900">{prop.title}</h3>
-                <span className="text-sand-500 font-medium">{prop.price}</span>
+                <h3 className="text-xl font-serif text-ocean-900 line-clamp-1">{prop.title}</h3>
+                <span className="text-sand-500 font-medium whitespace-nowrap ml-4">{prop.price}</span>
               </div>
               <div className="flex items-center gap-2 text-ocean-500 text-sm mb-4">
                 <MapPin size={14} />
-                <span>{prop.location}</span>
+                <span className="truncate">{prop.location}</span>
               </div>
               <div className="flex gap-6 text-xs text-ocean-400 uppercase tracking-widest font-medium border-t border-ocean-100 pt-4">
                 <span>{prop.beds} Beds</span>
@@ -318,6 +354,119 @@ const Properties = () => {
             </motion.div>
           ))}
         </div>
+
+        {!showAll && filteredProperties.length > 9 && (
+          <div className="mt-20 text-center">
+            <button 
+              onClick={() => setShowAll(true)}
+              className="px-12 py-5 border border-ocean-900 text-ocean-900 font-medium tracking-widest uppercase hover:bg-ocean-900 hover:text-white transition-all flex items-center gap-3 mx-auto"
+            >
+              {loading ? 'Updating Feed...' : `Load More (${filteredProperties.length - 9} remaining)`} <ArrowRight size={18} />
+            </button>
+          </div>
+        )}
+
+        {/* Property Detail Modal */}
+        <AnimatePresence>
+          {selectedProperty && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSelectedProperty(null)}
+                className="absolute inset-0 bg-ocean-900/90 backdrop-blur-sm"
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="relative w-full max-w-6xl max-h-full bg-white overflow-hidden flex flex-col md:flex-row shadow-2xl"
+              >
+                <button 
+                  onClick={() => setSelectedProperty(null)}
+                  className="absolute top-6 right-6 z-10 w-12 h-12 glass flex items-center justify-center text-ocean-900 hover:bg-white transition-colors"
+                >
+                  <X size={24} />
+                </button>
+
+                {/* Left Side: Image */}
+                <div className="w-full md:w-1/2 h-64 md:h-auto relative">
+                  <img 
+                    src={selectedProperty.image} 
+                    alt={selectedProperty.title} 
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute top-6 left-6 flex gap-2">
+                    <span className="glass px-4 py-2 text-xs uppercase tracking-widest font-bold text-ocean-900">
+                      {selectedProperty.tag}
+                    </span>
+                    {selectedProperty.pool && (
+                      <span className="glass px-4 py-2 text-xs uppercase tracking-widest font-bold text-ocean-900">
+                        Pool
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Right Side: Content */}
+                <div className="w-full md:w-1/2 p-8 md:p-16 overflow-y-auto bg-sand-50">
+                  <div className="mb-10">
+                    <div className="flex items-center gap-2 text-sand-500 text-sm uppercase tracking-widest mb-4">
+                      <MapPin size={16} />
+                      <span>{selectedProperty.location}</span>
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-serif text-ocean-900 mb-4">{selectedProperty.title}</h2>
+                    <div className="text-3xl font-light text-ocean-700">{selectedProperty.price}</div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-8 py-8 border-y border-ocean-100 mb-10">
+                    <div>
+                      <div className="text-sm text-ocean-400 uppercase tracking-widest mb-1">Beds</div>
+                      <div className="text-xl text-ocean-900 font-medium">{selectedProperty.beds}</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-ocean-400 uppercase tracking-widest mb-1">Baths</div>
+                      <div className="text-xl text-ocean-900 font-medium">{selectedProperty.baths}</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-ocean-400 uppercase tracking-widest mb-1">Area</div>
+                      <div className="text-xl text-ocean-900 font-medium">{selectedProperty.sqft}</div>
+                    </div>
+                  </div>
+
+                  {selectedProperty.description && (
+                    <div className="mb-10">
+                      <h4 className="text-xs uppercase tracking-[0.2em] font-bold text-ocean-900 mb-4">Description</h4>
+                      <p className="text-ocean-600 font-light leading-relaxed">
+                        {selectedProperty.description}
+                      </p>
+                    </div>
+                  )}
+
+                  {selectedProperty.features && selectedProperty.features.length > 0 && (
+                    <div className="mb-12">
+                      <h4 className="text-xs uppercase tracking-[0.2em] font-bold text-ocean-900 mb-4">Key Features</h4>
+                      <div className="grid grid-cols-2 gap-y-3">
+                        {selectedProperty.features.map(f => (
+                          <div key={f} className="flex items-center gap-2 text-sm text-ocean-500">
+                            <div className="w-1.5 h-1.5 bg-sand-400 rotate-45" />
+                            {f}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <button className="w-full py-5 bg-ocean-900 text-white font-medium tracking-widest uppercase hover:bg-ocean-800 transition-all flex items-center justify-center gap-4">
+                    Inquire for Details <Mail size={18} />
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
