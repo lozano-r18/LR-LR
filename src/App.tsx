@@ -85,12 +85,11 @@ const Navbar = () => {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-4 glass' : 'py-8 bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-ocean-900 flex items-center justify-center rounded-sm">
-            <span className="text-sand-200 font-serif text-2xl font-bold italic">L</span>
-          </div>
-          <span className={`text-2xl font-serif font-bold tracking-widest ${isScrolled ? 'text-ocean-900' : 'text-white'}`}>
-            LOZANO <span className="font-light italic">REALTY</span>
-          </span>
+          <img 
+            src={isScrolled ? "/assets/blue-logo.png" : "/assets/white-logo.png"} 
+            alt="Lozano Realty Logo" 
+            className="h-12 w-auto"
+          />
         </div>
 
         {/* Desktop Menu */}
@@ -695,8 +694,8 @@ const Contact = () => {
                   <Phone size={20} />
                 </div>
                 <div>
-                  <div className="text-xs text-white/40 uppercase tracking-widest mb-1">Call Us</div>
-                  <div className="text-lg">+34 951 234 567</div>
+                  <div className="text-xs text-white/40 uppercase tracking-widest mb-1">Phone</div>
+                  <div className="text-lg">+34 672 119 634</div>
                 </div>
               </div>
               <div className="flex items-center gap-6">
@@ -705,7 +704,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <div className="text-xs text-white/40 uppercase tracking-widest mb-1">Email</div>
-                  <div className="text-lg">concierge@lozanorealty.com</div>
+                  <div className="text-lg">contact@lozanorealty.uk</div>
                 </div>
               </div>
               <div className="flex items-center gap-6">
@@ -713,8 +712,13 @@ const Contact = () => {
                   <MapPin size={20} />
                 </div>
                 <div>
-                  <div className="text-xs text-white/40 uppercase tracking-widest mb-1">Office</div>
-                  <div className="text-lg">Av. Ricardo Soriano, 12, Marbella</div>
+                  <div className="text-xs text-white/40 uppercase tracking-widest mb-1">Address</div>
+                  <div className="text-lg leading-snug">
+                    Urb. Cancela de la Quinta<br />
+                    Calle Agua Marina<br />
+                    Local 1-2<br />
+                    29670 Marbella, Malaga
+                  </div>
                 </div>
               </div>
             </div>
@@ -775,15 +779,20 @@ const Contact = () => {
 
 const Footer = () => {
   return (
-    <footer className="py-12 bg-ocean-900 border-t border-white/10 text-white/40 text-xs tracking-widest uppercase">
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-        <div>© 2026 Lozano Realty. All Rights Reserved.</div>
-        <div className="flex gap-10">
-          <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-          <a href="#" className="hover:text-white transition-colors">Legal Notice</a>
-          <a href="#" className="hover:text-white transition-colors">Cookies</a>
+    <footer className="py-20 bg-sand-50 border-t border-ocean-100 text-ocean-900 text-xs tracking-widest uppercase">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-12 mb-16">
+          <img src="/assets/blue-logo.png" alt="Lozano Realty Logo" className="h-16 w-auto" />
+          <div className="flex gap-10">
+            <a href="#" className="hover:text-sand-500 transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-sand-500 transition-colors">Legal Notice</a>
+            <a href="#" className="hover:text-sand-500 transition-colors">Cookies</a>
+          </div>
+          <div className="font-serif italic normal-case tracking-normal text-lg">Crafted for Costa del Sol</div>
         </div>
-        <div className="font-serif italic normal-case tracking-normal">Crafted for Costa del Sol</div>
+        <div className="text-center pt-8 border-t border-ocean-50 text-ocean-400 normal-case tracking-normal">
+          © 2026 Lozano Realty®. Lozano Realty® is a registered trademark of Lozano Ltd.
+        </div>
       </div>
     </footer>
   );
