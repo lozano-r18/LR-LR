@@ -10,21 +10,21 @@ export default async function handler(req, res) {
       }
     });
     
-    if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const xmlText = await response.text();
     
-    // We parse the XML into a small JSON on the server to stay under the 4.5MB Vercel limit.
-    // This allows the website to load all properties instantly.
     const parser = new XMLParser({
       ignoreAttributes: false,
       attributeNamePrefix: "@_"
     });
     const jsonObj = parser.parse(xmlText);
     
+    // VERCEL 4.5MB LIMIT FIX:
+    // We keep ONLY the core property array. This is the exact structure App.tsx expects.
+    // We prune the descriptions and image arrays heavily on the server to save 90% of the payload.
     const rawProps = jsonObj?.root?.property || jsonObj?.properties?.property || [];
     const nodes = Array.isArray(rawProps) ? rawProps : [rawProps];
 
-    // PRUNING: We strip out 90% of the metadata but keep the ID, prices, images, and basic info.
     const pruned = nodes.map(node => ({
         id: (node.id || node.ref || Math.random()).toString(),
         ref: (node.ref || '').toString(),
@@ -39,13 +39,14 @@ export default async function handler(req, res) {
         location_detail: (node.location_detail || '').toString(),
         images: { 
           image: Array.isArray(node.images?.image) 
-            ? node.images.image.slice(0, 5).map(img => ({ url: typeof img === 'string' ? img : img.url }))
+            ? node.images.image.slice(0, 10).map(img => ({ url: typeof img === 'string' ? img : img.url }))
             : node.images?.image ? [{ url: typeof node.images.image === 'string' ? node.images.image : node.images.image.url }] : []
         },
-        desc: { en: (node.desc?.en || node.desc?.es || '').toString().slice(0, 300) },
+        desc: { en: (node.desc?.en || node.desc?.es || '').toString().slice(0, 400) },
         url: typeof node.url === 'string' ? node.url : (node.url?.en || node.url?.es || ''),
-        features: { feature: Array.isArray(node.features?.feature) ? node.features.feature.slice(0, 5) : [] },
-        pool: node.pool
+        features: { feature: Array.isArray(node.features?.feature) ? node.features.feature.slice(0, 8) : [] },
+        pool: node.pool,
+        plans: node.plans
     }));
 
     const result = { properties: { property: pruned } };
@@ -54,6 +55,7 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
 
+    // EXPLICIT RESPONSE TO BYPASS AUTO-STRINGIFY ISSUES
     if (typeof res.status === 'function') {
       return res.status(200).send(jsonStr);
     } else {
@@ -62,12 +64,12 @@ export default async function handler(req, res) {
     }
   } catch (error) {
     console.error('SERVER ERROR:', error);
-    const errObj = JSON.stringify({ error: 'Failed', details: error.message });
+    const errBody = JSON.stringify({ error: 'Failed', details: error.message });
     if (typeof res.status === 'function') {
-      res.status(500).send(errObj);
+      return res.status(500).send(errBody);
     } else {
       res.statusCode = 500;
-      res.end(errObj);
+      return res.end(errBody);
     }
   }
 }

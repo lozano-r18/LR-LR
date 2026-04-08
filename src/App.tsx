@@ -26,7 +26,8 @@ import {
   Heart,
   Layout,
   Share,
-  Shield
+  Shield,
+  Settings2
 } from 'lucide-react';
 import { div, section } from 'motion/react-client';
 
@@ -66,49 +67,203 @@ interface SearchFilters {
   sortBy: string;
 }
 
-// --- Mock Data ---
-const PROPERTIES: Property[] = [];
+// --- Global Data Cache ---
+let cachedPropertiesPromise: Promise<Property[]> | null = null;
 
-const COLLABORATIONS = [
-  { name: "Sotheby's International", logo: "https://logo.clearbit.com/sothebysrealty.com" },
-  { name: "Engel & Völkers", logo: "https://logo.clearbit.com/engelvoelkers.com" },
-  { name: "Knight Frank", logo: "https://logo.clearbit.com/knightfrank.com" },
-  { name: "Savills", logo: "https://logo.clearbit.com/savills.com" }
-];
+const getSharedProperties = (): Promise<Property[]> => {
+  if (cachedPropertiesPromise) return cachedPropertiesPromise;
+  
+  cachedPropertiesPromise = new Promise(async (resolve, reject) => {
+    try {
+      // 1. Instantly check localStorage for cached data
+      const cachedData = localStorage.getItem('lr_properties_cache_v2');
+      if (cachedData) {
+        try {
+          const parsed = JSON.parse(cachedData);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            // Resolve with cached data immediately so UI is instant
+            resolve(parsed);
+            
+            // Still fetch in background to refresh the cache silently
+            fetch('/api/feed')
+              .then(res => res.json())
+              .then(data => {
+                const props = parseJsonProperties(data);
+                if (props.length > 0) {
+                  localStorage.setItem('lr_properties_cache_v2', JSON.stringify(props));
+                  // We don't resolve again, but next time it will be fresh
+                }
+              }).catch(() => {});
+            return;
+          }
+        } catch (e) {
+          console.warn("Failed to parse local cache", e);
+        }
+      }
 
+      // 2. No cache or failed, do full fetch
+      const res = await fetch('/api/feed');
+      if (!res.ok) throw new Error('Network response not ok');
+      const data = await res.json();
+      const parsedProperties = parseJsonProperties(data);
+
+      if (parsedProperties.length > 0) {
+        localStorage.setItem('lr_properties_cache_v2', JSON.stringify(parsedProperties));
+      }
+      resolve(parsedProperties);
+    } catch (e) {
+      console.error("Fetch error:", e);
+      reject(e);
+      cachedPropertiesPromise = null;
+    }
+  });
+  
+  return cachedPropertiesPromise;
+};
+
+// Helper to parse the JSON structure returned by fast-xml-parser
+const parseJsonProperties = (data: any): Property[] => {
+  try {
+    const propertiesSource = data?.properties?.property;
+    if (!propertiesSource) return [];
+    const nodes = Array.isArray(propertiesSource) ? propertiesSource : [propertiesSource];
+
+    return nodes.map((node: any) => {
+      const type = node.type || 'Property';
+      const town = node.town || 'Costa del Sol';
+      
+      const devCandidate = (
+        node.development ||
+        node.urbanization ||
+        node.urbanisation ||
+        node.complex_name ||
+        node.project ||
+        node.residence ||
+        ''
+      ).toString().trim();
+
+      const isTownName = [town, 'marbella', 'mijas', 'fuengirola', 'estepona', 'benahavis'].some(t => devCandidate.toLowerCase() === t.toLowerCase());
+      const development = !isTownName ? devCandidate : '';
+
+      const priceVal = node.price;
+      const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
+
+      // Images parsing (fast-xml-parser structure)
+      let images: string[] = [];
+      const imageList = node.images?.image;
+      if (imageList) {
+        const imageArray = Array.isArray(imageList) ? imageList : [imageList];
+        images = imageArray.map((img: any) => img.url).filter(Boolean);
+      }
+
+      const propertyId = (node.id || node.ref || '0').toString();
+      const idNumber = propertyId.replace(/\D/g, '');
+      const availableGalleryCount = Math.min(images.length, 10);
+      const imageIndex = idNumber && availableGalleryCount > 0 ? parseInt(idNumber) % availableGalleryCount : 0;
+      let image = images[imageIndex] || images[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
+
+      // Plans
+      let plans: string[] = [];
+      const plansList = node.plans?.plan;
+      if (plansList) {
+        const plansArray = Array.isArray(plansList) ? plansList : [plansList];
+        plans = plansArray.map((p: any) => p.url).filter(Boolean);
+      }
+
+      const builtArea = node.surface_area?.built || '0';
+      const sqft = builtArea !== '0' ? `${builtArea} m²` : 'Contact for area';
+
+      // Features
+      let features: string[] = [];
+      const featuresList = node.features?.feature;
+      if (featuresList) {
+        features = Array.isArray(featuresList) ? featuresList : [featuresList];
+      }
+
+      const description = (node.desc?.en || node.desc?.es || '')
+        .split(/(?<=[.!?])\s+/)
+        .slice(0, 2)
+        .join(' ');
+
+      const title = development
+        ? `${type.charAt(0).toUpperCase() + type.slice(1)} in ${development}`
+        : `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`;
+
+      return {
+        id: propertyId || Math.random().toString(),
+        ref: node.ref || '',
+        title: title,
+        location: `${town}, ${node.province || ''}`,
+        town: town,
+        province: node.province || '',
+        price: formattedPrice,
+        priceNumeric: Number(priceVal) || 0,
+        beds: parseInt(node.beds) || 0,
+        baths: parseInt(node.baths) || 0,
+        sqft: sqft,
+        sqftNumeric: Number(builtArea) || 0,
+        image: image,
+        images: images,
+        tag: node.new_build === 1 || node.new_build === '1' ? "New Build" : "Exclusive",
+        type: type,
+        features: features,
+        pool: node.pool === 1 || node.pool === '1',
+        plans: plans,
+        description: description,
+        url: node['url es'] || node['url en'] || ''
+      } as Property;
+    });
+  } catch (err) {
+    console.error("Error parsing JSON properties:", err);
+    return [];
+  }
+};
 // --- Components ---
 
-const Navbar = () => {
+const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, currentRoute: string }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const forceDark = currentRoute === 'team';
+  const navTextClass = forceDark || isScrolled ? 'text-ocean-900' : 'text-white';
+  const logoSrc = forceDark || isScrolled ? "/assets/logo-blue.png" : "/assets/logo-white.png";
+  const navBgClass = forceDark && !isScrolled ? 'py-4 md:py-8 bg-transparent' : (isScrolled ? 'py-2 md:py-4 glass' : 'py-4 md:py-8 bg-transparent');
+  const btnHover = forceDark || isScrolled ? 'hover:bg-ocean-900 hover:text-white' : 'hover:bg-white hover:text-ocean-900';
+
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-4 glass' : 'py-8 bg-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${navBgClass}`}>
+      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center relative z-[60]">
         <div className="flex items-center">
           <img
-            src={isScrolled ? "/assets/logo-blue.png" : "/assets/logo-white.png"}
+            src={logoSrc}
             alt="Lozano Realty Logo"
-            className="h-20 w-auto"
+            className="h-14 md:h-20 w-auto transition-all duration-300"
           />
         </div>
 
         {/* Desktop Menu */}
-        <div className={`hidden md:flex items-center gap-10 font-medium text-sm uppercase tracking-widest ${isScrolled ? 'text-ocean-900' : 'text-white'}`}>
-          <a href="#hero" className="hover:text-sand-500 transition-colors">Home</a>
-          <a href="#properties" className="hover:text-sand-500 transition-colors">Properties</a>
-          <a href="#contact" className="px-6 py-2 border border-current hover:bg-white hover:text-ocean-900 transition-all">Contact</a>
+        <div className={`hidden md:flex items-center gap-10 font-medium text-sm uppercase tracking-widest ${navTextClass}`}>
+          <a href="#home" className="hover:opacity-70 transition-opacity">Home</a>
+          <a href="#home" className="hover:opacity-70 transition-opacity">Properties</a>
+          <a href="#team" className="hover:opacity-70 transition-opacity whitespace-nowrap">Team</a>
+          <button
+            onClick={onContactClick}
+            className={`px-6 py-2 border border-current transition-all ${btnHover}`}
+          >
+            Contact
+          </button>
         </div>
 
         {/* Mobile Toggle */}
         <button className="md:hidden text-current" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          {isMobileMenuOpen ? <X className={isScrolled ? 'text-ocean-900' : 'text-white'} /> : <Menu className={isScrolled ? 'text-ocean-900' : 'text-white'} />}
+          {isMobileMenuOpen ? <X className="text-ocean-900" /> : <Menu className={navTextClass} />}
         </button>
       </div>
 
@@ -119,11 +274,20 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 glass border-t border-ocean-100 flex flex-col p-8 gap-6 text-ocean-900 font-medium uppercase tracking-widest md:hidden"
+            className="absolute top-0 left-0 right-0 bg-white/95 backdrop-blur-xl shadow-2xl pt-32 pb-12 flex flex-col items-center gap-8 text-ocean-900 font-medium uppercase tracking-widest md:hidden z-50"
           >
-            <a href="#hero" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
-            <a href="#properties" onClick={() => setIsMobileMenuOpen(false)}>Properties</a>
-            <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
+            <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
+            <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Properties</a>
+            <a href="#team" onClick={() => setIsMobileMenuOpen(false)}>Team & Collaborations</a>
+            <button
+              className="text-center mt-4 px-10 py-3 bg-ocean-900 text-white border border-ocean-900 text-sm font-bold transition-all active:scale-95"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                onContactClick();
+              }}
+            >
+              Contact
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -131,15 +295,15 @@ const Navbar = () => {
   );
 };
 
-const Hero = () => {
+const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
   return (
-    <section id="hero" className="relative h-[85vh] flex items-center justify-center overflow-hidden">
+    <section id="home" className="relative h-[85vh] flex items-center justify-center overflow-hidden">
       {/* High-End Villa Background */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=2000"
-          alt="Luxury Villa Costa del Sol"
-          className="w-full h-full object-cover"
+          src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&q=90&w=3840"
+          alt="Luxury Beachside Villa Costa del Sol"
+          className="w-full h-full object-cover object-center"
           referrerPolicy="no-referrer"
         />
         <div className="absolute inset-0 bg-ocean-900/40 backdrop-blur-[1px]" />
@@ -152,7 +316,7 @@ const Hero = () => {
           transition={{ duration: 1 }}
           className="w-full flex flex-col pt-20"
         >
-          <h1 className="text-[7.5vw] md:text-[9vw] font-serif text-white/95 tracking-[0.02em] leading-none mb-14 uppercase select-none font-medium whitespace-nowrap">
+          <h1 className="text-[13vw] md:text-[9vw] font-serif text-white/95 tracking-[0.02em] leading-[1.1] md:leading-none mb-14 uppercase select-none font-medium md:whitespace-nowrap">
             LOZANO REALTY
           </h1>
 
@@ -162,7 +326,10 @@ const Hero = () => {
                 Premium properties handpicked for living, investing, and pure coastal bliss.
               </p>
             </div>
-            <button className="group flex items-center gap-4 bg-white/20 backdrop-blur-xl border border-white/30 text-white px-10 py-5 rounded-xl hover:bg-white hover:text-ocean-900 transition-all duration-500 shadow-2xl">
+            <button
+              onClick={onContactClick}
+              className="group flex items-center gap-4 bg-white/20 backdrop-blur-xl border border-white/30 text-white px-10 py-5 rounded-xl hover:bg-white hover:text-ocean-900 transition-all duration-500 shadow-2xl"
+            >
               <span className="text-sm font-bold tracking-widest uppercase text-nowrap">GET IN TOUCH</span>
               <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
@@ -173,7 +340,7 @@ const Hero = () => {
   );
 };
 
-const Properties = () => {
+const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<SearchFilters>({
@@ -188,97 +355,14 @@ const Properties = () => {
   });
   const [showAll, setShowAll] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   useEffect(() => {
     const fetchHabiHubProperties = async () => {
       try {
-        const res = await fetch('/api/feed');
-        if (!res.ok) throw new Error('Network response not ok');
-        const xmlText = await res.text();
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlText, "application/xml");
-
-        const propertyNodes = Array.from(xmlDoc.querySelectorAll('property'));
-        if (propertyNodes.length > 0) {
-          const parsedProperties: Property[] = propertyNodes.map((node, index) => {
-            const getText = (selector: string) => node.querySelector(selector)?.textContent || '';
-            const type = getText('type') || 'Property';
-            const town = getText('town') || 'Costa del Sol';
-            // Improve development name extraction
-            const devCandidate = (
-              getText('development') || 
-              getText('urbanization') || 
-              getText('urbanisation') || 
-              getText('complex_name') || 
-              getText('project') || 
-              getText('residence') || 
-              ''
-            ).trim();
-
-            const isTownName = [town, 'marbella', 'mijas', 'fuengirola', 'estepona', 'benahavis'].some(t => devCandidate.toLowerCase() === t.toLowerCase());
-            const development = !isTownName ? devCandidate : '';
-
-            const priceVal = getText('price');
-            const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
-
-            const imagesNodes = Array.from(node.querySelectorAll('images image url'));
-            const images = imagesNodes.map(img => img.textContent || '').filter(Boolean);
-
-            // Variate imagery if available in same development by using a hash of the ID
-            // Limit to first 10 images to avoid low-quality/utility shots like gyms
-            const propertyId = getText('id') || getText('ref') || '0';
-            const idNumber = propertyId.replace(/\D/g, '');
-            const availableGalleryCount = Math.min(images.length, 10);
-            const imageIndex = idNumber && availableGalleryCount > 0 ? parseInt(idNumber) % availableGalleryCount : 0;
-            let image = images[imageIndex] || images[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
-
-            const plansNodes = Array.from(node.querySelectorAll('plans plan url'));
-            const plans = plansNodes.map(p => p.textContent || '').filter(Boolean);
-
-            const builtArea = node.querySelector('surface_area built')?.textContent || '0';
-            const sqft = builtArea !== '0' ? `${builtArea} m²` : 'Contact for area';
-
-            const featuresNodes = Array.from(node.querySelectorAll('features feature'));
-            const features = featuresNodes.map(f => f.textContent || '').filter(Boolean);
-
-            const descEn = node.querySelector('desc en')?.textContent || '';
-            const descEs = node.querySelector('desc es')?.textContent || '';
-            const rawDescription = descEn || descEs || '';
-            
-            // Standardize/cut down description to first 2 sentences
-            const description = rawDescription.split(/(?<=[.!?])\s+/).slice(0, 2).join(' ');
-
-            const title = development
-              ? `${type.charAt(0).toUpperCase() + type.slice(1)} in ${development}`
-              : `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`;
-
-            return {
-              id: getText('id') || getText('ref') || Math.random().toString(),
-              ref: getText('ref'),
-              title: title,
-              location: `${town}, ${getText('province')}`,
-              town: town,
-              province: getText('province'),
-              price: formattedPrice,
-              priceNumeric: Number(priceVal) || 0,
-              beds: parseInt(getText('beds')) || 0,
-              baths: parseInt(getText('baths')) || 0,
-              sqft: sqft,
-              sqftNumeric: Number(builtArea) || 0,
-              image: image,
-              images: images,
-              tag: getText('new_build') === '1' ? "New Build" : "Exclusive",
-              type: type,
-              features: features,
-              pool: getText('pool') === '1',
-              plans: plans,
-              description: description,
-              url: getText('url es') || getText('url en') || ''
-            };
-          });
-
-          setProperties(parsedProperties);
-        }
+        const parsedProperties = await getSharedProperties();
+        setProperties(parsedProperties);
       } catch (error) {
         console.error("Error fetching HabiHub feed:", error);
       } finally {
@@ -288,6 +372,26 @@ const Properties = () => {
 
     fetchHabiHubProperties();
   }, []);
+
+  // Keyboard navigation for Lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isLightboxOpen || !selectedProperty) return;
+
+      const images = selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image];
+
+      if (e.key === 'ArrowRight') {
+        setActiveImageIndex(prev => Math.min(images.length - 1, prev + 1));
+      } else if (e.key === 'ArrowLeft') {
+        setActiveImageIndex(prev => Math.max(0, prev - 1));
+      } else if (e.key === 'Escape') {
+        setIsLightboxOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen, selectedProperty]);
 
   const filteredProperties = properties.filter(prop => {
     const matchArea = !filters.area || prop.town === filters.area;
@@ -309,7 +413,6 @@ const Properties = () => {
   const types = Array.from(new Set(properties.map(p => p.type))).sort();
 
   const displayedProperties = showAll ? filteredProperties : filteredProperties.slice(0, 9);
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   // Reset image index when modal opens
   useEffect(() => {
@@ -411,7 +514,7 @@ const Properties = () => {
 
               <div className="relative group lg:col-span-1">
                 <button
-                  className="w-full h-full py-4 bg-ocean-900 text-white rounded-full flex items-center justify-center hover:bg-sand-500 transition-all shadow-lg"
+                  className="w-full h-full py-4 bg-ocean-900 text-white rounded-full flex items-center justify-center hover:bg-ocean-800 transition-all shadow-lg"
                   onClick={() => setFilters({ area: '', type: '', beds: '', baths: '', priceMin: '', priceMax: '', ref: '', sortBy: 'newest' })}
                   title="Reset Filters"
                 >
@@ -448,35 +551,42 @@ const Properties = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: (idx % 3) * 0.1 }}
-              className="group cursor-pointer"
+              className="group cursor-pointer relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all"
               onClick={() => setSelectedProperty(prop)}
             >
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <img
-                  src={prop.image}
-                  alt={prop.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute top-4 left-4 glass px-4 py-1 text-[10px] uppercase tracking-widest font-bold text-ocean-900">
-                  {prop.tag}
+              <img
+                src={prop.image}
+                alt={prop.title}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                referrerPolicy="no-referrer"
+              />
+              
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
+
+              <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-md border border-white/50 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-widest font-bold text-white z-10 transition-colors group-hover:bg-white/30 shadow-sm">
+                {prop.tag}
+              </div>
+
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col justify-end z-10">
+                <h3 className="text-2xl md:text-3xl font-semibold font-sans text-white mb-1 line-clamp-1 drop-shadow-sm">{prop.title}</h3>
+                <p className="text-white/90 text-sm md:text-base font-medium mb-5 drop-shadow-sm truncate">
+                  {prop.location}
+                </p>
+                
+                <div className="flex flex-col gap-2">
+                  <div className="w-fit px-4 py-1.5 rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-sm text-white font-medium shadow-sm">
+                    {prop.price}
+                  </div>
+                  <div className="w-fit flex items-center px-4 py-1.5 rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-sm text-white font-medium shadow-sm">
+                    <span>{prop.sqft}</span>
+                    <span className="mx-2 text-white/60 font-light">|</span>
+                    <span>{prop.beds} Bed.</span>
+                    <span className="mx-2 text-white/60 font-light">|</span>
+                    <span>{prop.baths} Bath.</span>
+                  </div>
                 </div>
-                <div className="absolute inset-0 bg-ocean-900/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="glass px-6 py-3 text-xs uppercase tracking-[0.2em] font-medium">View Details</span>
-                </div>
-              </div>
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="text-xl font-serif text-ocean-900 line-clamp-1">{prop.title}</h3>
-                <span className="text-sand-500 font-medium whitespace-nowrap ml-4">{prop.price}</span>
-              </div>
-              <div className="flex items-center gap-2 text-ocean-500 text-sm mb-4">
-                <MapPin size={14} />
-                <span className="truncate">{prop.location}</span>
-              </div>
-              <div className="flex gap-6 text-xs text-ocean-400 uppercase tracking-widest font-medium border-t border-ocean-100 pt-4">
-                <span>{prop.beds} Beds</span>
-                <span>{prop.baths} Baths</span>
-                <span>{prop.sqft}</span>
               </div>
             </motion.div>
           ))}
@@ -486,9 +596,9 @@ const Properties = () => {
           <div className="mt-20 text-center">
             <button
               onClick={() => setShowAll(true)}
-              className="px-12 py-5 border border-ocean-900 text-ocean-900 font-medium tracking-widest uppercase hover:bg-ocean-900 hover:text-white transition-all flex items-center gap-3 mx-auto"
+              className="px-10 py-4 bg-white/60 backdrop-blur-xl border border-ocean-200 text-ocean-900 text-sm font-bold tracking-widest uppercase hover:bg-ocean-900 hover:text-white transition-all duration-500 flex items-center gap-4 mx-auto rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)]"
             >
-              {loading ? 'Updating Feed...' : `Load More (${filteredProperties.length - 9} remaining)`} <ArrowRight size={18} />
+              {loading ? 'Updating Feed...' : `Load More (${filteredProperties.length - 9} remaining)`} <ArrowRight size={16} />
             </button>
           </div>
         )}
@@ -509,23 +619,23 @@ const Properties = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 100 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="relative w-full h-[90vh] bg-white overflow-y-auto rounded-t-[3rem] shadow-2xl"
+                className="relative w-full h-[100vh] bg-white overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header Actions */}
                 <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-ocean-50 px-6 py-4 flex justify-between items-center">
-                  <div className="flex items-center gap-6 text-sm font-medium text-ocean-900">
+                  <div className="flex items-center gap-4 md:gap-6 text-sm font-medium text-ocean-900">
                     <button className="flex items-center gap-2 hover:opacity-60 transition-opacity">
-                      <Heart size={18} /> Save
+                      <Heart size={18} /> <span className="hidden sm:inline">Save</span>
                     </button>
                     <button className="flex items-center gap-2 hover:opacity-60 transition-opacity">
-                      <Share size={18} /> Share
+                      <Share size={18} /> <span className="hidden sm:inline">Share</span>
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-2 text-xs text-ocean-400">
-                    <MapPin size={14} className="text-ocean-900" />
-                    <span className="uppercase tracking-widest">{selectedProperty.location}</span>
+                  <div className="flex items-center gap-2 text-[10px] md:text-xs text-ocean-400 max-w-[40%] md:max-w-none truncate">
+                    <MapPin size={14} className="text-ocean-900 shrink-0" />
+                    <span className="uppercase tracking-widest truncate">{selectedProperty.location}</span>
                   </div>
 
                   <button
@@ -536,57 +646,93 @@ const Properties = () => {
                   </button>
                 </div>
 
-                <div className="max-w-[1400px] mx-auto px-6 py-8">
-                  {/* Gallery Grid - 'URBN' Aesthetic */}
-                  <div className="grid grid-cols-12 gap-2 h-[60vh] md:h-[75vh] mb-12 rounded-[2.5rem] overflow-hidden group/gallery relative">
-                    <div className="col-span-12 md:col-span-6 h-full relative cursor-pointer overflow-hidden">
-                      <img src={selectedProperty.images[0] || selectedProperty.image} className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000" referrerPolicy="no-referrer" />
-                    </div>
-                    <div className="hidden md:flex flex-col col-span-3 gap-2 h-full">
-                      <div className="h-1/2 overflow-hidden cursor-pointer">
-                        <img src={selectedProperty.images[1] || selectedProperty.image} className="w-full h-full object-cover hover:scale-110 transition-transform duration-1000" referrerPolicy="no-referrer" />
+                <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-6 md:py-8 font-sans">
+                  {/* Image Gallery - Carousel on Mobile, Grid on Desktop */}
+                  <div className="relative mb-8 md:mb-12 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden group/gallery">
+                    {/* Desktop Grid Layout */}
+                    <div className="hidden md:grid grid-cols-12 gap-2 h-[55vh]">
+                      <div className="col-span-12 md:col-span-6 h-full relative overflow-hidden">
+                        <img src={selectedProperty.images[0] || selectedProperty.image} className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000" referrerPolicy="no-referrer" />
                       </div>
-                      <div className="h-1/2 overflow-hidden cursor-pointer">
-                        <img src={selectedProperty.images[2] || selectedProperty.image} className="w-full h-full object-cover hover:scale-110 transition-transform duration-1000" referrerPolicy="no-referrer" />
+                      <div className="flex flex-col col-span-3 gap-2 h-full">
+                        <div className="h-1/2 overflow-hidden">
+                          <img src={selectedProperty.images[1] || selectedProperty.image} className="w-full h-full object-cover hover:scale-110 transition-transform duration-1000" referrerPolicy="no-referrer" />
+                        </div>
+                        <div className="h-1/2 overflow-hidden">
+                          <img src={selectedProperty.images[2] || selectedProperty.image} className="w-full h-full object-cover hover:scale-110 transition-transform duration-1000" referrerPolicy="no-referrer" />
+                        </div>
                       </div>
-                    </div>
-                    <div className="hidden md:block col-span-3 h-full relative overflow-hidden cursor-pointer">
-                      <img src={selectedProperty.images[3] || selectedProperty.image} className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000" referrerPolicy="no-referrer" />
+                      <div className="col-span-3 h-full relative overflow-hidden">
+                        <img src={selectedProperty.images[3] || selectedProperty.image} className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000" referrerPolicy="no-referrer" />
 
-                      <button
-                        className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-xl border border-white px-6 py-4 rounded-xl text-xs font-bold tracking-widest uppercase text-ocean-900 shadow-2xl hover:bg-ocean-900 hover:text-white transition-all flex items-center gap-3"
-                        onClick={() => setActiveImageIndex(0)}
+                        <button
+                          onClick={() => setIsLightboxOpen(true)}
+                          className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-xl border border-white px-6 py-4 rounded-xl text-xs font-bold tracking-widest uppercase text-ocean-900 shadow-2xl hover:bg-ocean-900 hover:text-white transition-all flex items-center gap-3"
+                        >
+                          Images <span className="opacity-40">{selectedProperty.images.length || 1}</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Mobile Carousel Layout */}
+                    <div className="md:hidden relative h-[45vh] w-full overflow-hidden">
+                      <motion.div
+                        className="flex h-full"
+                        animate={{ x: `-${(activeImageIndex || 0) * 100}%` }}
+                        transition={{ type: "spring", damping: 30, stiffness: 200 }}
                       >
-                        Show All Photos <span className="opacity-40">{selectedProperty.images.length || 1}</span>
-                      </button>
+                        {(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image]).map((img, i) => (
+                          <div key={i} className="min-w-full h-full">
+                            <img src={img} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                          </div>
+                        ))}
+                      </motion.div>
+
+                      {/* Carousel Controls */}
+                      <div className="absolute bottom-4 left-0 right-0 flex justify-between px-4 items-center pointer-events-none">
+                        <div className="bg-ocean-900/60 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white font-bold tracking-widest pointer-events-auto">
+                          {(activeImageIndex || 0) + 1} / {selectedProperty.images.length || 1}
+                        </div>
+                        <div className="flex gap-2 pointer-events-auto">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setActiveImageIndex(prev => Math.max(0, (prev || 0) - 1)); }}
+                            className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-ocean-900 shadow-lg"
+                          >
+                            <ChevronDown size={20} className="rotate-90" />
+                          </button>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setActiveImageIndex(prev => Math.min((selectedProperty.images.length || 1) - 1, (prev || 0) + 1)); }}
+                            className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-ocean-900 shadow-lg"
+                          >
+                            <ChevronDown size={20} className="-rotate-90" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 item-start">
                     {/* Main Content */}
                     <div className="lg:col-span-8">
-                      <div className="flex items-end justify-between mb-12">
+                      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
                         <div>
-                          <h2 className="text-6xl md:text-8xl font-serif text-ocean-900 mb-6 leading-none">
+                          <h2 className="text-5xl md:text-8xl font-serif text-ocean-900 mb-2 leading-none">
                             {selectedProperty.price}
                           </h2>
-                          <button className="text-sm font-bold text-ocean-500 uppercase tracking-widest border-b border-ocean-100 pb-1">
-                            Calculate potential returns
-                          </button>
                         </div>
 
-                        <div className="flex gap-12 text-right">
+                        <div className="flex gap-8 md:gap-12 flex-wrap">
                           <div>
-                            <div className="text-3xl md:text-5xl font-light text-ocean-900">{selectedProperty.sqftNumeric} <span className="text-base text-ocean-300">m²</span></div>
-                            <div className="text-[10px] text-ocean-400 uppercase tracking-widest font-bold mt-2">Surface</div>
+                            <div className="text-2xl md:text-5xl font-light text-ocean-900">{selectedProperty.sqftNumeric} <span className="text-xs md:text-base text-ocean-300">m²</span></div>
+                            <div className="text-[9px] md:text-[10px] text-ocean-400 uppercase tracking-widest font-bold mt-1 md:mt-2">Surface</div>
                           </div>
                           <div>
-                            <div className="text-3xl md:text-5xl font-light text-ocean-900">{selectedProperty.beds}</div>
-                            <div className="text-[10px] text-ocean-400 uppercase tracking-widest font-bold mt-2">Bedrooms</div>
+                            <div className="text-2xl md:text-5xl font-light text-ocean-900">{selectedProperty.beds}</div>
+                            <div className="text-[9px] md:text-[10px] text-ocean-400 uppercase tracking-widest font-bold mt-1 md:mt-2">Bedrooms</div>
                           </div>
                           <div>
-                            <div className="text-3xl md:text-5xl font-light text-ocean-900">{selectedProperty.baths}</div>
-                            <div className="text-[10px] text-ocean-400 uppercase tracking-widest font-bold mt-2">Bathrooms</div>
+                            <div className="text-2xl md:text-5xl font-light text-ocean-900">{selectedProperty.baths}</div>
+                            <div className="text-[9px] md:text-[10px] text-ocean-400 uppercase tracking-widest font-bold mt-1 md:mt-2">Bathrooms</div>
                           </div>
                         </div>
                       </div>
@@ -628,7 +774,7 @@ const Properties = () => {
                             <a
                               href={selectedProperty.plans[0]}
                               target="_blank"
-                              className="px-10 py-5 bg-white text-ocean-900 rounded-xl text-xs font-bold tracking-[0.2em] uppercase hover:bg-sand-500 hover:text-white transition-all shadow-xl"
+                              className="px-10 py-5 bg-white text-ocean-900 rounded-xl text-xs font-bold tracking-[0.2em] uppercase hover:bg-ocean-50/50 transition-all shadow-xl"
                             >
                               Get Floor Plans
                             </a>
@@ -650,12 +796,12 @@ const Properties = () => {
                           </div>
                         </div>
 
-                        <button className="w-full py-6 bg-ocean-900 text-white rounded-2xl font-bold tracking-[0.3em] uppercase hover:bg-ocean-800 transition-all shadow-xl mb-4">
+                        <button
+                          onClick={onContactClick}
+                          className="w-full py-6 bg-ocean-900 text-white rounded-2xl font-bold tracking-[0.3em] uppercase hover:bg-ocean-800 transition-all shadow-xl mb-4"
+                        >
                           Contact Agent
                         </button>
-                        <p className="text-[10px] text-center text-ocean-300 uppercase tracking-widest leading-loose">
-                          Bespoke Acquisition & <br /> Investment Advisory
-                        </p>
                       </div>
                     </div>
                   </div>
@@ -664,37 +810,282 @@ const Properties = () => {
             </div>
           )}
         </AnimatePresence>
+
+        {/* Full-Screen Lightbox Gallery (Desktop Focus) */}
+        <AnimatePresence>
+          {isLightboxOpen && selectedProperty && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[200] bg-ocean-900/60 backdrop-blur-2xl flex flex-col items-center justify-center p-4 md:p-0"
+              onClick={() => setIsLightboxOpen(false)}
+            >
+              <div className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-10 bg-gradient-to-b from-ocean-900/40 to-transparent">
+                <div className="text-white/60 text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase">
+                  {selectedProperty.title} <span className="mx-4 text-white/20">|</span> {activeImageIndex + 1} / {selectedProperty.images.length || 1}
+                </div>
+                <button
+                  onClick={() => setIsLightboxOpen(false)}
+                  className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-ocean-900 transition-all border border-white/10"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              <div className="relative w-full h-full flex items-center justify-center p-4 md:p-32">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={activeImageIndex}
+                    initial={{ opacity: 0, scale: 0.98, x: 20 }}
+                    animate={{ opacity: 1, scale: 1, x: 0 }}
+                    exit={{ opacity: 0, scale: 0.98, x: -20 }}
+                    src={(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image])[activeImageIndex]}
+                    className="max-w-full max-h-full object-contain shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] bg-ocean-900/20"
+                    referrerPolicy="no-referrer"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </AnimatePresence>
+
+                <button
+                  onClick={(e) => { e.stopPropagation(); setActiveImageIndex(prev => Math.max(0, prev - 1)); }}
+                  className="absolute left-6 md:left-12 w-16 h-16 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-ocean-900 transition-all group"
+                >
+                  <ChevronDown size={32} className="rotate-90 group-hover:-translate-x-1 transition-transform" />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); setActiveImageIndex(prev => Math.min((selectedProperty.images.length || 1) - 1, prev + 1)); }}
+                  className="absolute right-6 md:right-12 w-16 h-16 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-ocean-900 transition-all group"
+                >
+                  <ChevronDown size={32} className="-rotate-90 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+
+              {/* Lightbox Thumbnails */}
+              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-4 max-w-[90vw] overflow-x-auto px-6 py-4 no-scrollbar bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl">
+                {(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image]).map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={(e) => { e.stopPropagation(); setActiveImageIndex(i); }}
+                    className={`w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-300 ${activeImageIndex === i ? 'border-white scale-110 shadow-xl' : 'border-transparent opacity-40 hover:opacity-100'}`}
+                  >
+                    <img src={img} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
+  );
+};
+
+
+const TeamPage = () => {
+  const team = [
+    {
+      name: 'Ignacio Lozano',
+      role: 'Business Development Associate',
+      bio: 'Ignacio manages client relations, builds strategic partnerships with developers, and leads our creative brand development.',
+      linkedin: null
+    },
+    {
+      name: 'Pablo Lozano',
+      role: 'Costa Blanca Associate',
+      bio: 'An operations expert who leverages his background in managing complex systems to ensure flawless execution and exceptional client experiences.',
+      linkedin: null
+    }
+  ];
+
+  const collaborators = [
+    {
+      name: 'Huspy™',
+      role: 'Collaborator',
+      bio: 'An international real estate platform we partner with to source top-tier properties and guide clients seamlessly through the acquisition process.',
+      linkedin: null
+    },
+    {
+      name: 'Kay Bergman',
+      role: 'Real Estate Law Consultant',
+      bio: 'A specialist in Spanish property law, Kay ensures complete transactional security and provides expert legal clarity for international buyers.',
+      linkedin: 'https://www.linkedin.com/in/kay-bergman-b2930913/'
+    },
+    {
+      name: 'Amaya Luzuriaga',
+      role: 'Real Estate Attorney',
+      bio: 'An independent legal counsel focused on ensuring full compliance and uncompromising property security through rigorous due diligence.',
+      linkedin: 'https://www.linkedin.com/in/amaya-luzuriaga-84299235/'
+    },
+  ];
+
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <div className="pt-32 pb-40 bg-white min-h-screen">
+      <div className="max-w-6xl mx-auto px-6 pt-16 md:pt-24">
+        
+        {/* Header */}
+        <div className="mb-16 md:mb-24 text-center md:text-left">
+          <h1 className="text-[10px] font-bold tracking-[0.4em] uppercase text-ocean-400 mb-6">
+            The People Behind The Process
+          </h1>
+          <h2 className="text-5xl md:text-6xl lg:text-[5rem] font-light text-ocean-900 tracking-tight leading-none">
+            Our <span className="font-serif italic text-ocean-600">Team</span>
+          </h2>
+        </div>
+
+        {/* Core Team Cards */}
+        <div className="flex flex-col gap-8 mb-32">
+          {/* Luis Felipe Card (Full Width) */}
+          <div className="bg-white rounded-[2rem] p-10 md:p-16 shadow-[0_30px_60px_rgb(0,0,0,0.06)] relative border border-ocean-100 flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16 items-start">
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white shadow-[0_10px_40px_rgb(0,0,0,0.12)] border border-ocean-100 text-ocean-900 flex items-center justify-center font-serif text-3xl italic flex-shrink-0 relative z-10 hover:shadow-[0_15px_50px_rgb(0,0,0,0.18)] transition-shadow duration-500">
+              L
+            </div>
+            <div>
+              <div className="flex items-center gap-4 mb-4">
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-serif text-ocean-900 font-normal tracking-tight">Luis Felipe Lozano</h3>
+                <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full border border-ocean-100 flex items-center justify-center text-ocean-300 hover:text-ocean-500 hover:border-ocean-300 transition-colors">
+                  <Globe size={14} />
+                </a>
+              </div>
+              <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-ocean-400 mb-8">
+                Director and Lead Real Estate Consultant
+              </p>
+              <div className="w-12 h-[1px] bg-ocean-200 mb-8" />
+              <p className="text-base md:text-lg text-ocean-700/80 font-light leading-relaxed max-w-3xl">
+                Founder of Lozano Realty and specialist in property acquisition across the Costa del Sol. With a background in real estate and project management, Luis personally leads every client's acquisition journey.
+              </p>
+            </div>
+          </div>
+
+          {/* Associates Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {team.map((member, idx) => (
+              <div key={idx} className="bg-white rounded-[2rem] p-8 md:p-12 shadow-[0_30px_60px_rgb(0,0,0,0.06)] relative border border-ocean-100 flex flex-col">
+                <div className="flex items-center justify-between mb-8 relative z-10">
+                  <div className="w-12 h-12 rounded-full bg-white shadow-[0_10px_30px_rgb(0,0,0,0.1)] border border-ocean-100 text-ocean-900 flex items-center justify-center font-serif text-xl italic flex-shrink-0 hover:shadow-[0_15px_40px_rgb(0,0,0,0.15)] transition-shadow duration-500">
+                    {member.name.charAt(0)}
+                  </div>
+                  {member.linkedin && (
+                    <a href={member.linkedin} target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full border border-ocean-100 flex items-center justify-center text-ocean-300 hover:text-ocean-500 hover:border-ocean-300 transition-colors">
+                      <Globe size={14} />
+                    </a>
+                  )}
+                </div>
+                
+                <h4 className="text-2xl md:text-3xl font-serif text-ocean-900 mb-2 font-normal">{member.name}</h4>
+                <p className="text-[9px] uppercase tracking-[0.3em] font-bold text-ocean-400 mb-6">{member.role}</p>
+                <div className="w-8 h-[1px] bg-ocean-200 mb-6" />
+                <p className="text-sm md:text-base text-ocean-700/80 font-light leading-relaxed">
+                  {member.bio}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      {/* Collaborators Block (Dark Section) */}
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="bg-ocean-900 rounded-[3rem] px-6 py-16 md:p-20 overflow-hidden relative shadow-2xl">
+          {/* subtle background pattern/gradient */}
+          <div className="absolute top-0 right-0 w-full md:w-1/2 h-full bg-gradient-to-bl from-white/10 to-transparent pointer-events-none" />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 relative z-10 mb-20 md:mb-24">
+            {collaborators.map((member, idx) => (
+              <div key={idx} className="flex flex-col group">
+                <div className="flex items-center justify-between mb-8 opacity-80 group-hover:opacity-100 transition-opacity">
+                  <div className="w-12 h-12 rounded-full border border-white/20 text-white/70 flex items-center justify-center font-serif text-xl italic flex-shrink-0 bg-white/5">
+                    {member.name.charAt(0)}
+                  </div>
+                  {member.linkedin ? (
+                    <a href={member.linkedin} target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:border-white/50 transition-colors bg-white/5">
+                      <Globe size={14} />
+                    </a>
+                  ) : (
+                    <Globe size={14} className="text-white/10" />
+                  )}
+                </div>
+
+                <h4 className="text-2xl md:text-3xl font-serif text-white mb-2 font-normal">{member.name}</h4>
+                <p className="text-[9px] uppercase tracking-[0.3em] font-bold text-ocean-300 mb-6">{member.role}</p>
+                <div className="w-8 h-[1px] bg-white/20 mb-6" />
+                <p className="text-sm md:text-base text-white/60 font-light leading-relaxed group-hover:text-white/80 transition-colors duration-500">
+                  {member.bio}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="relative z-10 max-w-4xl border-t border-white/10 pt-12">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-light text-white tracking-tight leading-tight mb-6">
+              Our <span className="font-serif italic text-white/70">Collaborators</span>
+            </h2>
+            <p className="text-base md:text-lg text-white/50 font-light leading-relaxed max-w-2xl">
+              Exceptional results are achieved through collaboration. We work with a select network of trusted professionals, chosen for their expertise and shared commitment to excellence.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
   );
 };
 
 
 const About = () => {
   return (
-    <section id="about" className="py-24 bg-white">
+    <section id="about" className="py-20 lg:py-32 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="bg-ocean-50/30 rounded-[2.5rem] overflow-hidden border border-ocean-50/50">
-          <div className="flex flex-col md:flex-row items-center">
-            <div className="w-full md:w-1/2 h-[400px]">
-              <img
-                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000"
-                alt="Luxury Estate"
-                className="w-full h-full object-cover"
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+          
+          {/* Left: Staggered Editorial Images */}
+          <div className="lg:w-1/2 relative w-full pt-10 pb-32 lg:pb-20">
+            <span className="absolute top-0 left-0 text-[10px] font-bold tracking-widest uppercase text-ocean-300">
+              01 — Our Philosophy
+            </span>
+            <div className="relative z-10 w-[85%] mt-12 bg-white p-2 lg:p-3 shadow-2xl">
+              <img 
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000" 
+                className="w-full h-auto aspect-[3/4] object-cover" 
                 referrerPolicy="no-referrer"
               />
             </div>
-            <div className="w-full md:w-1/2 p-10 md:p-16">
-              <span className="text-[10px] uppercase tracking-[0.4em] text-ocean-300 font-bold mb-4 block">Our Philosophy</span>
-              <h2 className="text-3xl font-serif text-ocean-900 mb-6 italic">Personal, not procedural.</h2>
-              <p className="text-ocean-600 font-light leading-relaxed mb-6 text-sm">
-                As Costa del Sol exclusive property advisors, we take a bespoke approach to every client, combining deep local expertise with a genuine commitment to your lifestyle and aspirations.
+            <div className="absolute top-1/2 right-0 w-[60%] lg:w-[55%] -translate-y-12 z-20 bg-ocean-900 p-1.5 lg:p-2 shadow-2xl">
+              <div className="relative border border-white/20">
+                <img 
+                  src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000" 
+                  className="w-full h-auto aspect-square object-cover" 
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div className="absolute -bottom-4 lg:-bottom-6 right-0 text-ocean-900 text-[8px] lg:text-[10px] tracking-[0.2em] uppercase font-bold bg-white px-3 lg:px-5 py-2 lg:py-3 shadow-[0_15px_40px_rgb(0,0,0,0.15)] border border-ocean-50">
+                Est. 2026
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Sleek Typography */}
+          <div className="lg:w-1/2 flex flex-col justify-center mt-8 lg:mt-0">
+            <h2 className="text-3xl lg:text-[2.5rem] xl:text-5xl font-light tracking-tight text-ocean-900 leading-[1.3] mb-8 lg:mb-12">
+              At <strong className="font-serif font-normal italic text-ocean-600">Lozano Realty</strong>, we see a home as the ultimate expression of comfort and well-being.
+            </h2>
+            <div className="pl-6 md:pl-12 border-l border-ocean-200">
+              <p className="text-[10px] text-ocean-400 font-bold mb-4 uppercase tracking-[0.3em]">
+                Beyond Boundaries
               </p>
-              <p className="text-ocean-900 font-medium text-sm leading-relaxed italic">
-                "We're here to find more than a property — we're here to find your home and your best investment."
+              <p className="text-sm lg:text-base text-ocean-800/80 leading-relaxed font-light">
+                From thoughtfully designed spaces to carefully planned communities, we curate properties that not only offer a place to live, but foster lasting memories while shaping a better, more sustainable future on the Costa del Sol.
               </p>
             </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -702,98 +1093,193 @@ const About = () => {
 };
 
 
-const Contact = () => {
-  return (
-    <section id="contact" className="py-24 bg-white border-t border-ocean-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="bg-ocean-50/30 rounded-[2.5rem] p-8 md:p-16 border border-ocean-50/50">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-serif text-ocean-900 mb-8 leading-tight">
-                Acquisition <br />
-                <span className="italic font-light opacity-70">Inquiry</span>
-              </h2>
+const StarProjects = () => {
+  const [properties, setProperties] = useState<Property[]>([]);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
 
-              <div className="space-y-6">
-                <div className="flex items-center gap-4 text-ocean-900/60">
-                  <Phone size={18} />
-                  <span className="text-sm tracking-widest font-medium uppercase">+34 672 119 634</span>
+  useEffect(() => {
+    const fetchTopProperties = async () => {
+      try {
+        const parsedProperties = await getSharedProperties();
+        setProperties([...parsedProperties].sort(() => 0.5 - Math.random()).slice(0, 25));
+      } catch (error) {
+        console.error("Error fetching Star Projects:", error);
+      }
+    };
+
+    fetchTopProperties();
+  }, []);
+
+  if (properties.length === 0) return null;
+
+  return (
+    <section id="star-projects" className="pt-16 pb-32 bg-white relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 mb-16">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
+          <div>
+            <span className="text-[11px] font-medium tracking-wide text-ocean-900/40 block mb-6">
+              (02) Our projects
+            </span>
+            <h2 className="text-4xl md:text-5xl font-medium tracking-tight text-ocean-900 mb-4">
+              Projects We are Proud of
+            </h2>
+            <p className="text-sm text-ocean-600/70 font-light max-w-lg">
+              We curate properties that not only offer a place to live but elevate the standard of Costa del Sol living.
+            </p>
+          </div>
+          
+          <div className="flex items-center gap-4 w-full lg:w-auto">
+            <div className="relative w-full lg:w-80">
+              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-ocean-900/40" />
+              <input 
+                type="text" 
+                placeholder="What are you looking for" 
+                className="w-full pl-12 pr-4 py-3 border border-ocean-100 placeholder:text-ocean-900/40 text-sm outline-none focus:border-ocean-900 transition-colors"
+              />
+            </div>
+            <button className="bg-ocean-900 text-white px-6 py-3 flex items-center gap-3 text-xs font-semibold tracking-wider hover:bg-ocean-800 transition-colors">
+              <Settings2 size={16} /> Filter
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div 
+        ref={scrollRef}
+        className="flex overflow-x-auto gap-5 lg:gap-8 px-6 pb-12 no-scrollbar snap-x snap-mandatory"
+        style={{ scrollPaddingLeft: '1.5rem', scrollPaddingRight: '1.5rem' }}
+      >
+        {properties.map((prop, idx) => (
+          <div key={idx} className="min-w-[85vw] md:min-w-[380px] lg:min-w-[420px] snap-start group cursor-pointer relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all">
+            <img
+              src={prop.image}
+              alt={prop.title}
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              referrerPolicy="no-referrer"
+            />
+            
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
+
+            <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-md border border-white/50 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-widest font-bold text-white z-10 transition-colors group-hover:bg-white/30 shadow-sm">
+              {prop.tag}
+            </div>
+
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col justify-end z-10">
+              <h3 className="text-2xl md:text-3xl font-semibold font-sans text-white mb-1 line-clamp-1 drop-shadow-sm">{prop.title}</h3>
+              <p className="text-white/90 text-sm md:text-base font-medium mb-5 drop-shadow-sm truncate">
+                {prop.location}
+              </p>
+              
+              <div className="flex flex-col gap-2">
+                <div className="w-fit px-4 py-1.5 rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-sm text-white font-medium shadow-sm">
+                  {prop.price}
                 </div>
-                <div className="flex items-center gap-4 text-ocean-900/60">
-                  <Mail size={18} />
-                  <span className="text-sm tracking-widest font-medium uppercase text-lowercase">contact@lozanorealty.uk</span>
-                </div>
-                <div className="flex items-center gap-4 text-ocean-900/60">
-                  <MapPin size={18} />
-                  <span className="text-sm tracking-widest font-medium uppercase">Marbella, Malaga</span>
+                <div className="w-fit flex items-center px-4 py-1.5 rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-sm text-white font-medium shadow-sm">
+                  <span>{prop.sqft}</span>
+                  <span className="mx-2 text-white/60 font-light">|</span>
+                  <span>{prop.beds} Bed.</span>
+                  <span className="mx-2 text-white/60 font-light">|</span>
+                  <span>{prop.baths} Bath.</span>
                 </div>
               </div>
             </div>
-
-            <div className="relative">
-              <form className="space-y-10 group">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="NAME"
-                      className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all placeholder:text-ocean-200"
-                    />
-                  </div>
-                  <div className="relative">
-                    <input
-                      type="email"
-                      placeholder="EMAIL"
-                      className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all placeholder:text-ocean-200"
-                    />
-                  </div>
-                </div>
-
-                <div className="relative">
-                  <select className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all appearance-none cursor-pointer">
-                    <option>GOLDEN MILE</option>
-                    <option>LA ZAGALETA</option>
-                    <option>SOTOGRANDE</option>
-                    <option>OTHER</option>
-                  </select>
-                  <ChevronDown size={14} className="absolute right-0 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
-                </div>
-
-                <div className="relative">
-                  <textarea
-                    rows={2}
-                    placeholder="MESSAGE"
-                    className="w-full bg-transparent border-b border-ocean-200 py-3 text-xs tracking-[0.2em] font-bold text-ocean-900 outline-none focus:border-ocean-900 transition-all resize-none placeholder:text-ocean-200"
-                  />
-                </div>
-
-                <button className="w-full py-5 bg-ocean-900 text-white rounded-full text-[10px] font-bold tracking-[0.3em] uppercase hover:bg-ocean-800 transition-all shadow-xl">
-                  Send Inquiry
-                </button>
-              </form>
-            </div>
           </div>
-        </div>
+        ))}
       </div>
     </section>
   );
 };
 
-const Footer = () => {
+const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
   return (
-    <footer className="py-20 bg-sand-50 border-t border-ocean-100 text-ocean-900 text-xs tracking-widest uppercase">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-12 mb-16">
-          <img src="/assets/logo-blue.png" alt="Lozano Realty Logo" className="h-24 w-auto" />
-          <div className="flex gap-10">
-            <a href="#" className="hover:text-sand-500 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-sand-500 transition-colors">Legal Notice</a>
-            <a href="#" className="hover:text-sand-500 transition-colors">Cookies</a>
+    <footer className="bg-ocean-900 text-white">
+      {/* Main Footer Content */}
+      <div className="max-w-7xl mx-auto px-6 pt-16 lg:pt-20 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 mb-12 lg:mb-16">
+
+          {/* Brand Column */}
+          <div className="flex flex-col gap-6 lg:gap-8">
+            <img src="/assets/logo-white.png" alt="Lozano Realty Logo" className="h-16 lg:h-20 w-auto self-start" />
+            <p className="text-white/40 text-sm font-light leading-relaxed max-w-xs">
+              Exclusive property advisory across the Costa del Sol. Curated estates. Bespoke service.
+            </p>
+            <div className="flex gap-4">
+              <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white/60 hover:bg-white hover:text-ocean-900 transition-all">
+                <Instagram size={16} />
+              </a>
+              <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white/60 hover:bg-white hover:text-ocean-900 transition-all">
+                <Linkedin size={16} />
+              </a>
+              <a href="mailto:contact@lozanorealty.uk" className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white/60 hover:bg-white hover:text-ocean-900 transition-all">
+                <Mail size={16} />
+              </a>
+              <a href="tel:+34672119634" className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white/60 hover:bg-white hover:text-ocean-900 transition-all">
+                <Phone size={16} />
+              </a>
+            </div>
           </div>
-          <div className="font-serif italic normal-case tracking-normal text-lg">Crafted for Costa del Sol</div>
+
+          {/* Navigation Column */}
+          <div className="flex flex-col gap-6">
+            <span className="text-[10px] uppercase tracking-[0.5em] text-white/30 font-bold">Navigate</span>
+            <div className="flex flex-col gap-4 text-sm font-medium tracking-widest uppercase">
+              <a href="#hero" className="text-white/60 hover:text-white transition-colors">Home</a>
+              <a href="#properties" className="text-white/60 hover:text-white transition-colors">Properties</a>
+              <a href="#about" className="text-white/60 hover:text-white transition-colors">About</a>
+              <button onClick={onContactClick} className="text-left text-white/60 hover:text-white transition-colors tracking-widest uppercase text-sm font-medium">Contact</button>
+            </div>
+          </div>
+
+          {/* Contact Column */}
+          <div className="flex flex-col gap-6">
+            <span className="text-[10px] uppercase tracking-[0.5em] text-white/30 font-bold">Get In Touch</span>
+            <div className="flex flex-col gap-5">
+              <a href="tel:+34672119634" className="flex items-center gap-4 text-white/60 hover:text-white transition-colors group">
+                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                  <Phone size={14} />
+                </div>
+                <span className="text-sm font-medium tracking-wider">+34 672 119 634</span>
+              </a>
+              <a href="mailto:contact@lozanorealty.uk" className="flex items-center gap-4 text-white/60 hover:text-white transition-colors group">
+                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                  <Mail size={14} />
+                </div>
+                <span className="text-sm font-medium tracking-wider">contact@lozanorealty.uk</span>
+              </a>
+              <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="flex items-center gap-4 text-white/60 hover:text-white transition-colors group">
+                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                  <Instagram size={14} />
+                </div>
+                <span className="text-sm font-medium tracking-wider">@lozanorealty.uk</span>
+              </a>
+              <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="flex items-center gap-4 text-white/60 hover:text-white transition-colors group">
+                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                  <Linkedin size={14} />
+                </div>
+                <span className="text-sm font-medium tracking-wider">LinkedIn</span>
+              </a>
+              <div className="flex items-start gap-4 text-white/40">
+                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center mt-0.5">
+                  <MapPin size={14} />
+                </div>
+                <span className="text-sm font-medium tracking-wider leading-relaxed">Marbella, Málaga<br />Costa del Sol, Spain</span>
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div className="text-center pt-8 border-t border-ocean-50 text-ocean-400 normal-case tracking-normal">
-          © 2026 Lozano Realty®. Lozano Realty® is a registered trademark of Lozano Ltd.
+
+        {/* Divider + Legal */}
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-white/20 uppercase tracking-widest">
+          <span>© 2026 Lozano Realty®. All rights reserved.</span>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-white/60 transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-white/60 transition-colors">Legal Notice</a>
+            <a href="#" className="hover:text-white/60 transition-colors">Cookies</a>
+          </div>
+          <span className="font-serif italic normal-case tracking-normal text-white/20">Crafted for Costa del Sol</span>
         </div>
       </div>
     </footer>
@@ -801,14 +1287,109 @@ const Footer = () => {
 };
 
 export default function App() {
+  const [showContactPopup, setShowContactPopup] = useState(false);
+  const [currentRoute, setCurrentRoute] = useState('home');
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'team') {
+        setCurrentRoute('team');
+      } else {
+        setCurrentRoute('home');
+      }
+    };
+    
+    // Initial check
+    handleHashChange();
+    
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
   return (
     <div className="min-h-screen font-sans">
-      <Navbar />
-      <Hero />
-      <Properties />
-      <About />
-      <Contact />
-      <Footer />
+      <Navbar onContactClick={() => setShowContactPopup(true)} currentRoute={currentRoute} />
+      
+      {currentRoute === 'home' ? (
+        <>
+          <Hero onContactClick={() => setShowContactPopup(true)} />
+          <Properties onContactClick={() => setShowContactPopup(true)} />
+          <About />
+          <StarProjects />
+        </>
+      ) : (
+        <TeamPage />
+      )}
+      
+      <Footer onContactClick={() => setShowContactPopup(true)} />
+
+      {/* Liquid Glass Contact Popup (Global) */}
+      <AnimatePresence>
+        {showContactPopup && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowContactPopup(false)}
+              className="absolute inset-0 bg-ocean-900/40 backdrop-blur-md"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-lg bg-white/30 backdrop-blur-[40px] border border-white/40 p-8 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] shadow-[0_32px_100px_-20px_rgba(4,47,85,0.4)] overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Liquid Highlight Effect Overlay */}
+              <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/20 blur-[100px] rounded-full" />
+              <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-ocean-200/20 blur-[100px] rounded-full" />
+
+              <button
+                onClick={() => setShowContactPopup(false)}
+                className="absolute top-6 right-6 md:top-8 md:right-8 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-ocean-900 hover:bg-white transition-all shadow-sm"
+              >
+                <X size={18} />
+              </button>
+
+              <div className="relative z-10 text-center">
+                <div className="w-20 h-20 md:w-24 md:h-24 bg-white/40 backdrop-blur-xl rounded-3xl mx-auto mb-8 md:mb-10 flex items-center justify-center shadow-lg border border-white/50">
+                  <img src="/assets/logo-blue.png" className="w-12 md:w-14 h-auto" />
+                </div>
+
+                <h2 className="text-3xl md:text-4xl font-serif text-ocean-900 mb-10 md:mb-14 tracking-tight leading-tight">
+                  Luis Felipe <br />
+                  <span className="text-ocean-900 font-semibold">Lozano</span>
+                </h2>
+
+                <div className="space-y-3 md:space-y-4 text-xs md:text-sm tracking-[0.2em] font-bold text-ocean-900">
+                  <a href="tel:+34672119634" className="flex items-center justify-center gap-6 py-5 md:py-6 px-4 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group">
+                    <Phone size={18} className="text-ocean-400 group-hover:text-ocean-900 transition-colors" />
+                    +34 672 119 634
+                  </a>
+                  <a href="mailto:contact@lozanorealty.uk" className="flex items-center justify-center gap-6 py-5 md:py-6 px-4 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group text-[10px] md:text-xs">
+                    <Mail size={18} className="text-ocean-400 group-hover:text-ocean-900 transition-colors flex-shrink-0" />
+                    CONTACT@LOZANOREALTY.UK
+                  </a>
+                  <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="flex items-center justify-center gap-6 py-5 md:py-6 px-4 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group">
+                    <Instagram size={18} className="text-ocean-400 group-hover:text-ocean-900 transition-colors" />
+                    INSTAGRAM
+                  </a>
+                  <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="flex items-center justify-center gap-6 py-5 md:py-6 px-4 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group">
+                    <Linkedin size={18} className="text-ocean-400 group-hover:text-ocean-900 transition-colors" />
+                    LINKEDIN
+                  </a>
+                </div>
+
+                <div className="mt-12 md:mt-16 pt-8 md:pt-10 border-t border-ocean-900/5">
+                  <span className="text-[9px] uppercase tracking-[0.5em] text-ocean-300">Bespoke Advisory</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
