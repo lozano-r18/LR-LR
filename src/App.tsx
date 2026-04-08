@@ -1,35 +1,11 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  MapPin,
-  Search,
-  Users,
-  Phone,
-  Mail,
-  Instagram,
-  Facebook,
-  Linkedin,
-  ChevronRight,
-  ChevronDown,
-  Menu,
-  X,
-  Home,
-  Award,
-  ShieldCheck,
-  ArrowRight,
-  Globe,
-  Heart,
-  Layout,
-  Share,
-  Shield,
-  Settings2
+  MapPin, Search, Users, Phone, Mail, Instagram, Facebook, Linkedin,
+  ChevronRight, ChevronDown, Menu, X, Home, Award, ShieldCheck,
+  ArrowRight, Globe, Heart, Layout, Share, Shield, Settings2, RotateCcw
 } from 'lucide-react';
-import { div, section } from 'motion/react-client';
+import { XMLParser } from 'fast-xml-parser';
 
 // --- Types ---
 interface Property {
@@ -57,58 +33,100 @@ interface Property {
 }
 
 interface SearchFilters {
-  area: string;
-  type: string;
-  beds: string;
-  baths: string;
-  priceMin: string;
-  priceMax: string;
-  ref: string;
-  sortBy: string;
+  area: string; type: string; beds: string; baths: string;
+  priceMin: string; priceMax: string; ref: string; sortBy: string;
 }
 
 // --- Global Data Cache ---
 let cachedPropertiesPromise: Promise<Property[]> | null = null;
+
+const parseJsonProperties = (data: any): Property[] => {
+  try {
+    const propertiesSource = data?.root?.property || data?.properties?.property;
+    if (!propertiesSource) return [];
+    const nodes = Array.isArray(propertiesSource) ? propertiesSource : [propertiesSource];
+
+    return nodes.map((node: any) => {
+      const type = node.type || 'Property';
+      const town = node.town || 'Costa del Sol';
+      const development = node.location_detail || '';
+      
+      const priceVal = node.price;
+      const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? \`€\${Number(priceVal).toLocaleString()}\` : 'Price on Request';
+
+      let images: string[] = [];
+      if (node.images?.image) {
+        images = (Array.isArray(node.images.image) ? node.images.image : [node.images.image])
+          .map((img: any) => typeof img === 'string' ? img : img.url)
+          .filter(Boolean);
+      }
+
+      const propertyId = (node.id || node.ref || Math.random()).toString();
+      const mainImage = images.find(url => !url.toLowerCase().includes('logo')) || images[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
+      const builtArea = node.surface_area?.built || '0';
+
+      return {
+        id: propertyId,
+        ref: node.ref || '',
+        title: development ? \`\${type.charAt(0).toUpperCase() + type.slice(1)} in \${development}\` : \`\${type.charAt(0).toUpperCase() + type.slice(1)} in \${town}\`,
+        location: \`\${town}, \${node.province || ''}\`,
+        town: town,
+        province: node.province || '',
+        price: formattedPrice,
+        priceNumeric: Number(priceVal) || 0,
+        beds: parseInt(node.beds) || 0,
+        baths: parseInt(node.baths) || 0,
+        sqft: builtArea !== '0' ? \`\${builtArea} m²\` : 'Contact for area',
+        sqftNumeric: Number(builtArea) || 0,
+        image: mainImage,
+        images: images,
+        tag: node.new_build == 1 ? "New Build" : "Exclusive",
+        type: type,
+        description: (node.desc?.en || node.desc?.es || '').split('. ').slice(0, 2).join('. '),
+        url: typeof node.url === 'string' ? node.url : (node.url?.en || node.url?.es || ''),
+        features: Array.isArray(node.features?.feature) ? node.features.feature : [],
+        pool: node.pool == 1
+      } as Property;
+    });
+  } catch (err) {
+    console.error("Parse Error:", err);
+    return [];
+  }
+};
 
 const getSharedProperties = (): Promise<Property[]> => {
   if (cachedPropertiesPromise) return cachedPropertiesPromise;
   
   cachedPropertiesPromise = new Promise(async (resolve, reject) => {
     try {
-      // 1. Instantly check localStorage for cached data
-      const cachedData = localStorage.getItem('lr_properties_cache_v2');
+      // BUMP CACHE TO V4 TO CLEAR OLD CORRUPT DATA
+      const CACHE_KEY = 'lr_properties_cache_v4';
+      const cachedData = localStorage.getItem(CACHE_KEY);
       if (cachedData) {
         try {
           const parsed = JSON.parse(cachedData);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            // Resolve with cached data immediately so UI is instant
             resolve(parsed);
-            
-            // Still fetch in background to refresh the cache silently
             fetch('/api/feed')
-              .then(res => res.json())
-              .then(data => {
-                const props = parseJsonProperties(data);
-                if (props.length > 0) {
-                  localStorage.setItem('lr_properties_cache_v2', JSON.stringify(props));
-                  // We don't resolve again, but next time it will be fresh
-                }
+              .then(res => res.text())
+              .then(xml => {
+                const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
+                const props = parseJsonProperties(parser.parse(xml));
+                if (props.length > 0) localStorage.setItem(CACHE_KEY, JSON.stringify(props));
               }).catch(() => {});
             return;
           }
-        } catch (e) {
-          console.warn("Failed to parse local cache", e);
-        }
+        } catch (e) {}
       }
 
-      // 2. No cache or failed, do full fetch
       const res = await fetch('/api/feed');
       if (!res.ok) throw new Error('Network response not ok');
-      const data = await res.json();
-      const parsedProperties = parseJsonProperties(data);
+      const xmlText = await res.text();
+      const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
+      const parsedProperties = parseJsonProperties(parser.parse(xmlText));
 
       if (parsedProperties.length > 0) {
-        localStorage.setItem('lr_properties_cache_v2', JSON.stringify(parsedProperties));
+        localStorage.setItem(CACHE_KEY, JSON.stringify(parsedProperties));
       }
       resolve(parsedProperties);
     } catch (e) {
@@ -120,24 +138,6 @@ const getSharedProperties = (): Promise<Property[]> => {
   
   return cachedPropertiesPromise;
 };
-
-// Helper to parse the JSON structure returned by fast-xml-parser
-const parseJsonProperties = (data: any): Property[] => {
-  try {
-    const propertiesSource = data?.properties?.property;
-    if (!propertiesSource) return [];
-    const nodes = Array.isArray(propertiesSource) ? propertiesSource : [propertiesSource];
-
-    return nodes.map((node: any) => {
-      const type = node.type || 'Property';
-      const town = node.town || 'Costa del Sol';
-      
-      const devCandidate = (
-        node.development ||
-        node.urbanization ||
-        node.urbanisation ||
-        node.complex_name ||
-        node.project ||
         node.residence ||
         ''
       ).toString().trim();
