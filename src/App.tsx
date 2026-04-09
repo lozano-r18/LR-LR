@@ -1361,7 +1361,7 @@ export default function App() {
 
               <button
                 onClick={() => setShowContactPopup(false)}
-                className="absolute top-6 right-6 md:top-10 md:right-10 w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-ocean-900 hover:bg-white transition-all shadow-sm z-20"
+                className="absolute top-4 right-4 md:top-8 md:right-8 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 flex items-center justify-center text-ocean-900 hover:bg-white transition-all shadow-sm z-20"
               >
                 <X size={20} />
               </button>
