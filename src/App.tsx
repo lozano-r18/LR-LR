@@ -69,7 +69,10 @@ const parseJsonProperties = (data: any): Property[] => {
           const u = url.toLowerCase();
           return !u.includes('logo') && (u.includes('outdoor') || u.includes('indoor') || u.includes('exterior'));
         });
-        const validImages = images.filter(url => !url.toLowerCase().includes('logo'));
+        const validImages = images.filter(url => {
+          const u = url.toLowerCase();
+          return !u.includes('logo') && !u.includes('plan') && !u.includes('layout') && !u.includes('blueprint') && !u.includes('floor');
+        });
         const mainImage = preferredImages[0] || validImages[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
         
         const builtArea = node.surface_area?.built || '0';
@@ -308,8 +311,8 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
     priceMax: '',
     ref: '',
     sortBy: 'newest'
-  });
-  const itemsPerPage = 30;
+  const [isExpanded, setIsExpanded] = useState(false);
+  const itemsPerPage = isExpanded ? 30 : 9;
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
@@ -363,7 +366,13 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
   }).sort((a, b) => {
     if (filters.sortBy === 'price-asc') return a.priceNumeric - b.priceNumeric;
     if (filters.sortBy === 'price-desc') return b.priceNumeric - a.priceNumeric;
-    return 0; // Default newest (assuming feed order)
+    
+    // Default layout prioritizes Villas heavily at the top of the feed to hook viewers,
+    // and naturally interleaves the remaining property IDs to break up identical sequential dev blocks.
+    if (a.type === 'Villa' && b.type !== 'Villa') return -1;
+    if (b.type === 'Villa' && a.type !== 'Villa') return 1;
+    
+    return String(b.id).localeCompare(String(a.id));
   });
 
   const areas = Array.from(new Set(properties.map(p => p.town))).sort();
@@ -566,7 +575,17 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
           ))}
         </div>
 
-        {totalPages > 1 && (
+        {!isExpanded && filteredProperties.length > 9 ? (
+          <div className="mt-20 flex justify-center">
+            <button
+              onClick={() => setIsExpanded(true)}
+              className="px-10 py-5 bg-ocean-900 border border-ocean-900 text-white text-sm font-bold tracking-widest uppercase hover:bg-white hover:text-ocean-900 transition-all duration-500 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] group"
+            >
+              Explore Full Portfolio <span className="opacity-70 ml-2">({filteredProperties.length} Properties)</span>
+              <ArrowRight className="inline ml-3 -mt-0.5 group-hover:translate-x-1 transition-transform" size={16} />
+            </button>
+          </div>
+        ) : totalPages > 1 ? (
           <div className="mt-20 flex justify-center items-center gap-2 md:gap-6">
             <button
               onClick={() => {
@@ -594,7 +613,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-        )}
+        ) : null}
 
         {/* Property Detail Modal */}
         <AnimatePresence>
