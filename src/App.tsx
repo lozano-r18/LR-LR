@@ -52,7 +52,7 @@ const parseJsonProperties = (data: any): Property[] => {
       const development = node.location_detail || '';
       
       const priceVal = node.price;
-      const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? \`€\${Number(priceVal).toLocaleString()}\` : 'Price on Request';
+      const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
 
       let images: string[] = [];
       if (node.images?.image) {
@@ -68,15 +68,15 @@ const parseJsonProperties = (data: any): Property[] => {
       return {
         id: propertyId,
         ref: node.ref || '',
-        title: development ? \`\${type.charAt(0).toUpperCase() + type.slice(1)} in \${development}\` : \`\${type.charAt(0).toUpperCase() + type.slice(1)} in \${town}\`,
-        location: \`\${town}, \${node.province || ''}\`,
+        title: development ? `${type.charAt(0).toUpperCase() + type.slice(1)} in ${development}` : `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`,
+        location: `${town}, ${node.province || ''}`,
         town: town,
         province: node.province || '',
         price: formattedPrice,
         priceNumeric: Number(priceVal) || 0,
         beds: parseInt(node.beds) || 0,
         baths: parseInt(node.baths) || 0,
-        sqft: builtArea !== '0' ? \`\${builtArea} m²\` : 'Contact for area',
+        sqft: builtArea !== '0' ? `${builtArea} m²` : 'Contact for area',
         sqftNumeric: Number(builtArea) || 0,
         image: mainImage,
         images: images,
@@ -99,8 +99,8 @@ const getSharedProperties = (): Promise<Property[]> => {
   
   cachedPropertiesPromise = new Promise(async (resolve, reject) => {
     try {
-      // BUMP CACHE TO V4 TO CLEAR OLD CORRUPT DATA
-      const CACHE_KEY = 'lr_properties_cache_v4';
+      // BUMP CACHE TO V5 TO CLEAR OLD CORRUPT DATA
+      const CACHE_KEY = 'lr_properties_cache_v5';
       const cachedData = localStorage.getItem(CACHE_KEY);
       if (cachedData) {
         try {
@@ -138,86 +138,7 @@ const getSharedProperties = (): Promise<Property[]> => {
   
   return cachedPropertiesPromise;
 };
-        node.residence ||
-        ''
-      ).toString().trim();
 
-      const isTownName = [town, 'marbella', 'mijas', 'fuengirola', 'estepona', 'benahavis'].some(t => devCandidate.toLowerCase() === t.toLowerCase());
-      const development = !isTownName ? devCandidate : '';
-
-      const priceVal = node.price;
-      const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
-
-      // Images parsing (fast-xml-parser structure)
-      let images: string[] = [];
-      const imageList = node.images?.image;
-      if (imageList) {
-        const imageArray = Array.isArray(imageList) ? imageList : [imageList];
-        images = imageArray.map((img: any) => img.url).filter(Boolean);
-      }
-
-      const propertyId = (node.id || node.ref || '0').toString();
-      const idNumber = propertyId.replace(/\D/g, '');
-      const availableGalleryCount = Math.min(images.length, 10);
-      const imageIndex = idNumber && availableGalleryCount > 0 ? parseInt(idNumber) % availableGalleryCount : 0;
-      let image = images[imageIndex] || images[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
-
-      // Plans
-      let plans: string[] = [];
-      const plansList = node.plans?.plan;
-      if (plansList) {
-        const plansArray = Array.isArray(plansList) ? plansList : [plansList];
-        plans = plansArray.map((p: any) => p.url).filter(Boolean);
-      }
-
-      const builtArea = node.surface_area?.built || '0';
-      const sqft = builtArea !== '0' ? `${builtArea} m²` : 'Contact for area';
-
-      // Features
-      let features: string[] = [];
-      const featuresList = node.features?.feature;
-      if (featuresList) {
-        features = Array.isArray(featuresList) ? featuresList : [featuresList];
-      }
-
-      const description = (node.desc?.en || node.desc?.es || '')
-        .split(/(?<=[.!?])\s+/)
-        .slice(0, 2)
-        .join(' ');
-
-      const title = development
-        ? `${type.charAt(0).toUpperCase() + type.slice(1)} in ${development}`
-        : `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`;
-
-      return {
-        id: propertyId || Math.random().toString(),
-        ref: node.ref || '',
-        title: title,
-        location: `${town}, ${node.province || ''}`,
-        town: town,
-        province: node.province || '',
-        price: formattedPrice,
-        priceNumeric: Number(priceVal) || 0,
-        beds: parseInt(node.beds) || 0,
-        baths: parseInt(node.baths) || 0,
-        sqft: sqft,
-        sqftNumeric: Number(builtArea) || 0,
-        image: image,
-        images: images,
-        tag: node.new_build === 1 || node.new_build === '1' ? "New Build" : "Exclusive",
-        type: type,
-        features: features,
-        pool: node.pool === 1 || node.pool === '1',
-        plans: plans,
-        description: description,
-        url: node['url es'] || node['url en'] || ''
-      } as Property;
-    });
-  } catch (err) {
-    console.error("Error parsing JSON properties:", err);
-    return [];
-  }
-};
 // --- Components ---
 
 const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, currentRoute: string }) => {
