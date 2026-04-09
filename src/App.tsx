@@ -257,7 +257,7 @@ const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
       {/* High-End Villa Background */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&q=90&w=3840"
+          src="/assets/HERO IMAGE .jpg"
           alt="Luxury Beachside Villa Costa del Sol"
           className="w-full h-full object-cover object-center"
           referrerPolicy="no-referrer"
