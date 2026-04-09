@@ -309,7 +309,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
     ref: '',
     sortBy: 'newest'
   });
-  const [showAll, setShowAll] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(12);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -368,7 +368,12 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
   const areas = Array.from(new Set(properties.map(p => p.town))).sort();
   const types = Array.from(new Set(properties.map(p => p.type))).sort();
 
-  const displayedProperties = showAll ? filteredProperties : filteredProperties.slice(0, 9);
+  // Reset pagination when filters change
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [filters]);
+
+  const displayedProperties = filteredProperties.slice(0, visibleCount);
 
   // Reset image index when modal opens
   useEffect(() => {
@@ -515,9 +520,9 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
               key={prop.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "100px" }}
               transition={{ delay: (idx % 3) * 0.1 }}
-              className="group cursor-pointer relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all"
+              className="group cursor-pointer relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all bg-ocean-50"
               onClick={() => setSelectedProperty(prop)}
             >
               <img
@@ -558,13 +563,14 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
           ))}
         </div>
 
-        {!showAll && filteredProperties.length > 9 && (
+        {filteredProperties.length > visibleCount && (
           <div className="mt-20 text-center">
             <button
-              onClick={() => setShowAll(true)}
-              className="px-10 py-4 bg-white/60 backdrop-blur-xl border border-ocean-200 text-ocean-900 text-sm font-bold tracking-widest uppercase hover:bg-ocean-900 hover:text-white transition-all duration-500 flex items-center gap-4 mx-auto rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)]"
+              onClick={() => setVisibleCount(prev => prev + 12)}
+              className="px-10 py-4 bg-white/60 backdrop-blur-xl border border-ocean-200 text-ocean-900 text-sm font-bold tracking-widest uppercase hover:bg-ocean-900 hover:text-white transition-all duration-500 flex items-center gap-4 mx-auto rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] group/btn"
             >
-              {loading ? 'Updating Feed...' : `Load More (${filteredProperties.length - 9} remaining)`} <ArrowRight size={16} />
+              {loading ? 'Updating Feed...' : `Load More (${filteredProperties.length - visibleCount} remaining)`} 
+              <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
             </button>
           </div>
         )}
