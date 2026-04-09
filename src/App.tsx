@@ -1282,7 +1282,7 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-lg bg-white/30 backdrop-blur-[40px] border border-white/40 p-8 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] shadow-[0_32px_100px_-20px_rgba(4,47,85,0.4)] overflow-hidden"
+              className="relative w-full max-w-lg md:max-w-4xl bg-white/30 backdrop-blur-[40px] border border-white/40 p-10 md:p-16 rounded-[2.5rem] md:rounded-[4rem] shadow-[0_32px_100px_-20px_rgba(4,47,85,0.4)] overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Liquid Highlight Effect Overlay */}
@@ -1291,42 +1291,50 @@ export default function App() {
 
               <button
                 onClick={() => setShowContactPopup(false)}
-                className="absolute top-6 right-6 md:top-8 md:right-8 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-ocean-900 hover:bg-white transition-all shadow-sm"
+                className="absolute top-6 right-6 md:top-10 md:right-10 w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-ocean-900 hover:bg-white transition-all shadow-sm z-20"
               >
-                <X size={18} />
+                <X size={20} />
               </button>
 
-              <div className="relative z-10 text-center">
-                <div className="w-20 h-20 md:w-24 md:h-24 bg-white/40 backdrop-blur-xl rounded-3xl mx-auto mb-8 md:mb-10 flex items-center justify-center shadow-lg border border-white/50">
-                  <img src="/assets/logo-blue.png" className="w-12 md:w-14 h-auto" />
+              <div className="relative z-10 flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20">
+                {/* Profile Section */}
+                <div className="flex-1 text-center md:text-left flex flex-col justify-center">
+                  <div className="w-20 h-20 md:w-28 md:h-28 bg-white/40 backdrop-blur-xl rounded-3xl mb-8 md:mb-10 flex items-center justify-center shadow-lg border border-white/50 mx-auto md:mx-0">
+                    <img src="/assets/logo-blue.png" className="w-12 md:w-16 h-auto" />
+                  </div>
+
+                  <h2 className="text-3xl md:text-5xl font-serif text-ocean-900 mb-6 md:mb-8 tracking-tight leading-tight">
+                    Luis Felipe <br />
+                    <span className="text-ocean-900 font-semibold">Lozano</span>
+                  </h2>
+
+                  <div className="pt-6 md:pt-10 border-t border-ocean-900/5 hidden md:block">
+                    <span className="text-[10px] uppercase tracking-[0.5em] text-ocean-300">Bespoke Advisory</span>
+                  </div>
                 </div>
 
-                <h2 className="text-3xl md:text-4xl font-serif text-ocean-900 mb-10 md:mb-14 tracking-tight leading-tight">
-                  Luis Felipe <br />
-                  <span className="text-ocean-900 font-semibold">Lozano</span>
-                </h2>
-
-                <div className="space-y-3 md:space-y-4 text-xs md:text-sm tracking-[0.2em] font-bold text-ocean-900">
-                  <a href="tel:+34672119634" className="flex items-center justify-center gap-6 py-5 md:py-6 px-4 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group">
+                {/* Contacts Section */}
+                <div className="flex-1 w-full space-y-4 text-xs md:text-sm tracking-[0.2em] font-bold text-ocean-900 flex flex-col justify-center">
+                  <a href="tel:+34672119634" className="flex items-center justify-center md:justify-start gap-6 py-6 px-8 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group">
                     <Phone size={18} className="text-ocean-400 group-hover:text-ocean-900 transition-colors" />
                     +34 672 119 634
                   </a>
-                  <a href="mailto:contact@lozanorealty.uk" className="flex items-center justify-center gap-6 py-5 md:py-6 px-4 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group text-[10px] md:text-xs">
+                  <a href="mailto:contact@lozanorealty.uk" className="flex items-center justify-center md:justify-start gap-6 py-6 px-8 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group text-[10px] md:text-xs">
                     <Mail size={18} className="text-ocean-400 group-hover:text-ocean-900 transition-colors flex-shrink-0" />
                     CONTACT@LOZANOREALTY.UK
                   </a>
-                  <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="flex items-center justify-center gap-6 py-5 md:py-6 px-4 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group">
+                  <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="flex items-center justify-center md:justify-start gap-6 py-6 px-8 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group">
                     <Instagram size={18} className="text-ocean-400 group-hover:text-ocean-900 transition-colors" />
                     INSTAGRAM
                   </a>
-                  <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="flex items-center justify-center gap-6 py-5 md:py-6 px-4 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group">
+                  <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="flex items-center justify-center md:justify-start gap-6 py-6 px-8 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group">
                     <Linkedin size={18} className="text-ocean-400 group-hover:text-ocean-900 transition-colors" />
                     LINKEDIN
                   </a>
-                </div>
 
-                <div className="mt-12 md:mt-16 pt-8 md:pt-10 border-t border-ocean-900/5">
-                  <span className="text-[9px] uppercase tracking-[0.5em] text-ocean-300">Bespoke Advisory</span>
+                  <div className="mt-8 pt-6 border-t border-ocean-900/5 md:hidden text-center">
+                    <span className="text-[9px] uppercase tracking-[0.5em] text-ocean-300">Bespoke Advisory</span>
+                  </div>
                 </div>
               </div>
             </motion.div>
