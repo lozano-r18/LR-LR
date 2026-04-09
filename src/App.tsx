@@ -51,7 +51,7 @@ const parseJsonProperties = (data: any): Property[] => {
         const type = String(node.type || 'Property');
         const town = String(node.town || 'Costa del Sol');
         const development = node.location_detail || '';
-        
+
         const priceVal = node.price;
         const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
 
@@ -64,7 +64,7 @@ const parseJsonProperties = (data: any): Property[] => {
         }
 
         const propertyId = String(node.id || node.ref || Math.random());
-        
+
         const preferredImages = images.filter(url => {
           const u = url.toLowerCase();
           return !u.includes('logo') && (u.includes('outdoor') || u.includes('indoor') || u.includes('exterior'));
@@ -74,13 +74,13 @@ const parseJsonProperties = (data: any): Property[] => {
           return !u.includes('logo') && !u.includes('plan') && !u.includes('layout') && !u.includes('blueprint') && !u.includes('floor');
         });
         const mainImage = preferredImages[0] || validImages[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
-        
+
         const builtArea = node.surface_area?.built || '0';
 
         const devCandidate = String(node.name || node.development_name || node.residence || node.location_detail || '').trim();
         const isTownName = [town, 'marbella', 'mijas', 'fuengirola', 'estepona', 'benahavis', 'sotogrande', 'manilva', 'casares']
-                           .map(String)
-                           .some(t => devCandidate.toLowerCase() === t.toLowerCase());
+          .map(String)
+          .some(t => devCandidate.toLowerCase() === t.toLowerCase());
         const developmentName = !isTownName && devCandidate ? devCandidate : '';
 
         acc.push({
@@ -118,7 +118,7 @@ const parseJsonProperties = (data: any): Property[] => {
 
 const getSharedProperties = (): Promise<Property[]> => {
   if (cachedPropertiesPromise) return cachedPropertiesPromise;
-  
+
   cachedPropertiesPromise = new Promise(async (resolve, reject) => {
     try {
       // BUMP CACHE TO V6 TO CLEAR OLD XML CAPTURES
@@ -142,15 +142,15 @@ const getSharedProperties = (): Promise<Property[]> => {
                 }
                 const props = parseJsonProperties(dataToParse);
                 if (props.length > 0) localStorage.setItem(CACHE_KEY, JSON.stringify(props));
-              }).catch(() => {});
+              }).catch(() => { });
             return;
           }
-        } catch (e) {}
+        } catch (e) { }
       }
 
       const res = await fetch('/api/feed');
       if (!res.ok) throw new Error('Network response not ok');
-      
+
       const contentType = res.headers.get("content-type");
       let dataToParse;
       if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -160,7 +160,7 @@ const getSharedProperties = (): Promise<Property[]> => {
         const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
         dataToParse = parser.parse(xmlText);
       }
-      
+
       const parsedProperties = parseJsonProperties(dataToParse);
 
       if (parsedProperties.length > 0) {
@@ -173,7 +173,7 @@ const getSharedProperties = (): Promise<Property[]> => {
       cachedPropertiesPromise = null;
     }
   });
-  
+
   return cachedPropertiesPromise;
 };
 
@@ -210,8 +210,7 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
         {/* Desktop Menu */}
         <div className={`hidden md:flex items-center gap-10 font-medium text-sm uppercase tracking-widest ${navTextClass}`}>
           <a href="#home" className="hover:opacity-70 transition-opacity">Home</a>
-          <a href="#properties" className="hover:opacity-70 transition-opacity">Properties</a>
-          <a href="#star-projects" className="hover:opacity-70 transition-opacity whitespace-nowrap">Star Properties</a>
+          <a href="#home" className="hover:opacity-70 transition-opacity">Properties</a>
           <a href="#team" className="hover:opacity-70 transition-opacity whitespace-nowrap">Team</a>
           <button
             onClick={onContactClick}
@@ -237,9 +236,8 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
             className="absolute top-0 left-0 right-0 bg-white/95 backdrop-blur-xl shadow-2xl pt-32 pb-12 flex flex-col items-center gap-8 text-ocean-900 font-medium uppercase tracking-widest md:hidden z-50"
           >
             <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
-            <a href="#properties" onClick={() => setIsMobileMenuOpen(false)}>Properties</a>
-            <a href="#star-projects" onClick={() => setIsMobileMenuOpen(false)}>Star Properties</a>
-            <a href="#team" onClick={() => setIsMobileMenuOpen(false)}>Team</a>
+            <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Properties</a>
+            <a href="#team" onClick={() => setIsMobileMenuOpen(false)}>Team & Collaborations</a>
             <button
               className="text-center mt-4 px-10 py-3 bg-ocean-900 text-white border border-ocean-900 text-sm font-bold transition-all active:scale-95"
               onClick={() => {
@@ -261,32 +259,32 @@ const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
     <section id="home" className="relative h-[85vh] flex items-center justify-center overflow-hidden">
       {/* High-End Villa Background */}
       <div className="absolute inset-0 z-0">
-        <img
-          src="/assets/hero-bg.jpg"
-          alt="Luxury Beachside Villa Costa del Sol"
-          className="w-full h-full object-cover object-center"
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-ocean-900/40 backdrop-blur-[1px]" />
-      </div>
+          <img
+            src="/assets/hero-bg.jpg"
+            alt="Luxury Beachside Villa Costa del Sol"
+            className="w-full h-full object-cover object-bottom scale-110"
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ocean-900/60 via-ocean-900/20 to-transparent" />
+        </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full h-full flex flex-col justify-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="w-full flex flex-col pt-20"
-        >
-          <h1 className="text-[13vw] md:text-[9vw] font-serif text-white/95 tracking-[0.02em] leading-[1.1] md:leading-none mb-14 uppercase select-none font-medium md:whitespace-nowrap">
-            LOZANO REALTY
-          </h1>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full h-full flex flex-col justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="w-full flex flex-col pt-20"
+          >
+            <h1 className="text-[13vw] md:text-[9vw] font-serif text-white/95 tracking-[0.02em] leading-[1.1] md:leading-none mb-14 uppercase select-none font-medium md:whitespace-nowrap transition-transform duration-700">
+              LOZANO REALTY
+            </h1>
 
-          <div className="flex flex-col md:flex-row items-start md:items-end gap-10 mt-4 px-4">
-            <div className="max-w-md">
-              <p className="text-white/70 text-sm md:text-base font-medium leading-relaxed tracking-wide">
-                Premiering <span className="text-white/90">New Developments</span> and exclusive lifestyle properties across the <span className="text-white/100 font-semibold italic">Costa del Sol</span>.
-              </p>
-            </div>
+            <div className="flex flex-col md:flex-row items-start md:items-end gap-10 mt-4 px-4">
+              <div className="max-w-md">
+                <p className="text-white/80 text-sm md:text-base font-medium leading-relaxed tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                  Premiering <span className="text-white/100">New Developments</span> and exclusive lifestyle properties across the <span className="text-white/100 font-semibold italic">Costa del Sol</span>.
+                </p>
+              </div>
             <button
               onClick={onContactClick}
               className="group flex items-center gap-4 bg-white/20 backdrop-blur-xl border border-white/30 text-white px-10 py-5 rounded-xl hover:bg-white hover:text-ocean-900 transition-all duration-500 shadow-2xl"
@@ -369,12 +367,12 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
   }).sort((a, b) => {
     if (filters.sortBy === 'price-asc') return a.priceNumeric - b.priceNumeric;
     if (filters.sortBy === 'price-desc') return b.priceNumeric - a.priceNumeric;
-    
+
     // Default layout prioritizes Villas heavily at the top of the feed to hook viewers,
     // and naturally interleaves the remaining property IDs to break up identical sequential dev blocks.
     if (a.type === 'Villa' && b.type !== 'Villa') return -1;
     if (b.type === 'Villa' && a.type !== 'Villa') return 1;
-    
+
     return String(b.id).localeCompare(String(a.id));
   });
 
@@ -548,7 +546,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 referrerPolicy="no-referrer"
               />
-              
+
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
 
               <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-md border border-white/50 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-widest font-bold text-white z-10 transition-colors group-hover:bg-white/30 shadow-sm">
@@ -560,7 +558,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                 <p className="text-white/90 text-sm md:text-base font-medium mb-5 drop-shadow-sm truncate">
                   {prop.location}
                 </p>
-                
+
                 <div className="flex flex-col gap-2">
                   <div className="w-fit px-4 py-1.5 rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-sm text-white font-medium shadow-sm">
                     {prop.price}
@@ -943,7 +941,7 @@ const TeamPage = () => {
   return (
     <div className="pt-32 pb-40 bg-white min-h-screen">
       <div className="max-w-6xl mx-auto px-6 pt-16 md:pt-24">
-        
+
         {/* Header */}
         <div className="mb-16 md:mb-24 text-center md:text-left">
           <h1 className="text-[10px] font-bold tracking-[0.4em] uppercase text-ocean-400 mb-6">
@@ -992,7 +990,7 @@ const TeamPage = () => {
                     </a>
                   )}
                 </div>
-                
+
                 <h4 className="text-2xl md:text-3xl font-serif text-ocean-900 mb-2 font-normal">{member.name}</h4>
                 <p className="text-[9px] uppercase tracking-[0.3em] font-bold text-ocean-400 mb-6">{member.role}</p>
                 <div className="w-8 h-[1px] bg-ocean-200 mb-6" />
@@ -1011,7 +1009,7 @@ const TeamPage = () => {
         <div className="bg-ocean-900 rounded-[3rem] px-6 py-16 md:p-20 overflow-hidden relative shadow-2xl">
           {/* subtle background pattern/gradient */}
           <div className="absolute top-0 right-0 w-full md:w-1/2 h-full bg-gradient-to-bl from-white/10 to-transparent pointer-events-none" />
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 relative z-10 mb-20 md:mb-24">
             {collaborators.map((member, idx) => (
               <div key={idx} className="flex flex-col group">
@@ -1059,24 +1057,24 @@ const About = () => {
     <section id="about" className="py-20 lg:py-32 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-          
+
           {/* Left: Staggered Editorial Images */}
           <div className="lg:w-1/2 relative w-full pt-10 pb-32 lg:pb-20">
             <span className="absolute top-0 left-0 text-[10px] font-bold tracking-widest uppercase text-ocean-300">
               01 — Our Philosophy
             </span>
             <div className="relative z-10 w-[85%] mt-12 bg-white p-2 lg:p-3 shadow-2xl">
-              <img 
-                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000" 
-                className="w-full h-auto aspect-[3/4] object-cover" 
+              <img
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000"
+                className="w-full h-auto aspect-[3/4] object-cover"
                 referrerPolicy="no-referrer"
               />
             </div>
             <div className="absolute top-1/2 right-0 w-[60%] lg:w-[55%] -translate-y-12 z-20 bg-ocean-900 p-1.5 lg:p-2 shadow-2xl">
               <div className="relative border border-white/20">
-                <img 
-                  src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000" 
-                  className="w-full h-auto aspect-square object-cover" 
+                <img
+                  src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000"
+                  className="w-full h-auto aspect-square object-cover"
                   referrerPolicy="no-referrer"
                 />
               </div>
@@ -1139,13 +1137,13 @@ const StarProjects = () => {
               Star Properties
             </h2>
             <p className="text-sm text-ocean-600/70 font-light max-w-lg">
-              We curate properties that not only offer a place to live but elevate the standard of Costa del Sol living.
+              The coast has favorites.
             </p>
           </div>
         </div>
       </div>
 
-      <div 
+      <div
         ref={scrollRef}
         className="flex overflow-x-auto gap-5 lg:gap-8 px-6 pb-12 no-scrollbar snap-x snap-mandatory"
         style={{ scrollPaddingLeft: '1.5rem', scrollPaddingRight: '1.5rem' }}
@@ -1160,7 +1158,7 @@ const StarProjects = () => {
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               referrerPolicy="no-referrer"
             />
-            
+
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
 
             <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-md border border-white/50 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-widest font-bold text-white z-10 transition-colors group-hover:bg-white/30 shadow-sm">
@@ -1172,7 +1170,7 @@ const StarProjects = () => {
               <p className="text-white/90 text-sm md:text-base font-medium mb-5 drop-shadow-sm truncate">
                 {prop.location}
               </p>
-              
+
               <div className="flex flex-col gap-2">
                 <div className="w-fit px-4 py-1.5 rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-sm text-white font-medium shadow-sm">
                   {prop.price}
@@ -1202,9 +1200,7 @@ const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
 
           {/* Brand Column */}
           <div className="flex flex-col gap-6 lg:gap-8">
-            <a href="#home" className="inline-block self-start">
-              <img src="/assets/logo-white.png" alt="Lozano Realty Logo" className="h-16 lg:h-20 w-auto" />
-            </a>
+            <img src="/assets/logo-white.png" alt="Lozano Realty Logo" className="h-16 lg:h-20 w-auto self-start" />
             <p className="text-white/40 text-sm font-light leading-relaxed max-w-xs">
               Exclusive property advisory across the Costa del Sol. Curated estates. Bespoke service.
             </p>
@@ -1228,20 +1224,10 @@ const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
           <div className="flex flex-col gap-6">
             <span className="text-[10px] uppercase tracking-[0.5em] text-white/30 font-bold">Navigate</span>
             <div className="flex flex-col gap-4 text-sm font-medium tracking-widest uppercase">
-              <a href="#home" className="text-white/60 hover:text-white transition-colors">Home</a>
+              <a href="#hero" className="text-white/60 hover:text-white transition-colors">Home</a>
               <a href="#properties" className="text-white/60 hover:text-white transition-colors">Properties</a>
-              <a href="#star-projects" className="text-white/60 hover:text-white transition-colors">Star Properties</a>
-              <a href="#about" className="text-white/60 hover:text-white transition-colors">Our Philosophy</a>
-              <a href="#team" className="text-white/60 hover:text-white transition-colors">Team</a>
-              <button 
-                onClick={(e) => { 
-                  e.preventDefault(); 
-                  onContactClick(); 
-                }} 
-                className="text-left text-white/60 hover:text-white transition-colors tracking-widest uppercase text-sm font-medium"
-              >
-                Contact
-              </button>
+              <a href="#about" className="text-white/60 hover:text-white transition-colors">About</a>
+              <button onClick={onContactClick} className="text-left text-white/60 hover:text-white transition-colors tracking-widest uppercase text-sm font-medium">Contact</button>
             </div>
           </div>
 
@@ -1288,9 +1274,9 @@ const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-white/20 uppercase tracking-widest">
           <span>© 2026 Lozano Realty®. All rights reserved.</span>
           <div className="flex gap-6">
-            <a href="/privacy" className="hover:text-white/60 transition-colors">Privacy Policy</a>
-            <a href="/legal" className="hover:text-white/60 transition-colors">Legal Notice</a>
-            <a href="/cookies" className="hover:text-white/60 transition-colors">Cookies</a>
+            <a href="#" className="hover:text-white/60 transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-white/60 transition-colors">Legal Notice</a>
+            <a href="#" className="hover:text-white/60 transition-colors">Cookies</a>
           </div>
           <span className="font-serif italic normal-case tracking-normal text-white/20">Crafted for Costa del Sol</span>
         </div>
@@ -1312,10 +1298,10 @@ export default function App() {
         setCurrentRoute('home');
       }
     };
-    
+
     // Initial check
     handleHashChange();
-    
+
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
@@ -1323,7 +1309,7 @@ export default function App() {
   return (
     <div className="min-h-screen font-sans">
       <Navbar onContactClick={() => setShowContactPopup(true)} currentRoute={currentRoute} />
-      
+
       {currentRoute === 'home' ? (
         <>
           <Hero onContactClick={() => setShowContactPopup(true)} />
@@ -1334,7 +1320,7 @@ export default function App() {
       ) : (
         <TeamPage />
       )}
-      
+
       <Footer onContactClick={() => setShowContactPopup(true)} />
 
       {/* Liquid Glass Contact Popup (Global) */}
