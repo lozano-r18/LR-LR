@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   MapPin, Search, Users, Phone, Mail, Instagram, Facebook, Linkedin,
   ChevronRight, ChevronDown, Menu, X, Home, Award, ShieldCheck,
-  ArrowRight, Globe, Heart, Layout, Share, Shield, Settings2, RotateCcw
+  ArrowRight, ArrowLeft, Globe, Heart, Layout, Share, Shield, Settings2, RotateCcw
 } from 'lucide-react';
 import { XMLParser } from 'fast-xml-parser';
 
@@ -309,7 +309,8 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
     ref: '',
     sortBy: 'newest'
   });
-  const [visibleCount, setVisibleCount] = useState(12);
+  const itemsPerPage = 30;
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -370,10 +371,12 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
 
   // Reset pagination when filters change
   useEffect(() => {
-    setVisibleCount(12);
+    setCurrentPage(1);
   }, [filters]);
 
-  const displayedProperties = filteredProperties.slice(0, visibleCount);
+  const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const displayedProperties = filteredProperties.slice(startIndex, startIndex + itemsPerPage);
 
   // Reset image index when modal opens
   useEffect(() => {
@@ -496,7 +499,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
 
             <div className="mt-4 flex justify-between items-center px-6">
               <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-ocean-400">
-                {filteredProperties.length} Properties Matching
+                Showing {filteredProperties.length > 0 ? startIndex + 1 : 0}-{Math.min(startIndex + itemsPerPage, filteredProperties.length)} of {filteredProperties.length} Matches
               </div>
               <div className="flex gap-4 items-center">
                 <span className="text-[10px] uppercase tracking-widest text-ocean-300">Sort:</span>
@@ -521,7 +524,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "100px" }}
-              transition={{ delay: (idx % 3) * 0.1 }}
+              transition={{ delay: (idx % 3) * 0.05 }}
               className="group cursor-pointer relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all bg-ocean-50"
               onClick={() => setSelectedProperty(prop)}
             >
@@ -563,14 +566,32 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
           ))}
         </div>
 
-        {filteredProperties.length > visibleCount && (
-          <div className="mt-20 text-center">
+        {totalPages > 1 && (
+          <div className="mt-20 flex justify-center items-center gap-2 md:gap-6">
             <button
-              onClick={() => setVisibleCount(prev => prev + 12)}
-              className="px-10 py-4 bg-white/60 backdrop-blur-xl border border-ocean-200 text-ocean-900 text-sm font-bold tracking-widest uppercase hover:bg-ocean-900 hover:text-white transition-all duration-500 flex items-center gap-4 mx-auto rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] group/btn"
+              onClick={() => {
+                setCurrentPage(p => Math.max(1, p - 1));
+                setTimeout(() => document.getElementById('properties')?.scrollIntoView({ behavior: 'smooth' }), 50);
+              }}
+              disabled={currentPage === 1}
+              className="w-12 h-12 md:w-auto md:px-8 md:py-4 bg-white/60 backdrop-blur-xl border border-ocean-200 text-ocean-900 md:text-sm font-bold tracking-widest uppercase hover:bg-ocean-900 hover:text-white transition-all duration-500 flex items-center justify-center gap-3 rounded-full flex-shrink-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] disabled:opacity-40 disabled:cursor-not-allowed group"
             >
-              {loading ? 'Updating Feed...' : `Load More (${filteredProperties.length - visibleCount} remaining)`} 
-              <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+              <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+              <span className="hidden md:block">Previous</span>
+            </button>
+            <span className="text-ocean-900 font-medium text-xs md:text-sm tracking-widest px-4 md:px-6">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={() => {
+                setCurrentPage(p => Math.min(totalPages, p + 1));
+                setTimeout(() => document.getElementById('properties')?.scrollIntoView({ behavior: 'smooth' }), 50);
+              }}
+              disabled={currentPage === totalPages}
+              className="w-12 h-12 md:w-auto md:px-8 md:py-4 bg-white/60 backdrop-blur-xl border border-ocean-200 text-ocean-900 md:text-sm font-bold tracking-widest uppercase hover:bg-ocean-900 hover:text-white transition-all duration-500 flex items-center justify-center gap-3 rounded-full flex-shrink-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] disabled:opacity-40 disabled:cursor-not-allowed group"
+            >
+              <span className="hidden md:block">Next Page</span>
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         )}
