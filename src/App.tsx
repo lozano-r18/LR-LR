@@ -277,9 +277,9 @@ const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
           </h1>
 
           <div className="flex flex-col md:flex-row items-start md:items-end gap-10 mt-4 px-4">
-            <div className="max-w-xs">
+            <div className="max-w-md">
               <p className="text-white/70 text-sm md:text-base font-medium leading-relaxed tracking-wide">
-                Premium properties handpicked for living, investing, and pure coastal bliss.
+                Premiering <span className="text-white/90">New Developments</span> and exclusive lifestyle properties across the <span className="text-white/100 font-semibold italic">Costa del Sol</span>.
               </p>
             </div>
             <button
