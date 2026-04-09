@@ -46,60 +46,67 @@ const parseJsonProperties = (data: any): Property[] => {
     if (!propertiesSource) return [];
     const nodes = Array.isArray(propertiesSource) ? propertiesSource : [propertiesSource];
 
-    return nodes.map((node: any) => {
-      const type = node.type || 'Property';
-      const town = node.town || 'Costa del Sol';
-      const development = node.location_detail || '';
-      
-      const priceVal = node.price;
-      const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
+    return nodes.reduce((acc: Property[], node: any) => {
+      try {
+        const type = String(node.type || 'Property');
+        const town = String(node.town || 'Costa del Sol');
+        const development = node.location_detail || '';
+        
+        const priceVal = node.price;
+        const formattedPrice = priceVal && !isNaN(Number(priceVal)) ? `€${Number(priceVal).toLocaleString()}` : 'Price on Request';
 
-      let images: string[] = [];
-      if (node.images?.image) {
-        images = (Array.isArray(node.images.image) ? node.images.image : [node.images.image])
-          .map((img: any) => typeof img === 'string' ? img : img.url)
-          .filter(Boolean);
+        let images: string[] = [];
+        if (node.images?.image) {
+          images = (Array.isArray(node.images.image) ? node.images.image : [node.images.image])
+            .map((img: any) => typeof img === 'string' ? img : img?.url)
+            .filter(Boolean)
+            .map(String);
+        }
+
+        const propertyId = String(node.id || node.ref || Math.random());
+        
+        const preferredImages = images.filter(url => {
+          const u = url.toLowerCase();
+          return !u.includes('logo') && (u.includes('outdoor') || u.includes('indoor') || u.includes('exterior'));
+        });
+        const validImages = images.filter(url => !url.toLowerCase().includes('logo'));
+        const mainImage = preferredImages[0] || validImages[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
+        
+        const builtArea = node.surface_area?.built || '0';
+
+        const devCandidate = String(node.name || node.development_name || node.residence || node.location_detail || '').trim();
+        const isTownName = [town, 'marbella', 'mijas', 'fuengirola', 'estepona', 'benahavis', 'sotogrande', 'manilva', 'casares']
+                           .map(String)
+                           .some(t => devCandidate.toLowerCase() === t.toLowerCase());
+        const developmentName = !isTownName && devCandidate ? devCandidate : '';
+
+        acc.push({
+          id: propertyId,
+          ref: String(node.ref || ''),
+          title: developmentName ? `${type.charAt(0).toUpperCase() + type.slice(1)} in ${developmentName}` : `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`,
+          location: `${town}, ${node.province || ''}`,
+          town: town,
+          province: typeof node.province === 'string' ? node.province : '',
+          price: formattedPrice,
+          priceNumeric: Number(priceVal) || 0,
+          beds: parseInt(node.beds) || 0,
+          baths: parseInt(node.baths) || 0,
+          sqft: builtArea !== '0' ? `${builtArea} m²` : 'Contact for area',
+          sqftNumeric: Number(builtArea) || 0,
+          image: mainImage,
+          images: images,
+          tag: node.new_build == 1 ? "New Build" : "Exclusive",
+          type: type,
+          description: String(node.desc?.en || node.desc?.es || '').split('. ').slice(0, 2).join('. '),
+          url: typeof node.url === 'string' ? node.url : String(node.url?.en || node.url?.es || ''),
+          features: Array.isArray(node.features?.feature) ? node.features.feature : [],
+          pool: node.pool == 1
+        } as Property);
+      } catch (innerErr) {
+        console.warn('Skipped parsing property:', innerErr);
       }
-
-      const propertyId = (node.id || node.ref || Math.random()).toString();
-      
-      // Smart thumbnail selection: avoid logos, try to grab beautiful outdoor/indoor shots rather than common aerial maps
-      const preferredImages = images.filter(url => {
-        const u = url.toLowerCase();
-        return !u.includes('logo') && (u.includes('outdoor') || u.includes('indoor') || u.includes('exterior'));
-      });
-      const validImages = images.filter(url => !url.toLowerCase().includes('logo'));
-      const mainImage = preferredImages[0] || validImages[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
-      
-      const builtArea = node.surface_area?.built || '0';
-
-      const devCandidate = (node.name || node.development_name || node.residence || node.location_detail || '').toString().trim();
-      const isTownName = [town, 'marbella', 'mijas', 'fuengirola', 'estepona', 'benahavis', 'sotogrande', 'manilva', 'casares', 'manilva'].some(t => devCandidate.toLowerCase() === t.toLowerCase());
-      const developmentName = !isTownName && devCandidate ? devCandidate : '';
-
-      return {
-        id: propertyId,
-        ref: node.ref || '',
-        title: developmentName ? `${type.charAt(0).toUpperCase() + type.slice(1)} in ${developmentName}` : `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`,
-        location: `${town}, ${node.province || ''}`,
-        town: town,
-        province: node.province || '',
-        price: formattedPrice,
-        priceNumeric: Number(priceVal) || 0,
-        beds: parseInt(node.beds) || 0,
-        baths: parseInt(node.baths) || 0,
-        sqft: builtArea !== '0' ? `${builtArea} m²` : 'Contact for area',
-        sqftNumeric: Number(builtArea) || 0,
-        image: mainImage,
-        images: images,
-        tag: node.new_build == 1 ? "New Build" : "Exclusive",
-        type: type,
-        description: (node.desc?.en || node.desc?.es || '').split('. ').slice(0, 2).join('. '),
-        url: typeof node.url === 'string' ? node.url : (node.url?.en || node.url?.es || ''),
-        features: Array.isArray(node.features?.feature) ? node.features.feature : [],
-        pool: node.pool == 1
-      } as Property;
-    });
+      return acc;
+    }, []);
   } catch (err) {
     console.error("Parse Error:", err);
     return [];
