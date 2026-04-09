@@ -111,8 +111,8 @@ const getSharedProperties = (): Promise<Property[]> => {
   
   cachedPropertiesPromise = new Promise(async (resolve, reject) => {
     try {
-      // BUMP CACHE TO V5 TO CLEAR OLD CORRUPT DATA
-      const CACHE_KEY = 'lr_properties_cache_v5';
+      // BUMP CACHE TO V6 TO CLEAR OLD XML CAPTURES
+      const CACHE_KEY = 'lr_properties_cache_v6';
       const cachedData = localStorage.getItem(CACHE_KEY);
       if (cachedData) {
         try {
@@ -120,10 +120,17 @@ const getSharedProperties = (): Promise<Property[]> => {
           if (Array.isArray(parsed) && parsed.length > 0) {
             resolve(parsed);
             fetch('/api/feed')
-              .then(res => res.text())
-              .then(xml => {
-                const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
-                const props = parseJsonProperties(parser.parse(xml));
+              .then(async res => {
+                const contentType = res.headers.get("content-type");
+                let dataToParse;
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                  dataToParse = await res.json();
+                } else {
+                  const xml = await res.text();
+                  const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
+                  dataToParse = parser.parse(xml);
+                }
+                const props = parseJsonProperties(dataToParse);
                 if (props.length > 0) localStorage.setItem(CACHE_KEY, JSON.stringify(props));
               }).catch(() => {});
             return;
@@ -133,9 +140,18 @@ const getSharedProperties = (): Promise<Property[]> => {
 
       const res = await fetch('/api/feed');
       if (!res.ok) throw new Error('Network response not ok');
-      const xmlText = await res.text();
-      const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
-      const parsedProperties = parseJsonProperties(parser.parse(xmlText));
+      
+      const contentType = res.headers.get("content-type");
+      let dataToParse;
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        dataToParse = await res.json();
+      } else {
+        const xmlText = await res.text();
+        const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
+        dataToParse = parser.parse(xmlText);
+      }
+      
+      const parsedProperties = parseJsonProperties(dataToParse);
 
       if (parsedProperties.length > 0) {
         localStorage.setItem(CACHE_KEY, JSON.stringify(parsedProperties));
