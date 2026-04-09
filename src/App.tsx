@@ -1130,29 +1130,15 @@ const StarProjects = () => {
       <div className="max-w-7xl mx-auto px-6 mb-16">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
           <div>
-            <span className="text-[11px] font-medium tracking-wide text-ocean-900/40 block mb-6">
-              (02) Our projects
+            <span className="text-[11px] font-medium tracking-wide text-ocean-900/40 block mb-6 uppercase">
+              (02) Our best
             </span>
             <h2 className="text-4xl md:text-5xl font-medium tracking-tight text-ocean-900 mb-4">
-              Projects We are Proud of
+              Star Properties
             </h2>
             <p className="text-sm text-ocean-600/70 font-light max-w-lg">
               We curate properties that not only offer a place to live but elevate the standard of Costa del Sol living.
             </p>
-          </div>
-          
-          <div className="flex items-center gap-4 w-full lg:w-auto">
-            <div className="relative w-full lg:w-80">
-              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-ocean-900/40" />
-              <input 
-                type="text" 
-                placeholder="What are you looking for" 
-                className="w-full pl-12 pr-4 py-3 border border-ocean-100 placeholder:text-ocean-900/40 text-sm outline-none focus:border-ocean-900 transition-colors"
-              />
-            </div>
-            <button className="bg-ocean-900 text-white px-6 py-3 flex items-center gap-3 text-xs font-semibold tracking-wider hover:bg-ocean-800 transition-colors">
-              <Settings2 size={16} /> Filter
-            </button>
           </div>
         </div>
       </div>
