@@ -97,7 +97,7 @@ const parseJsonProperties = (data: any): Property[] => {
           sqft: builtArea !== '0' ? `${builtArea} m²` : 'Contact for area',
           sqftNumeric: Number(builtArea) || 0,
           image: mainImage,
-          images: images,
+          images: validImages.slice(0, 15),
           tag: node.new_build == 1 ? "New Build" : "Exclusive",
           type: type,
           description: String(node.desc?.en || node.desc?.es || '').split('. ').slice(0, 2).join('. '),
@@ -550,8 +550,6 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
               <img
                 src={prop.image}
                 alt={prop.title}
-                loading="lazy"
-                decoding="async"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 referrerPolicy="no-referrer"
               />
@@ -705,7 +703,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                       >
                         {(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image]).map((img, i) => (
                           <div key={i} className="min-w-full h-full">
-                            <img src={img} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                            <img src={img} loading="lazy" decoding="async" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                           </div>
                         ))}
                       </motion.div>
