@@ -62,13 +62,25 @@ const parseJsonProperties = (data: any): Property[] => {
       }
 
       const propertyId = (node.id || node.ref || Math.random()).toString();
-      const mainImage = images.find(url => !url.toLowerCase().includes('logo')) || images[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
+      
+      // Smart thumbnail selection: avoid logos, try to grab beautiful outdoor/indoor shots rather than common aerial maps
+      const preferredImages = images.filter(url => {
+        const u = url.toLowerCase();
+        return !u.includes('logo') && (u.includes('outdoor') || u.includes('indoor') || u.includes('exterior'));
+      });
+      const validImages = images.filter(url => !url.toLowerCase().includes('logo'));
+      const mainImage = preferredImages[0] || validImages[0] || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000';
+      
       const builtArea = node.surface_area?.built || '0';
+
+      const devCandidate = (node.name || node.development_name || node.residence || node.location_detail || '').toString().trim();
+      const isTownName = [town, 'marbella', 'mijas', 'fuengirola', 'estepona', 'benahavis', 'sotogrande', 'manilva', 'casares', 'manilva'].some(t => devCandidate.toLowerCase() === t.toLowerCase());
+      const developmentName = !isTownName && devCandidate ? devCandidate : '';
 
       return {
         id: propertyId,
         ref: node.ref || '',
-        title: development ? `${type.charAt(0).toUpperCase() + type.slice(1)} in ${development}` : `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`,
+        title: developmentName ? `${type.charAt(0).toUpperCase() + type.slice(1)} in ${developmentName}` : `${type.charAt(0).toUpperCase() + type.slice(1)} in ${town}`,
         location: `${town}, ${node.province || ''}`,
         town: town,
         province: node.province || '',
@@ -433,13 +445,23 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                 />
               </div>
 
-              <div className="relative group lg:col-span-1">
+              <div className="relative group lg:col-span-1 flex gap-2">
                 <button
                   className="w-full h-full py-4 bg-ocean-900 text-white rounded-full flex items-center justify-center hover:bg-ocean-800 transition-all shadow-lg"
-                  onClick={() => setFilters({ area: '', type: '', beds: '', baths: '', priceMin: '', priceMax: '', ref: '', sortBy: 'newest' })}
-                  title="Reset Filters"
+                  onClick={() => {
+                    const el = document.getElementById('properties');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  title="Search Properties"
                 >
                   <Search size={18} />
+                </button>
+                <button
+                  className="w-14 h-full py-4 bg-ocean-50 text-ocean-900 rounded-full flex items-center justify-center hover:bg-ocean-100 transition-all shadow-sm"
+                  onClick={() => setFilters({ area: '', type: '', beds: '', baths: '', priceMin: '', priceMax: '', ref: '', sortBy: 'newest' })}
+                  title="Clear Filters"
+                >
+                  <RotateCcw size={14} />
                 </button>
               </div>
             </div>
@@ -1022,7 +1044,7 @@ const StarProjects = () => {
     const fetchTopProperties = async () => {
       try {
         const parsedProperties = await getSharedProperties();
-        setProperties([...parsedProperties].sort(() => 0.5 - Math.random()).slice(0, 25));
+        setProperties([...parsedProperties].sort(() => 0.5 - Math.random()).slice(0, 12));
       } catch (error) {
         console.error("Error fetching Star Projects:", error);
       }
