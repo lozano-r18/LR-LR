@@ -275,24 +275,33 @@ const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
             transition={{ duration: 1 }}
             className="w-full flex flex-col pt-20"
           >
-            <h1 className="text-[13vw] md:text-[9vw] font-serif text-white/95 tracking-[0.02em] leading-[1.1] md:leading-none mb-14 uppercase select-none font-medium md:whitespace-nowrap transition-transform duration-700">
-              LOZANO REALTY
-            </h1>
+            <div className="mb-14">
+              <h1 className="text-[13vw] md:text-[9vw] font-serif text-white/95 tracking-[0.02em] leading-none uppercase select-none font-medium md:whitespace-nowrap drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)]">
+                LOZANO REALTY
+              </h1>
+              <div className="flex items-center gap-6 mt-4">
+                <div className="h-[1px] w-12 bg-white/40 hidden md:block" />
+                <span className="text-[10px] md:text-xs uppercase tracking-[0.6em] text-white/90 font-bold drop-shadow-md whitespace-nowrap">
+                  Costa del Sol Real Estate
+                </span>
+                <div className="h-[1px] w-full bg-white/10 hidden md:block" />
+              </div>
+            </div>
 
-            <div className="flex flex-col md:flex-row items-start md:items-end gap-10 mt-4 px-4">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-10 px-4">
               <div className="max-w-md">
-                <p className="text-white/80 text-sm md:text-base font-medium leading-relaxed tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                  Premiering <span className="text-white/100">New Developments</span> and exclusive lifestyle properties across the <span className="text-white/100 font-semibold italic">Costa del Sol</span>.
+                <p className="text-white/80 text-[11px] md:text-xs font-semibold uppercase tracking-[0.2em] leading-loose drop-shadow-lg">
+                  Premiering <span className="text-white/100">New Developments</span> & <br className="hidden md:block"/> Exclusive Lifestyle properties.
                 </p>
               </div>
-            <button
-              onClick={onContactClick}
-              className="group flex items-center gap-4 bg-white/20 backdrop-blur-xl border border-white/30 text-white px-10 py-5 rounded-xl hover:bg-white hover:text-ocean-900 transition-all duration-500 shadow-2xl"
-            >
-              <span className="text-sm font-bold tracking-widest uppercase text-nowrap">GET IN TOUCH</span>
-              <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
+              <button
+                onClick={onContactClick}
+                className="group flex items-center gap-4 bg-white/20 backdrop-blur-xl border border-white/30 text-white px-10 py-5 rounded-xl hover:bg-white hover:text-ocean-900 transition-all duration-500 shadow-2xl"
+              >
+                <span className="text-sm font-bold tracking-widest uppercase text-nowrap">GET IN TOUCH</span>
+                <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
         </motion.div>
       </div>
     </section>
