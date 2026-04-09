@@ -1072,58 +1072,6 @@ const TeamPage = () => {
 };
 
 
-const About = () => {
-  return (
-    <section id="about" className="py-20 lg:py-32 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-
-          {/* Left: Staggered Editorial Images */}
-          <div className="lg:w-1/2 relative w-full pt-10 pb-32 lg:pb-20">
-            <span className="absolute top-0 left-0 text-[10px] font-bold tracking-widest uppercase text-ocean-300">
-              01 — Our Philosophy
-            </span>
-            <div className="relative z-10 w-[85%] mt-12 bg-white p-2 lg:p-3 shadow-2xl">
-              <img
-                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000"
-                className="w-full h-auto aspect-[3/4] object-cover"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-            <div className="absolute top-1/2 right-0 w-[60%] lg:w-[55%] -translate-y-12 z-20 bg-ocean-900 p-1.5 lg:p-2 shadow-2xl">
-              <div className="relative border border-white/20">
-                <img
-                  src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000"
-                  className="w-full h-auto aspect-square object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <div className="absolute -bottom-4 lg:-bottom-6 right-0 text-ocean-900 text-[8px] lg:text-[10px] tracking-[0.2em] uppercase font-bold bg-white px-3 lg:px-5 py-2 lg:py-3 shadow-[0_15px_40px_rgb(0,0,0,0.15)] border border-ocean-50">
-                Est. 2026
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Sleek Typography */}
-          <div className="lg:w-1/2 flex flex-col justify-center mt-8 lg:mt-0">
-            <h2 className="text-3xl lg:text-[2.5rem] xl:text-5xl font-light tracking-tight text-ocean-900 leading-[1.3] mb-8 lg:mb-12">
-              At <strong className="font-serif font-normal italic text-ocean-600">Lozano Realty</strong>, we see a home as the ultimate expression of comfort and well-being.
-            </h2>
-            <div className="pl-6 md:pl-12 border-l border-ocean-200">
-              <p className="text-[10px] text-ocean-400 font-bold mb-4 uppercase tracking-[0.3em]">
-                Beyond Boundaries
-              </p>
-              <p className="text-sm lg:text-base text-ocean-800/80 leading-relaxed font-light">
-                From thoughtfully designed spaces to carefully planned communities, we curate properties that not only offer a place to live, but foster lasting memories while shaping a better, more sustainable future on the Costa del Sol.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-  );
-};
 
 const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
   return (
@@ -1160,7 +1108,6 @@ const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
             <div className="flex flex-col gap-4 text-sm font-medium tracking-widest uppercase">
               <a href="#home" className="text-white/60 hover:text-white transition-colors">Home</a>
               <a href="#properties" className="text-white/60 hover:text-white transition-colors">Properties</a>
-              <a href="#about" className="text-white/60 hover:text-white transition-colors">Our Philosophy</a>
               <a href="#team" className="text-white/60 hover:text-white transition-colors">Team</a>
               <button onClick={onContactClick} className="text-left text-white/60 hover:text-white transition-colors tracking-widest uppercase text-sm font-medium">Contact</button>
             </div>
@@ -1249,7 +1196,6 @@ export default function App() {
         <>
           <Hero onContactClick={() => setShowContactPopup(true)} />
           <Properties onContactClick={() => setShowContactPopup(true)} />
-          <About />
         </>
       ) : (
         <TeamPage />
