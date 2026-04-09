@@ -1224,9 +1224,11 @@ const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
           <div className="flex flex-col gap-6">
             <span className="text-[10px] uppercase tracking-[0.5em] text-white/30 font-bold">Navigate</span>
             <div className="flex flex-col gap-4 text-sm font-medium tracking-widest uppercase">
-              <a href="#hero" className="text-white/60 hover:text-white transition-colors">Home</a>
+              <a href="#home" className="text-white/60 hover:text-white transition-colors">Home</a>
               <a href="#properties" className="text-white/60 hover:text-white transition-colors">Properties</a>
-              <a href="#about" className="text-white/60 hover:text-white transition-colors">About</a>
+              <a href="#star-projects" className="text-white/60 hover:text-white transition-colors">Star Properties</a>
+              <a href="#about" className="text-white/60 hover:text-white transition-colors">Our Philosophy</a>
+              <a href="#team" className="text-white/60 hover:text-white transition-colors">Team</a>
               <button onClick={onContactClick} className="text-left text-white/60 hover:text-white transition-colors tracking-widest uppercase text-sm font-medium">Contact</button>
             </div>
           </div>
@@ -1274,9 +1276,9 @@ const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-white/20 uppercase tracking-widest">
           <span>© 2026 Lozano Realty®. All rights reserved.</span>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-white/60 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white/60 transition-colors">Legal Notice</a>
-            <a href="#" className="hover:text-white/60 transition-colors">Cookies</a>
+            <a href="/privacy" className="hover:text-white/60 transition-colors">Privacy Policy</a>
+            <a href="/legal" className="hover:text-white/60 transition-colors">Legal Notice</a>
+            <a href="/cookies" className="hover:text-white/60 transition-colors">Cookies</a>
           </div>
           <span className="font-serif italic normal-case tracking-normal text-white/20">Crafted for Costa del Sol</span>
         </div>
