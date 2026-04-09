@@ -228,7 +228,6 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
         {/* Desktop Menu */}
         <div className={`hidden md:flex items-center gap-10 font-medium text-sm uppercase tracking-widest ${navTextClass}`}>
           <a href="#home" className="hover:opacity-70 transition-opacity">Home</a>
-          <a href="#properties" className="hover:opacity-70 transition-opacity">Properties</a>
           <a href="#team" className="hover:opacity-70 transition-opacity whitespace-nowrap">Team</a>
           <button
             onClick={onContactClick}
@@ -254,7 +253,6 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
             className="absolute top-0 left-0 right-0 bg-white/95 backdrop-blur-xl shadow-2xl pt-32 pb-12 flex flex-col items-center gap-8 text-ocean-900 font-medium uppercase tracking-widest md:hidden z-50"
           >
             <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
-            <a href="#properties" onClick={() => setIsMobileMenuOpen(false)}>Properties</a>
             <a href="#team" onClick={() => setIsMobileMenuOpen(false)}>Team</a>
             <button
               className="text-center mt-4 px-10 py-3 bg-ocean-900 text-white border border-ocean-900 text-sm font-bold transition-all active:scale-95"
@@ -1126,10 +1124,6 @@ const About = () => {
         </div>
       </div>
     </section>
-  );
-};
-
-
   );
 };
 
