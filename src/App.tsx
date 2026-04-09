@@ -311,6 +311,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
     priceMax: '',
     ref: '',
     sortBy: 'newest'
+  });
   const [isExpanded, setIsExpanded] = useState(false);
   const itemsPerPage = isExpanded ? 30 : 9;
   const [currentPage, setCurrentPage] = useState(1);
