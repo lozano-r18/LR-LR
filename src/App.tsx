@@ -228,7 +228,7 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
         {/* Desktop Menu */}
         <div className={`hidden md:flex items-center gap-10 font-medium text-sm uppercase tracking-widest ${navTextClass}`}>
           <a href="#home" className="hover:opacity-70 transition-opacity">Home</a>
-          <a href="#home" className="hover:opacity-70 transition-opacity">Properties</a>
+          <a href="#properties" className="hover:opacity-70 transition-opacity">Properties</a>
           <a href="#team" className="hover:opacity-70 transition-opacity whitespace-nowrap">Team</a>
           <button
             onClick={onContactClick}
@@ -254,8 +254,8 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
             className="absolute top-0 left-0 right-0 bg-white/95 backdrop-blur-xl shadow-2xl pt-32 pb-12 flex flex-col items-center gap-8 text-ocean-900 font-medium uppercase tracking-widest md:hidden z-50"
           >
             <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
-            <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Properties</a>
-            <a href="#team" onClick={() => setIsMobileMenuOpen(false)}>Team & Collaborations</a>
+            <a href="#properties" onClick={() => setIsMobileMenuOpen(false)}>Properties</a>
+            <a href="#team" onClick={() => setIsMobileMenuOpen(false)}>Team</a>
             <button
               className="text-center mt-4 px-10 py-3 bg-ocean-900 text-white border border-ocean-900 text-sm font-bold transition-all active:scale-95"
               onClick={() => {
@@ -1130,88 +1130,6 @@ const About = () => {
 };
 
 
-const StarProjects = () => {
-  const [properties, setProperties] = useState<Property[]>([]);
-  const scrollRef = React.useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const fetchTopProperties = async () => {
-      try {
-        const parsedProperties = await getSharedProperties();
-        setProperties([...parsedProperties].sort(() => 0.5 - Math.random()).slice(0, 12));
-      } catch (error) {
-        console.error("Error fetching Star Projects:", error);
-      }
-    };
-
-    fetchTopProperties();
-  }, []);
-
-  if (properties.length === 0) return null;
-
-  return (
-    <section id="star-projects" className="pt-16 pb-32 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 mb-16">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
-          <div>
-            <span className="text-[11px] font-medium tracking-wide text-ocean-900/40 block mb-6 uppercase">
-              (02) Our best
-            </span>
-            <h2 className="text-4xl md:text-5xl font-medium tracking-tight text-ocean-900 mb-4">
-              Star Properties
-            </h2>
-            <p className="text-sm text-ocean-600/70 font-light max-w-lg">
-              The coast has favorites.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div
-        ref={scrollRef}
-        className="flex overflow-x-auto gap-5 lg:gap-8 px-6 pb-12 no-scrollbar snap-x snap-mandatory"
-        style={{ scrollPaddingLeft: '1.5rem', scrollPaddingRight: '1.5rem' }}
-      >
-        {properties.map((prop, idx) => (
-          <div key={idx} className="min-w-[85vw] md:min-w-[380px] lg:min-w-[420px] snap-start group cursor-pointer relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all">
-            <img
-              src={prop.image}
-              alt={prop.title}
-              loading="lazy"
-              decoding="async"
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              referrerPolicy="no-referrer"
-            />
-
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
-
-            <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-md border border-white/50 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-widest font-bold text-white z-10 transition-colors group-hover:bg-white/30 shadow-sm">
-              {prop.tag}
-            </div>
-
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col justify-end z-10">
-              <h3 className="text-2xl md:text-3xl font-semibold font-sans text-white mb-1 line-clamp-1 drop-shadow-sm">{prop.title}</h3>
-              <p className="text-white/90 text-sm md:text-base font-medium mb-5 drop-shadow-sm truncate">
-                {prop.location}
-              </p>
-
-              <div className="flex flex-col gap-2">
-                <div className="w-fit px-4 py-1.5 rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-sm text-white font-medium shadow-sm">
-                  {prop.price}
-                </div>
-                <div className="w-fit flex items-center px-4 py-1.5 rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-sm text-white font-medium shadow-sm">
-                  <span>{prop.sqft}</span>
-                  <span className="mx-2 text-white/60 font-light">|</span>
-                  <span>{prop.beds} Bed.</span>
-                  <span className="mx-2 text-white/60 font-light">|</span>
-                  <span>{prop.baths} Bath.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
   );
 };
 
@@ -1250,7 +1168,6 @@ const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
             <div className="flex flex-col gap-4 text-sm font-medium tracking-widest uppercase">
               <a href="#home" className="text-white/60 hover:text-white transition-colors">Home</a>
               <a href="#properties" className="text-white/60 hover:text-white transition-colors">Properties</a>
-              <a href="#star-projects" className="text-white/60 hover:text-white transition-colors">Star Properties</a>
               <a href="#about" className="text-white/60 hover:text-white transition-colors">Our Philosophy</a>
               <a href="#team" className="text-white/60 hover:text-white transition-colors">Team</a>
               <button onClick={onContactClick} className="text-left text-white/60 hover:text-white transition-colors tracking-widest uppercase text-sm font-medium">Contact</button>
@@ -1341,7 +1258,6 @@ export default function App() {
           <Hero onContactClick={() => setShowContactPopup(true)} />
           <Properties onContactClick={() => setShowContactPopup(true)} />
           <About />
-          <StarProjects />
         </>
       ) : (
         <TeamPage />
