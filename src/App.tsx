@@ -177,7 +177,25 @@ const getSharedProperties = (): Promise<Property[]> => {
   return cachedPropertiesPromise;
 };
 
-// --- Components ---
+// --- Custom Components ---
+
+const SmoothImage = ({ src, alt, className = "" }: any) => {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <>
+      <div className={`absolute inset-0 bg-ocean-100/30 animate-pulse transition-opacity duration-500 pointer-events-none ${loaded ? 'opacity-0' : 'opacity-100'}`} />
+      <img
+        src={src}
+        alt={alt}
+        onLoad={() => setLoaded(true)}
+        referrerPolicy="no-referrer"
+        className={`${className} ${loaded ? 'opacity-100' : 'opacity-0'}`}
+      />
+    </>
+  );
+};
+
+// --- Page Components ---
 
 const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, currentRoute: string }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -547,11 +565,10 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
               className="group cursor-pointer relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all bg-ocean-50"
               onClick={() => setSelectedProperty(prop)}
             >
-              <img
+              <SmoothImage
                 src={prop.image}
                 alt={prop.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                referrerPolicy="no-referrer"
+                className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
