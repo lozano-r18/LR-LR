@@ -776,7 +776,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                 </button>
               </div>
 
-              <div className="relative w-full h-full flex items-center justify-center p-4 md:p-32">
+              <div className="relative w-full h-full flex items-center justify-center p-4 md:py-12 md:px-6">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={activeImageIndex}
@@ -810,7 +810,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                   <button
                     key={i}
                     onClick={(e) => { e.stopPropagation(); setActiveImageIndex(i); }}
-                    className={`w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-300 ${activeImageIndex === i ? 'border-white scale-110 shadow-xl' : 'border-transparent opacity-40 hover:opacity-100'}`}
+                    className={`w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-300 ${activeImageIndex === i ? 'border-white scale-110 shadow-xl' : 'border-transparent opacity-40 hover:opacity-100'}`}
                   >
                     <img src={img} className="w-full h-full object-cover" />
                   </button>
