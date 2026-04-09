@@ -289,25 +289,23 @@ const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            className="w-full flex flex-col pt-20"
+            className="w-full flex flex-col items-center text-center pt-20"
           >
             <div className="mb-14">
-              <h1 className="text-[13vw] md:text-[9vw] font-serif text-white/95 tracking-[0.02em] leading-none uppercase select-none font-medium md:whitespace-nowrap drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)]">
+              <h1 className="text-[12vw] md:text-[8vw] font-serif text-white/95 tracking-[0.02em] leading-none uppercase select-none font-medium md:whitespace-nowrap drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)]">
                 LOZANO REALTY
               </h1>
-              <div className="flex items-center gap-6 mt-4">
-                <div className="h-[1px] w-12 bg-white/40 hidden md:block" />
+              <div className="flex items-center justify-center gap-6 mt-4">
                 <span className="text-[10px] md:text-xs uppercase tracking-[0.6em] text-white/90 font-bold drop-shadow-md whitespace-nowrap">
                   Costa del Sol Real Estate
                 </span>
-                <div className="h-[1px] w-full bg-white/10 hidden md:block" />
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-10 px-4">
+            <div className="flex flex-col items-center gap-10">
               <div className="max-w-md">
                 <p className="text-white/80 text-[11px] md:text-xs font-semibold uppercase tracking-[0.2em] leading-loose drop-shadow-lg">
-                  Premiering <span className="text-white/100">New Developments</span> & <br className="hidden md:block"/> Exclusive Lifestyle properties.
+                  Premiering <span className="text-white/100">New Developments</span> & <br/> Exclusive Lifestyle properties.
                 </p>
               </div>
               <button
