@@ -30,23 +30,6 @@ interface Property {
   pool: boolean;
   plans: string[];
   url: string;
-  developmentName?: string;
-}
-
-interface PropertyGroup {
-  id: string;
-  isDevelopment: boolean;
-  title: string;
-  location: string;
-  image: string;
-  tag: string;
-  price: string;
-  priceNumeric: number;
-  bedsStr: string;
-  bathsStr: string;
-  sqft: string;
-  properties: Property[];
-  type: string;
 }
 
 interface SearchFilters {
@@ -120,8 +103,7 @@ const parseJsonProperties = (data: any): Property[] => {
           description: String(node.desc?.en || node.desc?.es || '').split('. ').slice(0, 2).join('. '),
           url: typeof node.url === 'string' ? node.url : String(node.url?.en || node.url?.es || ''),
           features: Array.isArray(node.features?.feature) ? node.features.feature : [],
-          pool: node.pool == 1,
-          developmentName: developmentName
+          pool: node.pool == 1
         } as Property);
       } catch (innerErr) {
         console.warn('Skipped parsing property:', innerErr);
@@ -357,7 +339,6 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
   const itemsPerPage = isExpanded ? 30 : 9;
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
-  const [selectedGroup, setSelectedGroup] = useState<PropertyGroup | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
@@ -426,68 +407,9 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
     setCurrentPage(1);
   }, [filters]);
 
-  const groupedProperties = React.useMemo(() => {
-    const groupsList: Property[][] = [];
-    const groupKeyToIndex = new Map<string, number>();
-
-    filteredProperties.forEach(prop => {
-      const key = prop.developmentName ? `dev_${prop.developmentName}_${prop.town}` : `id_${prop.id}`;
-      if (groupKeyToIndex.has(key)) {
-        groupsList[groupKeyToIndex.get(key)!].push(prop);
-      } else {
-        groupKeyToIndex.set(key, groupsList.length);
-        groupsList.push([prop]);
-      }
-    });
-
-    return groupsList.map(group => {
-      if (group.length > 1 && group[0].developmentName) {
-        const minPrice = Math.min(...group.map(p => p.priceNumeric).filter(p => p > 0));
-        const formattedMinPrice = minPrice > 0 ? `From €${minPrice.toLocaleString()}` : 'Price on Request';
-        const beds = Array.from(new Set(group.map(p => p.beds))).sort((a, b) => a - b);
-        const bedsStr = beds.length > 1 ? `${beds[0]}-${beds[beds.length - 1]}` : beds[0].toString();
-        const baths = Array.from(new Set(group.map(p => p.baths))).sort((a, b) => a - b);
-        const bathsStr = baths.length > 1 ? `${baths[0]}-${baths[baths.length - 1]}` : baths[0].toString();
-
-        return {
-          id: `dev_${group[0].developmentName}_${group[0].town}`,
-          isDevelopment: true,
-          title: `${group[0].type.charAt(0).toUpperCase() + group[0].type.slice(1)}s in ${group[0].developmentName}`,
-          location: group[0].location,
-          image: group[0].image,
-          tag: `${group.length} Units`,
-          price: formattedMinPrice,
-          priceNumeric: minPrice,
-          bedsStr: bedsStr,
-          bathsStr: bathsStr,
-          sqft: 'Various Sizes',
-          properties: group,
-          type: group[0].type
-        };
-      } else {
-        const p = group[0];
-        return {
-          id: p.id.toString(),
-          isDevelopment: false,
-          title: p.title,
-          location: p.location,
-          image: p.image,
-          tag: p.tag,
-          price: p.price,
-          priceNumeric: p.priceNumeric,
-          bedsStr: p.beds.toString(),
-          bathsStr: p.baths.toString(),
-          sqft: p.sqft,
-          properties: group,
-          type: p.type
-        };
-      }
-    });
-  }, [filteredProperties]);
-
-  const totalPages = Math.ceil(groupedProperties.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const displayedGroups = groupedProperties.slice(startIndex, startIndex + itemsPerPage);
+  const displayedProperties = filteredProperties.slice(startIndex, startIndex + itemsPerPage);
 
   // Reset image index when modal opens
   useEffect(() => {
@@ -610,7 +532,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
 
             <div className="mt-4 flex justify-between items-center px-6">
               <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-ocean-400">
-                Showing {groupedProperties.length > 0 ? startIndex + 1 : 0}-{Math.min(startIndex + itemsPerPage, groupedProperties.length)} of {groupedProperties.length} Matches
+                Showing {filteredProperties.length > 0 ? startIndex + 1 : 0}-{Math.min(startIndex + itemsPerPage, filteredProperties.length)} of {filteredProperties.length} Matches
               </div>
               <div className="flex gap-4 items-center">
                 <span className="text-[10px] uppercase tracking-widest text-ocean-300">Sort:</span>
@@ -629,50 +551,44 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {displayedGroups.map((group, idx) => (
+          {displayedProperties.map((prop, idx) => (
             <motion.div
-              key={group.id}
+              key={prop.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "100px" }}
               transition={{ delay: (idx % 3) * 0.05 }}
               className="group cursor-pointer relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all bg-ocean-50"
-              onClick={() => {
-                if (group.isDevelopment) {
-                  setSelectedGroup(group);
-                } else {
-                  setSelectedProperty(group.properties[0]);
-                }
-              }}
+              onClick={() => setSelectedProperty(prop)}
             >
               <SmoothImage
-                src={group.image}
-                alt={group.title}
+                src={prop.image}
+                alt={prop.title}
                 className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
 
               <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-md border border-white/50 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-widest font-bold text-white z-10 transition-colors group-hover:bg-white/30 shadow-sm">
-                {group.tag}
+                {prop.tag}
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col justify-end z-10">
-                <h3 className="text-2xl md:text-3xl font-semibold font-sans text-white mb-1 line-clamp-1 drop-shadow-sm">{group.title}</h3>
+                <h3 className="text-2xl md:text-3xl font-semibold font-sans text-white mb-1 line-clamp-1 drop-shadow-sm">{prop.title}</h3>
                 <p className="text-white/90 text-sm md:text-base font-medium mb-5 drop-shadow-sm truncate">
-                  {group.location}
+                  {prop.location}
                 </p>
 
                 <div className="flex flex-col gap-2">
                   <div className="w-fit px-4 py-1.5 rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-sm text-white font-medium shadow-sm">
-                    {group.price}
+                    {prop.price}
                   </div>
                   <div className="w-fit flex items-center px-4 py-1.5 rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-sm text-white font-medium shadow-sm">
-                    <span>{group.sqft}</span>
+                    <span>{prop.sqft}</span>
                     <span className="mx-2 text-white/60 font-light">|</span>
-                    <span>{group.bedsStr} Bed.</span>
+                    <span>{prop.beds} Bed.</span>
                     <span className="mx-2 text-white/60 font-light">|</span>
-                    <span>{group.bathsStr} Bath.</span>
+                    <span>{prop.baths} Bath.</span>
                   </div>
                 </div>
               </div>
@@ -680,13 +596,13 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
           ))}
         </div>
 
-        {!isExpanded && groupedProperties.length > 9 ? (
+        {!isExpanded && filteredProperties.length > 9 ? (
           <div className="mt-20 flex justify-center">
             <button
               onClick={() => setIsExpanded(true)}
               className="px-10 py-5 bg-ocean-900 border border-ocean-900 text-white text-sm font-bold tracking-widest uppercase hover:bg-white hover:text-ocean-900 transition-all duration-500 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] group"
             >
-              Explore Full Portfolio <span className="opacity-70 ml-2">({groupedProperties.length} Properties)</span>
+              Explore Full Portfolio <span className="opacity-70 ml-2">({filteredProperties.length} Properties)</span>
               <ArrowRight className="inline ml-3 -mt-0.5 group-hover:translate-x-1 transition-transform" size={16} />
             </button>
           </div>
@@ -719,84 +635,6 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
             </button>
           </div>
         ) : null}
-
-        {/* Development Modal */}
-        <AnimatePresence>
-          {selectedGroup && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setSelectedGroup(null)}
-                className="absolute inset-0 bg-ocean-900/40 backdrop-blur-md"
-              />
-              <motion.div
-                initial={{ opacity: 0, y: 100 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 100 }}
-                transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="relative w-full h-[100vh] bg-ocean-50 overflow-y-auto"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Header Actions */}
-                <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-ocean-50 px-6 py-4 flex justify-between items-center">
-                  <div className="text-xl font-serif text-ocean-900 line-clamp-1">
-                    {selectedGroup.title}
-                  </div>
-                  <button
-                    onClick={() => setSelectedGroup(null)}
-                    className="w-10 h-10 rounded-full bg-ocean-50 flex items-center justify-center text-ocean-900 hover:bg-ocean-900 hover:text-white transition-all shrink-0"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-                
-                <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-12 font-sans">
-                   <div className="mb-12">
-                     <h2 className="text-4xl md:text-6xl font-serif text-ocean-900 mb-4">{selectedGroup.title}</h2>
-                     <p className="text-ocean-600 text-lg">{selectedGroup.location} • {selectedGroup.properties.length} Available Units</p>
-                   </div>
-                   
-                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                     {selectedGroup.properties.map((prop, idx) => (
-                       <motion.div
-                         key={prop.id}
-                         initial={{ opacity: 0, y: 20 }}
-                         animate={{ opacity: 1, y: 0 }}
-                         transition={{ delay: idx * 0.05 }}
-                         className="group cursor-pointer bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all flex flex-col"
-                         onClick={() => setSelectedProperty(prop)}
-                       >
-                         <div className="relative aspect-[4/3] overflow-hidden">
-                           <SmoothImage src={prop.image} alt={prop.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                           <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase text-ocean-900 shadow-sm">
-                             REF: {prop.ref}
-                           </div>
-                         </div>
-                         <div className="p-6 flex-1 flex flex-col justify-between">
-                           <div>
-                             <div className="text-2xl font-serif text-ocean-900 mb-2">{prop.price}</div>
-                             <div className="flex items-center gap-4 text-sm text-ocean-600 mb-4">
-                               <span>{prop.beds} Beds</span>
-                               <span className="w-1 h-1 rounded-full bg-ocean-200" />
-                               <span>{prop.baths} Baths</span>
-                               <span className="w-1 h-1 rounded-full bg-ocean-200" />
-                               <span>{prop.sqft}</span>
-                             </div>
-                           </div>
-                           <button className="w-full py-3 bg-ocean-50 text-ocean-900 rounded-xl font-bold uppercase tracking-widest text-xs group-hover:bg-ocean-900 group-hover:text-white transition-colors">
-                             View Details
-                           </button>
-                         </div>
-                       </motion.div>
-                     ))}
-                   </div>
-                </div>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
 
         {/* Property Detail Modal */}
         <AnimatePresence>
