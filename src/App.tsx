@@ -249,7 +249,7 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
           <a href="#team" className="hover:opacity-70 transition-opacity whitespace-nowrap">Team</a>
           <button
             onClick={onContactClick}
-            className={`px-6 py-2 border border-current transition-all ${btnHover}`}
+            className={`px-8 py-3 border border-current rounded-full transition-all ${btnHover}`}
           >
             Contact
           </button>
@@ -273,7 +273,7 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
             <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
             <a href="#team" onClick={() => setIsMobileMenuOpen(false)}>Team</a>
             <button
-              className="text-center mt-4 px-10 py-3 bg-ocean-900 text-white border border-ocean-900 text-sm font-bold transition-all active:scale-95"
+              className="text-center mt-4 px-12 py-4 bg-ocean-900 text-white border border-ocean-900 rounded-full text-sm font-bold transition-all active:scale-95 shadow-lg"
               onClick={() => {
                 setIsMobileMenuOpen(false);
                 onContactClick();
