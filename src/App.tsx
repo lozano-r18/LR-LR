@@ -431,7 +431,9 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
     const groupKeyToIndex = new Map<string, number>();
 
     filteredProperties.forEach(prop => {
-      const key = prop.developmentName ? `dev_${prop.developmentName}_${prop.town}` : `id_${prop.id}`;
+      // Since the feed doesn't provide explicit development names reliably, 
+      // properties from the same development always share the exact same main image.
+      const key = prop.image && !prop.image.includes('unsplash') ? `img_${prop.image}_${prop.town}` : `id_${prop.id}`;
       if (groupKeyToIndex.has(key)) {
         groupsList[groupKeyToIndex.get(key)!].push(prop);
       } else {
@@ -441,18 +443,22 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
     });
 
     return groupsList.map(group => {
-      if (group.length > 1 && group[0].developmentName) {
+      if (group.length > 1) {
         const minPrice = Math.min(...group.map(p => p.priceNumeric).filter(p => p > 0));
         const formattedMinPrice = minPrice > 0 ? `From €${minPrice.toLocaleString()}` : 'Price on Request';
         const beds = Array.from(new Set(group.map(p => p.beds))).sort((a, b) => a - b);
         const bedsStr = beds.length > 1 ? `${beds[0]}-${beds[beds.length - 1]}` : beds[0].toString();
         const baths = Array.from(new Set(group.map(p => p.baths))).sort((a, b) => a - b);
         const bathsStr = baths.length > 1 ? `${baths[0]}-${baths[baths.length - 1]}` : baths[0].toString();
+        
+        // Find if they all have the same type, otherwise use "Residences"
+        const types = Array.from(new Set(group.map(p => p.type)));
+        const typeStr = types.length === 1 ? types[0].charAt(0).toUpperCase() + types[0].slice(1) + 's' : 'Residences';
 
         return {
-          id: `dev_${group[0].developmentName}_${group[0].town}`,
+          id: `dev_${group[0].id}`,
           isDevelopment: true,
-          title: `${group[0].type.charAt(0).toUpperCase() + group[0].type.slice(1)}s in ${group[0].developmentName}`,
+          title: `${typeStr} in ${group[0].town}`,
           location: group[0].location,
           image: group[0].image,
           tag: `${group.length} Units`,
