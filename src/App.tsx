@@ -260,6 +260,8 @@ const SmoothImage = ({ src, alt, className = "" }: any) => {
         alt={alt}
         onLoad={() => setLoaded(true)}
         referrerPolicy="no-referrer"
+        loading="lazy"
+        decoding="async"
         className={`${className} ${loaded ? 'opacity-100' : 'opacity-0'}`}
       />
     </>
@@ -850,13 +852,15 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
           </div>
         </div>
 
-        <div 
+        <motion.div 
+          layout
           ref={propertyCarouselRef}
           onScroll={handleCarouselScroll}
           className={!isExpanded ? "flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-3 md:gap-10 hide-scrollbar pb-8 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0 md:overflow-visible md:snap-none" : "grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10"}
         >
           {(!isExpanded ? carouselGroups : displayedGroups).map((group, idx) => (
             <motion.div
+              layout
               key={`${group.id}-${idx}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -903,7 +907,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {!isExpanded && groupedProperties.length > 9 ? (
           <div className="mt-20 flex justify-center">
