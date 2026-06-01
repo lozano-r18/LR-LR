@@ -275,52 +275,52 @@ const HuspyBenefits = () => {
         </h2>
         <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-2 lg:grid-cols-3 hide-scrollbar pb-6 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0">
            {/* Card 1 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
-             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+           <div className="bg-ocean-50/50 p-7 rounded-2xl border border-ocean-100/80 flex flex-col gap-3 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[76vw] snap-start shrink-0 md:min-w-0 md:shrink">
+             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Cpu size={24} strokeWidth={1.5} />
              </div>
-             <h3 className="font-bold text-ocean-900 text-lg mt-2">AI-powered search</h3>
-             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Smart matching to connect buyers with the right properties faster</p>
+             <h3 className="font-semibold text-ocean-900 text-base mt-1">AI-powered search</h3>
+             <p className="text-xs text-ocean-600 leading-relaxed">Smart matching to connect buyers with the right properties faster</p>
            </div>
            {/* Card 2 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
-             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+           <div className="bg-ocean-50/50 p-7 rounded-2xl border border-ocean-100/80 flex flex-col gap-3 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[76vw] snap-start shrink-0 md:min-w-0 md:shrink">
+             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Landmark size={24} strokeWidth={1.5} />
              </div>
-             <h3 className="font-bold text-ocean-900 text-lg mt-2">Instant mortgage access</h3>
-             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Real-time pre-approvals via 25+ banks — at the moment you need them</p>
+             <h3 className="font-semibold text-ocean-900 text-base mt-1">Instant mortgage access</h3>
+             <p className="text-xs text-ocean-600 leading-relaxed">Real-time pre-approvals via 25+ banks — at the moment you need them</p>
            </div>
            {/* Card 3 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
-             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+           <div className="bg-ocean-50/50 p-7 rounded-2xl border border-ocean-100/80 flex flex-col gap-3 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[76vw] snap-start shrink-0 md:min-w-0 md:shrink">
+             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <LineChart size={24} strokeWidth={1.5} />
              </div>
-             <h3 className="font-bold text-ocean-900 text-lg mt-2">Live market data</h3>
-             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Data-backed valuations and market trends — no guesswork</p>
+             <h3 className="font-semibold text-ocean-900 text-base mt-1">Live market data</h3>
+             <p className="text-xs text-ocean-600 leading-relaxed">Data-backed valuations and market trends — no guesswork</p>
            </div>
            {/* Card 4 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
-             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+           <div className="bg-ocean-50/50 p-7 rounded-2xl border border-ocean-100/80 flex flex-col gap-3 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[76vw] snap-start shrink-0 md:min-w-0 md:shrink">
+             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <FileSignature size={24} strokeWidth={1.5} />
              </div>
-             <h3 className="font-bold text-ocean-900 text-lg mt-2">Digital closing</h3>
-             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Streamlined, paperless transaction process from offer to signature</p>
+             <h3 className="font-semibold text-ocean-900 text-base mt-1">Digital closing</h3>
+             <p className="text-xs text-ocean-600 leading-relaxed">Streamlined, paperless transaction process from offer to signature</p>
            </div>
            {/* Card 5 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
-             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+           <div className="bg-ocean-50/50 p-7 rounded-2xl border border-ocean-100/80 flex flex-col gap-3 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[76vw] snap-start shrink-0 md:min-w-0 md:shrink">
+             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Eye size={24} strokeWidth={1.5} />
              </div>
-             <h3 className="font-bold text-ocean-900 text-lg mt-2">Full transparency</h3>
-             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Clients track every step of their transaction in real time</p>
+             <h3 className="font-semibold text-ocean-900 text-base mt-1">Full transparency</h3>
+             <p className="text-xs text-ocean-600 leading-relaxed">Clients track every step of their transaction in real time</p>
            </div>
            {/* Card 6 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
-             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+           <div className="bg-ocean-50/50 p-7 rounded-2xl border border-ocean-100/80 flex flex-col gap-3 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[76vw] snap-start shrink-0 md:min-w-0 md:shrink">
+             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Euro size={24} strokeWidth={1.5} />
              </div>
-             <h3 className="font-bold text-ocean-900 text-lg mt-2">Best financing rates</h3>
-             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Access to competitive mortgage products tailored for the Spanish market</p>
+             <h3 className="font-semibold text-ocean-900 text-base mt-1">Best financing rates</h3>
+             <p className="text-xs text-ocean-600 leading-relaxed">Access to competitive mortgage products tailored for the Spanish market</p>
            </div>
         </div>
       </div>
@@ -475,6 +475,22 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
   const [selectedGroup, setSelectedGroup] = useState<PropertyGroup | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [shareToast, setShareToast] = useState(false);
+  const [favorites, setFavorites] = useState<Set<string>>(() => {
+    try {
+      const saved = localStorage.getItem('lr_favorites');
+      return saved ? new Set<string>(JSON.parse(saved)) : new Set<string>();
+    } catch { return new Set<string>(); }
+  });
+
+  const toggleFavorite = (propId: string) => {
+    setFavorites(prev => {
+      const next = new Set(prev);
+      if (next.has(propId)) { next.delete(propId); } else { next.add(propId); }
+      try { localStorage.setItem('lr_favorites', JSON.stringify(Array.from(next))); } catch {}
+      return next;
+    });
+  };
 
   useEffect(() => {
     const fetchHabiHubProperties = async () => {
@@ -525,6 +541,12 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
     // Ensure special listings are prioritized at the top
     if (a.tag.includes("Special Listing") && !b.tag.includes("Special Listing")) return -1;
     if (b.tag.includes("Special Listing") && !a.tag.includes("Special Listing")) return 1;
+
+    // Favorited properties appear just below special listings
+    const aFav = favorites.has(String(a.id));
+    const bFav = favorites.has(String(b.id));
+    if (aFav && !bFav) return -1;
+    if (bFav && !aFav) return 1;
 
     if (filters.sortBy === 'price-asc') return a.priceNumeric - b.priceNumeric;
     if (filters.sortBy === 'price-desc') return b.priceNumeric - a.priceNumeric;
@@ -811,10 +833,11 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
           <div className="mt-20 flex justify-center">
             <button
               onClick={() => setIsExpanded(true)}
-              className="px-10 py-5 bg-ocean-900 border border-ocean-900 text-white text-sm font-bold tracking-widest uppercase hover:bg-white hover:text-ocean-900 transition-all duration-500 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] group"
+              className="group flex items-center gap-5 border-b-2 border-ocean-900 pb-2 text-ocean-900 text-xs font-bold tracking-[0.35em] uppercase hover:gap-8 transition-all duration-300"
             >
-              Explore Full Portfolio <span className="opacity-70 ml-2">({groupedProperties.length} Properties)</span>
-              <ArrowRight className="inline ml-3 -mt-0.5 group-hover:translate-x-1 transition-transform" size={16} />
+              Explore Full Portfolio
+              <span className="text-ocean-400 font-normal tracking-normal normal-case text-xs">({groupedProperties.length} listings)</span>
+              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         ) : totalPages > 1 ? (
@@ -947,12 +970,33 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                 {/* Header Actions */}
                 <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-ocean-50 px-6 py-4 flex justify-between items-center">
                   <div className="flex items-center gap-4 md:gap-6 text-sm font-medium text-ocean-900">
-                    <button className="flex items-center gap-2 hover:opacity-60 transition-opacity">
-                      <Heart size={18} /> <span className="hidden sm:inline">Save</span>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); toggleFavorite(String(selectedProperty.id)); }}
+                      className={`flex items-center gap-2 transition-all active:scale-95 ${favorites.has(String(selectedProperty.id)) ? 'text-rose-500' : 'hover:opacity-60'}`}
+                    >
+                      <Heart size={18} fill={favorites.has(String(selectedProperty.id)) ? 'currentColor' : 'none'} />
+                      <span className="hidden sm:inline">{favorites.has(String(selectedProperty.id)) ? 'Saved' : 'Save'}</span>
                     </button>
-                    <button className="flex items-center gap-2 hover:opacity-60 transition-opacity">
-                      <Share size={18} /> <span className="hidden sm:inline">Share</span>
-                    </button>
+                    <div className="relative">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const url = `${window.location.origin}${window.location.pathname}#properties?ref=${selectedProperty.ref}`;
+                          navigator.clipboard.writeText(url).then(() => {
+                            setShareToast(true);
+                            setTimeout(() => setShareToast(false), 2500);
+                          }).catch(() => {});
+                        }}
+                        className="flex items-center gap-2 hover:opacity-60 transition-opacity"
+                      >
+                        <Share size={18} /> <span className="hidden sm:inline">Share</span>
+                      </button>
+                      {shareToast && (
+                        <div className="absolute top-8 left-0 bg-ocean-900 text-white text-[10px] tracking-widest uppercase font-bold px-4 py-2 rounded-lg whitespace-nowrap shadow-xl z-50 animate-fadeIn">
+                          Link copied!
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="flex items-center gap-2 text-[10px] md:text-xs text-ocean-400 max-w-[40%] md:max-w-none truncate">
@@ -1010,16 +1054,23 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                         }}
                       >
                         {(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image]).map((img, i) => (
-                          <div key={i} className="min-w-full h-full snap-center shrink-0">
-                            <img src={img} loading="lazy" decoding="async" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                          <div
+                            key={i}
+                            className="min-w-full h-full snap-center shrink-0"
+                            onClick={() => { setActiveImageIndex(i); setIsLightboxOpen(true); }}
+                          >
+                            <img src={img} loading="lazy" decoding="async" className="w-full h-full object-cover cursor-zoom-in" referrerPolicy="no-referrer" />
                           </div>
                         ))}
                       </div>
 
                       {/* Carousel Controls */}
                       <div className="absolute bottom-4 left-0 right-0 flex justify-center px-4 items-center pointer-events-none">
-                        <div className="bg-ocean-900/60 backdrop-blur-md px-4 py-1.5 rounded-full text-[11px] text-white font-bold tracking-widest pointer-events-auto">
-                          {(activeImageIndex || 0) + 1} / {selectedProperty.images.length || 1}
+                        <div className="bg-ocean-900 backdrop-blur-md px-5 py-2 rounded-full text-[10px] text-white font-bold tracking-[0.2em] pointer-events-auto shadow-2xl flex items-center gap-3">
+                          <span className="flex gap-1">{(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image]).map((_, i) => (
+                            <span key={i} className={`block rounded-full transition-all duration-300 ${i === (activeImageIndex || 0) ? 'w-4 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/40'}`} />
+                          ))}</span>
+                          <span className="text-white/60">tap to expand</span>
                         </div>
                       </div>
                     </div>
@@ -1357,92 +1408,62 @@ const TeamPage = () => {
 const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
   return (
     <footer className="bg-ocean-900 text-white">
-      {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-6 pt-16 lg:pt-20 pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 mb-12 lg:mb-16">
+      {/* Top Rule */}
+      <div className="border-t border-white/10" />
 
-          {/* Brand Column */}
-          <div className="flex flex-col gap-6 lg:gap-8">
-            <img src="/assets/logo-white.png" alt="Lozano Realty Logo" className="h-16 lg:h-20 w-auto self-start" />
-            <p className="text-white/40 text-sm font-light leading-relaxed max-w-xs">
-              Exclusive property advisory across the Costa del Sol. Curated estates. Bespoke service.
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-6 pt-16 pb-10">
+
+        {/* Top Row: Brand + Nav */}
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-12 pb-14 border-b border-white/10">
+
+          {/* Brand */}
+          <div className="flex flex-col gap-5 max-w-xs">
+            <img src="/assets/logo-white.png" alt="Lozano Realty" className="h-14 w-auto self-start" />
+            <p className="text-white/30 text-xs font-light leading-relaxed tracking-wide">
+              Exclusive property advisory across the Costa del Sol.
+              Curated estates. Bespoke service.
             </p>
-            <div className="flex gap-4">
-              <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white/60 hover:bg-white hover:text-ocean-900 transition-all">
-                <Instagram size={16} />
-              </a>
-              <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white/60 hover:bg-white hover:text-ocean-900 transition-all">
-                <Linkedin size={16} />
-              </a>
-              <a href="mailto:contact@lozanorealty.uk" className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white/60 hover:bg-white hover:text-ocean-900 transition-all">
-                <Mail size={16} />
-              </a>
-              <a href="tel:+34672119634" className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white/60 hover:bg-white hover:text-ocean-900 transition-all">
-                <Phone size={16} />
-              </a>
-            </div>
           </div>
 
-          {/* Navigation Column */}
-          <div className="flex flex-col gap-6">
-            <span className="text-[10px] uppercase tracking-[0.5em] text-white/30 font-bold">Navigate</span>
-            <div className="flex flex-col gap-4 text-sm font-medium tracking-widest uppercase">
-              <a href="#home" className="text-white/60 hover:text-white transition-colors">Home</a>
-              <a href="#properties" className="text-white/60 hover:text-white transition-colors">Properties</a>
-              <a href="#team" className="text-white/60 hover:text-white transition-colors">Team</a>
-              <button onClick={onContactClick} className="text-left text-white/60 hover:text-white transition-colors tracking-widest uppercase text-sm font-medium">Contact</button>
-            </div>
-          </div>
+          {/* Nav Columns */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-10 text-xs">
 
-          {/* Contact Column */}
-          <div className="flex flex-col gap-6">
-            <span className="text-[10px] uppercase tracking-[0.5em] text-white/30 font-bold">Get In Touch</span>
-            <div className="flex flex-col gap-5">
-              <a href="tel:+34672119634" className="flex items-center gap-4 text-white/60 hover:text-white transition-colors group">
-                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
-                  <Phone size={14} />
-                </div>
-                <span className="text-sm font-medium tracking-wider">+34 672 119 634</span>
-              </a>
-              <a href="mailto:contact@lozanorealty.uk" className="flex items-center gap-4 text-white/60 hover:text-white transition-colors group">
-                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
-                  <Mail size={14} />
-                </div>
-                <span className="text-sm font-medium tracking-wider">contact@lozanorealty.uk</span>
-              </a>
-              <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="flex items-center gap-4 text-white/60 hover:text-white transition-colors group">
-                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
-                  <Instagram size={14} />
-                </div>
-                <span className="text-sm font-medium tracking-wider">@lozanorealty.uk</span>
-              </a>
-              <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="flex items-center gap-4 text-white/60 hover:text-white transition-colors group">
-                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
-                  <Linkedin size={14} />
-                </div>
-                <span className="text-sm font-medium tracking-wider">LinkedIn</span>
-              </a>
-              <div className="flex items-start gap-4 text-white/40">
-                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center mt-0.5">
-                  <MapPin size={14} />
-                </div>
-                <span className="text-sm font-medium tracking-wider leading-relaxed">Marbella, Málaga<br />Costa del Sol, Spain</span>
-              </div>
+            <div className="flex flex-col gap-4">
+              <span className="text-white/20 uppercase tracking-[0.4em] text-[9px] font-bold border-b border-white/10 pb-3">Navigate</span>
+              <a href="#home" className="text-white/50 hover:text-white transition-colors uppercase tracking-widest">Home</a>
+              <a href="#properties" className="text-white/50 hover:text-white transition-colors uppercase tracking-widest">Properties</a>
+              <a href="#team" className="text-white/50 hover:text-white transition-colors uppercase tracking-widest">Team</a>
+              <button onClick={onContactClick} className="text-left text-white/50 hover:text-white transition-colors uppercase tracking-widest">Contact</button>
             </div>
-          </div>
 
+            <div className="flex flex-col gap-4">
+              <span className="text-white/20 uppercase tracking-[0.4em] text-[9px] font-bold border-b border-white/10 pb-3">Contact</span>
+              <a href="tel:+34672119634" className="text-white/50 hover:text-white transition-colors tracking-wide">+34 672 119 634</a>
+              <a href="mailto:contact@lozanorealty.uk" className="text-white/50 hover:text-white transition-colors tracking-wide break-all">contact@lozanorealty.uk</a>
+              <span className="text-white/30 tracking-wide leading-relaxed">Marbella, Málaga<br />Costa del Sol</span>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <span className="text-white/20 uppercase tracking-[0.4em] text-[9px] font-bold border-b border-white/10 pb-3">Social</span>
+              <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="text-white/50 hover:text-white transition-colors uppercase tracking-widest">Instagram</a>
+              <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="text-white/50 hover:text-white transition-colors uppercase tracking-widest">LinkedIn</a>
+              <a href="mailto:contact@lozanorealty.uk" className="text-white/50 hover:text-white transition-colors uppercase tracking-widest">Email</a>
+            </div>
+
+          </div>
         </div>
 
-        {/* Divider + Legal */}
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-white/20 uppercase tracking-widest">
+        {/* Bottom Row: Legal */}
+        <div className="pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[9px] text-white/20 uppercase tracking-[0.3em]">
           <span>© 2026 Lozano Realty®. All rights reserved.</span>
-          <div className="flex gap-6">
-            <a href="/privacy" className="hover:text-white/60 transition-colors">Privacy Policy</a>
-            <a href="/legal" className="hover:text-white/60 transition-colors">Legal Notice</a>
-            <a href="/cookies" className="hover:text-white/60 transition-colors">Cookies</a>
+          <div className="flex gap-8">
+            <a href="/privacy" className="hover:text-white/50 transition-colors">Privacy</a>
+            <a href="/legal" className="hover:text-white/50 transition-colors">Legal</a>
+            <a href="/cookies" className="hover:text-white/50 transition-colors">Cookies</a>
           </div>
-          <span className="font-serif italic normal-case tracking-normal text-white/20">Crafted for Costa del Sol</span>
         </div>
+
       </div>
     </footer>
   );
