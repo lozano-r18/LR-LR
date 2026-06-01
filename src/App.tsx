@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   MapPin, Search, Users, Phone, Mail, Instagram, Facebook, Linkedin,
@@ -275,52 +275,64 @@ const HuspyBenefits = () => {
         </h2>
         <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-2 lg:grid-cols-3 hide-scrollbar pb-6 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0">
            {/* Card 1 */}
-           <div className="bg-ocean-50/50 p-7 rounded-2xl border border-ocean-100/80 flex flex-col gap-3 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[76vw] snap-start shrink-0 md:min-w-0 md:shrink">
-             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+           <div className="min-w-[80vw] aspect-square p-8 rounded-[2rem] bg-white border border-ocean-100/60 shadow-[0_15px_45px_rgba(12,27,42,0.06)] hover:shadow-xl transition-all hover:-translate-y-1 snap-start shrink-0 flex flex-col justify-between md:min-w-0 md:aspect-auto md:h-auto md:shrink md:p-8">
+             <div className="w-12 h-12 rounded-2xl bg-ocean-50 flex items-center justify-center text-ocean-900 shadow-sm shrink-0">
                <Cpu size={24} strokeWidth={1.5} />
              </div>
-             <h3 className="font-semibold text-ocean-900 text-base mt-1">AI-powered search</h3>
-             <p className="text-xs text-ocean-600 leading-relaxed">Smart matching to connect buyers with the right properties faster</p>
+             <div className="flex flex-col gap-2 mt-4">
+               <h3 className="font-bold text-ocean-900 text-lg tracking-tight leading-snug">AI-powered search</h3>
+               <p className="text-xs text-ocean-600 leading-relaxed font-light">Smart matching to connect buyers with the right properties faster</p>
+             </div>
            </div>
            {/* Card 2 */}
-           <div className="bg-ocean-50/50 p-7 rounded-2xl border border-ocean-100/80 flex flex-col gap-3 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[76vw] snap-start shrink-0 md:min-w-0 md:shrink">
-             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+           <div className="min-w-[80vw] aspect-square p-8 rounded-[2rem] bg-white border border-ocean-100/60 shadow-[0_15px_45px_rgba(12,27,42,0.06)] hover:shadow-xl transition-all hover:-translate-y-1 snap-start shrink-0 flex flex-col justify-between md:min-w-0 md:aspect-auto md:h-auto md:shrink md:p-8">
+             <div className="w-12 h-12 rounded-2xl bg-ocean-50 flex items-center justify-center text-ocean-900 shadow-sm shrink-0">
                <Landmark size={24} strokeWidth={1.5} />
              </div>
-             <h3 className="font-semibold text-ocean-900 text-base mt-1">Instant mortgage access</h3>
-             <p className="text-xs text-ocean-600 leading-relaxed">Real-time pre-approvals via 25+ banks — at the moment you need them</p>
+             <div className="flex flex-col gap-2 mt-4">
+               <h3 className="font-bold text-ocean-900 text-lg tracking-tight leading-snug">Instant mortgage access</h3>
+               <p className="text-xs text-ocean-600 leading-relaxed font-light">Real-time pre-approvals via 25+ banks — at the moment you need them</p>
+             </div>
            </div>
            {/* Card 3 */}
-           <div className="bg-ocean-50/50 p-7 rounded-2xl border border-ocean-100/80 flex flex-col gap-3 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[76vw] snap-start shrink-0 md:min-w-0 md:shrink">
-             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+           <div className="min-w-[80vw] aspect-square p-8 rounded-[2rem] bg-white border border-ocean-100/60 shadow-[0_15px_45px_rgba(12,27,42,0.06)] hover:shadow-xl transition-all hover:-translate-y-1 snap-start shrink-0 flex flex-col justify-between md:min-w-0 md:aspect-auto md:h-auto md:shrink md:p-8">
+             <div className="w-12 h-12 rounded-2xl bg-ocean-50 flex items-center justify-center text-ocean-900 shadow-sm shrink-0">
                <LineChart size={24} strokeWidth={1.5} />
              </div>
-             <h3 className="font-semibold text-ocean-900 text-base mt-1">Live market data</h3>
-             <p className="text-xs text-ocean-600 leading-relaxed">Data-backed valuations and market trends — no guesswork</p>
+             <div className="flex flex-col gap-2 mt-4">
+               <h3 className="font-bold text-ocean-900 text-lg tracking-tight leading-snug">Live market data</h3>
+               <p className="text-xs text-ocean-600 leading-relaxed font-light">Data-backed valuations and market trends — no guesswork</p>
+             </div>
            </div>
            {/* Card 4 */}
-           <div className="bg-ocean-50/50 p-7 rounded-2xl border border-ocean-100/80 flex flex-col gap-3 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[76vw] snap-start shrink-0 md:min-w-0 md:shrink">
-             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+           <div className="min-w-[80vw] aspect-square p-8 rounded-[2rem] bg-white border border-ocean-100/60 shadow-[0_15px_45px_rgba(12,27,42,0.06)] hover:shadow-xl transition-all hover:-translate-y-1 snap-start shrink-0 flex flex-col justify-between md:min-w-0 md:aspect-auto md:h-auto md:shrink md:p-8">
+             <div className="w-12 h-12 rounded-2xl bg-ocean-50 flex items-center justify-center text-ocean-900 shadow-sm shrink-0">
                <FileSignature size={24} strokeWidth={1.5} />
              </div>
-             <h3 className="font-semibold text-ocean-900 text-base mt-1">Digital closing</h3>
-             <p className="text-xs text-ocean-600 leading-relaxed">Streamlined, paperless transaction process from offer to signature</p>
+             <div className="flex flex-col gap-2 mt-4">
+               <h3 className="font-bold text-ocean-900 text-lg tracking-tight leading-snug">Digital closing</h3>
+               <p className="text-xs text-ocean-600 leading-relaxed font-light">Streamlined, paperless transaction process from offer to signature</p>
+             </div>
            </div>
            {/* Card 5 */}
-           <div className="bg-ocean-50/50 p-7 rounded-2xl border border-ocean-100/80 flex flex-col gap-3 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[76vw] snap-start shrink-0 md:min-w-0 md:shrink">
-             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+           <div className="min-w-[80vw] aspect-square p-8 rounded-[2rem] bg-white border border-ocean-100/60 shadow-[0_15px_45px_rgba(12,27,42,0.06)] hover:shadow-xl transition-all hover:-translate-y-1 snap-start shrink-0 flex flex-col justify-between md:min-w-0 md:aspect-auto md:h-auto md:shrink md:p-8">
+             <div className="w-12 h-12 rounded-2xl bg-ocean-50 flex items-center justify-center text-ocean-900 shadow-sm shrink-0">
                <Eye size={24} strokeWidth={1.5} />
              </div>
-             <h3 className="font-semibold text-ocean-900 text-base mt-1">Full transparency</h3>
-             <p className="text-xs text-ocean-600 leading-relaxed">Clients track every step of their transaction in real time</p>
+             <div className="flex flex-col gap-2 mt-4">
+               <h3 className="font-bold text-ocean-900 text-lg tracking-tight leading-snug">Full transparency</h3>
+               <p className="text-xs text-ocean-600 leading-relaxed font-light">Clients track every step of their transaction in real time</p>
+             </div>
            </div>
            {/* Card 6 */}
-           <div className="bg-ocean-50/50 p-7 rounded-2xl border border-ocean-100/80 flex flex-col gap-3 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[76vw] snap-start shrink-0 md:min-w-0 md:shrink">
-             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+           <div className="min-w-[80vw] aspect-square p-8 rounded-[2rem] bg-white border border-ocean-100/60 shadow-[0_15px_45px_rgba(12,27,42,0.06)] hover:shadow-xl transition-all hover:-translate-y-1 snap-start shrink-0 flex flex-col justify-between md:min-w-0 md:aspect-auto md:h-auto md:shrink md:p-8">
+             <div className="w-12 h-12 rounded-2xl bg-ocean-50 flex items-center justify-center text-ocean-900 shadow-sm shrink-0">
                <Euro size={24} strokeWidth={1.5} />
              </div>
-             <h3 className="font-semibold text-ocean-900 text-base mt-1">Best financing rates</h3>
-             <p className="text-xs text-ocean-600 leading-relaxed">Access to competitive mortgage products tailored for the Spanish market</p>
+             <div className="flex flex-col gap-2 mt-4">
+               <h3 className="font-bold text-ocean-900 text-lg tracking-tight leading-snug">Best financing rates</h3>
+               <p className="text-xs text-ocean-600 leading-relaxed font-light">Access to competitive mortgage products tailored for the Spanish market</p>
+             </div>
            </div>
         </div>
       </div>
@@ -476,6 +488,17 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [shareToast, setShareToast] = useState(false);
+  const lightboxScrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isLightboxOpen && lightboxScrollRef.current) {
+      const container = lightboxScrollRef.current;
+      const targetScroll = activeImageIndex * container.clientWidth;
+      if (Math.abs(container.scrollLeft - targetScroll) > 10) {
+        container.scrollTo({ left: targetScroll, behavior: 'auto' });
+      }
+    }
+  }, [activeImageIndex, isLightboxOpen]);
   const [favorites, setFavorites] = useState<Set<string>>(() => {
     try {
       const saved = localStorage.getItem('lr_favorites');
@@ -1066,11 +1089,12 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
 
                       {/* Carousel Controls */}
                       <div className="absolute bottom-4 left-0 right-0 flex justify-center px-4 items-center pointer-events-none">
-                        <div className="bg-ocean-900 backdrop-blur-md px-5 py-2 rounded-full text-[10px] text-white font-bold tracking-[0.2em] pointer-events-auto shadow-2xl flex items-center gap-3">
-                          <span className="flex gap-1">{(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image]).map((_, i) => (
-                            <span key={i} className={`block rounded-full transition-all duration-300 ${i === (activeImageIndex || 0) ? 'w-4 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/40'}`} />
+                        <div className="bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-2 rounded-full pointer-events-auto shadow-lg flex items-center gap-3">
+                          <span className="flex gap-1.5">{(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image]).map((_, i) => (
+                            <span key={i} className={`block rounded-full transition-all duration-300 ${i === (activeImageIndex || 0) ? 'w-2 h-2 bg-white' : 'w-1.5 h-1.5 bg-white/40'}`} />
                           ))}</span>
-                          <span className="text-white/60">tap to expand</span>
+                          <span className="h-3 w-px bg-white/20" />
+                          <span className="text-white/80 text-[9px] uppercase tracking-widest font-semibold">tap to expand</span>
                         </div>
                       </div>
                     </div>
@@ -1198,29 +1222,62 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                 </button>
               </div>
 
-              <div className="relative w-full h-full flex items-center justify-center p-4 md:py-12 md:px-6">
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={activeImageIndex}
-                    initial={{ opacity: 0, scale: 0.98, x: 20 }}
-                    animate={{ opacity: 1, scale: 1, x: 0 }}
-                    exit={{ opacity: 0, scale: 0.98, x: -20 }}
-                    src={(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image])[activeImageIndex]}
-                    className="max-w-full max-h-full object-contain shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] bg-ocean-900/20"
-                    referrerPolicy="no-referrer"
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </AnimatePresence>
+              <div className="relative w-full h-full flex items-center justify-center p-4 md:py-12 md:px-6" onClick={() => setIsLightboxOpen(false)}>
+                {/* Mobile Swipeable Gallery */}
+                <div 
+                  ref={lightboxScrollRef}
+                  className="md:hidden flex w-full h-[70vh] overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-4"
+                  onClick={(e) => e.stopPropagation()}
+                  onScroll={(e) => {
+                    const scrollLeft = e.currentTarget.scrollLeft;
+                    const width = e.currentTarget.clientWidth;
+                    if (width > 0) {
+                      const newIndex = Math.round(scrollLeft / width);
+                      if (activeImageIndex !== newIndex) {
+                        setActiveImageIndex(newIndex);
+                      }
+                    }
+                  }}
+                >
+                  {(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image]).map((img, i) => (
+                    <div key={i} className="min-w-full h-full snap-center shrink-0 flex items-center justify-center">
+                      <img 
+                        src={img} 
+                        className="max-w-full max-h-[65vh] object-contain shadow-2xl rounded-2xl" 
+                        referrerPolicy="no-referrer" 
+                        onClick={(e) => e.stopPropagation()} 
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop Clickable Gallery */}
+                <div className="hidden md:block relative w-full h-full" onClick={(e) => e.stopPropagation()}>
+                  <div className="w-full h-full flex items-center justify-center">
+                    <AnimatePresence mode="wait">
+                      <motion.img
+                        key={activeImageIndex}
+                        initial={{ opacity: 0, scale: 0.98, x: 20 }}
+                        animate={{ opacity: 1, scale: 1, x: 0 }}
+                        exit={{ opacity: 0, scale: 0.98, x: -20 }}
+                        src={(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image])[activeImageIndex]}
+                        className="max-w-full max-h-full object-contain shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] bg-ocean-900/20"
+                        referrerPolicy="no-referrer"
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </AnimatePresence>
+                  </div>
+                </div>
 
                 <button
                   onClick={(e) => { e.stopPropagation(); setActiveImageIndex(prev => Math.max(0, prev - 1)); }}
-                  className="absolute left-6 md:left-12 w-16 h-16 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-ocean-900 transition-all group"
+                  className="hidden md:flex absolute left-6 md:left-12 w-16 h-16 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 items-center justify-center text-white hover:bg-white hover:text-ocean-900 transition-all group"
                 >
                   <ChevronDown size={32} className="rotate-90 group-hover:-translate-x-1 transition-transform" />
                 </button>
                 <button
                   onClick={(e) => { e.stopPropagation(); setActiveImageIndex(prev => Math.min((selectedProperty.images.length || 1) - 1, prev + 1)); }}
-                  className="absolute right-6 md:right-12 w-16 h-16 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-ocean-900 transition-all group"
+                  className="hidden md:flex absolute right-6 md:right-12 w-16 h-16 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 items-center justify-center text-white hover:bg-white hover:text-ocean-900 transition-all group"
                 >
                   <ChevronDown size={32} className="-rotate-90 group-hover:translate-x-1 transition-transform" />
                 </button>
