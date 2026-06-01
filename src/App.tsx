@@ -211,8 +211,8 @@ const huspySpecialListings: Property[] = [
     baths: 5,
     sqft: "Contact for area",
     sqftNumeric: 0,
-    image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000",
-    images: ["https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000", "https://images.unsplash.com/photo-1613545325278-f24b0cae1224?auto=format&fit=crop&q=80&w=1000"],
+    image: "/assets/HUSPYVILLA1.webp",
+    images: ["/assets/HUSPYVILLA1.webp", "/assets/HUSPYVILLA12.webp", "/assets/HUSPYVILLA13.webp", "/assets/HUSPYVILLA14.webp", "/assets/HUSPYVILLA15.webp", "/assets/HUSPYVILLA16.webp", "/assets/HUSPYVILLA17.webp"],
     tag: "Special Listing - Huspy",
     type: "villa",
     description: "Exclusive villa in Monte Mayor, Benahavís. Outstanding natural setting and premium features. Represented by Huspy.",
@@ -235,8 +235,8 @@ const huspySpecialListings: Property[] = [
     baths: 5,
     sqft: "932 m²",
     sqftNumeric: 932,
-    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1000",
-    images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1000", "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000"],
+    image: "/assets/HUSPYVILLA2.webp",
+    images: ["/assets/HUSPYVILLA2.webp", "/assets/HUSPYVILLA21.webp", "/assets/HUSPYVILLA22.webp", "/assets/HUSPYVILLA23.webp", "/assets/HUSPYVILLA24.webp", "/assets/HUSPYVILLA25.webp", "/assets/HUSPYVILLA26.webp"],
     tag: "Special Listing - Huspy",
     type: "villa",
     description: "Independent chalet in Alto Urbanización Montemayor. Expansive 2000m² plot with 932m² built area. Represented by Huspy.",
@@ -271,7 +271,7 @@ const HuspyBenefits = () => {
     <section className="py-20 bg-white border-t border-ocean-50">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-sm font-bold text-ocean-900 uppercase tracking-[0.2em] mb-12 text-center md:text-left">
-          How Huspy Technology Elevates My Service
+          Collaborating with the best.
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
            {/* Card 1 */}
