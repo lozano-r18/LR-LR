@@ -273,9 +273,9 @@ const HuspyBenefits = () => {
         <h2 className="text-sm font-bold text-ocean-900 uppercase tracking-[0.2em] mb-12 text-center md:text-left">
           Collaborating with the best &mdash; HUSPY
         </h2>
-        <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-2 lg:grid-cols-3 hide-scrollbar pb-6 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0">
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
            {/* Card 1 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
+           <div className="bg-ocean-50/50 p-6 md:p-8 rounded-3xl border border-ocean-100/80 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 w-full">
              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Cpu size={24} strokeWidth={1.5} />
              </div>
@@ -283,7 +283,7 @@ const HuspyBenefits = () => {
              <p className="text-sm text-ocean-700 leading-relaxed font-medium">Smart matching to connect buyers with the right properties faster</p>
            </div>
            {/* Card 2 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
+           <div className="bg-ocean-50/50 p-6 md:p-8 rounded-3xl border border-ocean-100/80 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 w-full">
              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Landmark size={24} strokeWidth={1.5} />
              </div>
@@ -291,7 +291,7 @@ const HuspyBenefits = () => {
              <p className="text-sm text-ocean-700 leading-relaxed font-medium">Real-time pre-approvals via 25+ banks — at the moment you need them</p>
            </div>
            {/* Card 3 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
+           <div className="bg-ocean-50/50 p-6 md:p-8 rounded-3xl border border-ocean-100/80 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 w-full">
              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <LineChart size={24} strokeWidth={1.5} />
              </div>
@@ -299,7 +299,7 @@ const HuspyBenefits = () => {
              <p className="text-sm text-ocean-700 leading-relaxed font-medium">Data-backed valuations and market trends — no guesswork</p>
            </div>
            {/* Card 4 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
+           <div className="bg-ocean-50/50 p-6 md:p-8 rounded-3xl border border-ocean-100/80 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 w-full">
              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <FileSignature size={24} strokeWidth={1.5} />
              </div>
@@ -307,7 +307,7 @@ const HuspyBenefits = () => {
              <p className="text-sm text-ocean-700 leading-relaxed font-medium">Streamlined, paperless transaction process from offer to signature</p>
            </div>
            {/* Card 5 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
+           <div className="bg-ocean-50/50 p-6 md:p-8 rounded-3xl border border-ocean-100/80 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 w-full">
              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Eye size={24} strokeWidth={1.5} />
              </div>
@@ -315,14 +315,14 @@ const HuspyBenefits = () => {
              <p className="text-sm text-ocean-700 leading-relaxed font-medium">Clients track every step of their transaction in real time</p>
            </div>
            {/* Card 6 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
+           <div className="bg-ocean-50/50 p-6 md:p-8 rounded-3xl border border-ocean-100/80 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 w-full">
              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Euro size={24} strokeWidth={1.5} />
              </div>
              <h3 className="font-bold text-ocean-900 text-lg mt-2">Best financing rates</h3>
              <p className="text-sm text-ocean-700 leading-relaxed font-medium">Access to competitive mortgage products tailored for the Spanish market</p>
            </div>
-        </div>
+         </div>
       </div>
     </section>
   );
@@ -476,17 +476,72 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [shareToast, setShareToast] = useState(false);
-  const lightboxScrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isLightboxOpen && lightboxScrollRef.current) {
-      const container = lightboxScrollRef.current;
-      const targetScroll = activeImageIndex * container.clientWidth;
-      if (Math.abs(container.scrollLeft - targetScroll) > 10) {
-        container.scrollTo({ left: targetScroll, behavior: 'auto' });
+  // Touch swipe handling for Lightbox
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    if (isLeftSwipe) {
+      setActiveImageIndex(prev => Math.min((selectedProperty?.images.length || 1) - 1, prev + 1));
+    }
+    if (isRightSwipe) {
+      setActiveImageIndex(prev => Math.max(0, prev - 1));
+    }
+  };
+
+  // Property carousel ref & infinite loop handlers
+  const propertyCarouselRef = useRef<HTMLDivElement>(null);
+
+  const handleCarouselScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    if (isExpanded) return;
+    const container = e.currentTarget;
+    const scrollLeft = container.scrollLeft;
+    const width = container.clientWidth;
+    const scrollWidth = container.scrollWidth;
+
+    if (scrollLeft <= 5) {
+      const items = container.children;
+      if (items.length > 2) {
+        const targetItem = items[items.length - 2] as HTMLElement;
+        container.scrollLeft = targetItem.offsetLeft - (width - targetItem.clientWidth) / 2;
+      }
+    } else if (scrollLeft + width >= scrollWidth - 5) {
+      const items = container.children;
+      if (items.length > 2) {
+        const targetItem = items[1] as HTMLElement;
+        container.scrollLeft = targetItem.offsetLeft - (width - targetItem.clientWidth) / 2;
       }
     }
-  }, [activeImageIndex, isLightboxOpen]);
+  };
+
+  useEffect(() => {
+    if (!isExpanded && propertyCarouselRef.current) {
+      const timer = setTimeout(() => {
+        const container = propertyCarouselRef.current;
+        if (!container) return;
+        const items = container.children;
+        if (items.length > 1) {
+          const firstActualItem = items[1] as HTMLElement;
+          container.scrollLeft = firstActualItem.offsetLeft - (container.clientWidth - firstActualItem.clientWidth) / 2;
+        }
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isExpanded, filters, currentPage]);
   const [favorites, setFavorites] = useState<Set<string>>(() => {
     try {
       const saved = localStorage.getItem('lr_favorites');
@@ -649,6 +704,13 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const displayedGroups = groupedProperties.slice(startIndex, startIndex + itemsPerPage);
 
+  const carouselGroups = React.useMemo(() => {
+    if (displayedGroups.length === 0) return [];
+    const last = displayedGroups[displayedGroups.length - 1];
+    const first = displayedGroups[0];
+    return [last, ...displayedGroups, first];
+  }, [displayedGroups]);
+
   // Reset image index when modal opens
   useEffect(() => {
     if (selectedProperty) setActiveImageIndex(0);
@@ -788,15 +850,19 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
           </div>
         </div>
 
-        <div className={!isExpanded ? "flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-3 md:gap-10 hide-scrollbar pb-8 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0 md:overflow-visible md:snap-none" : "grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10"}>
-          {displayedGroups.map((group, idx) => (
+        <div 
+          ref={propertyCarouselRef}
+          onScroll={handleCarouselScroll}
+          className={!isExpanded ? "flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-3 md:gap-10 hide-scrollbar pb-8 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0 md:overflow-visible md:snap-none" : "grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10"}
+        >
+          {(!isExpanded ? carouselGroups : displayedGroups).map((group, idx) => (
             <motion.div
-              key={group.id}
+              key={`${group.id}-${idx}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "100px" }}
               transition={{ delay: (idx % 3) * 0.05 }}
-              className={`group cursor-pointer relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all bg-ocean-50 ${!isExpanded ? "min-w-[85vw] aspect-[4/5] snap-center shrink-0 md:min-w-0 md:shrink md:snap-none" : "aspect-[3/4] md:aspect-[4/5]"}`}
+              className={`group cursor-pointer relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all bg-ocean-50 ${!isExpanded ? "min-w-[80vw] aspect-[4/5] snap-center shrink-0 md:min-w-0 md:shrink md:snap-none" : "aspect-[3/4] md:aspect-[4/5]"}`}
               onClick={() => {
                 if (group.isDevelopment) {
                   setSelectedGroup(group);
@@ -1188,18 +1254,18 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
           )}
         </AnimatePresence>
 
-        {/* Full-Screen Lightbox Gallery (Desktop Focus) */}
+        {/* Full-Screen Lightbox Gallery */}
         <AnimatePresence>
           {isLightboxOpen && selectedProperty && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[200] bg-ocean-900/60 backdrop-blur-2xl flex flex-col items-center justify-center p-4 md:p-0"
+              className="fixed inset-0 z-[200] bg-ocean-900/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4 md:p-0"
               onClick={() => setIsLightboxOpen(false)}
             >
-              <div className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-10 bg-gradient-to-b from-ocean-900/40 to-transparent">
-                <div className="text-white/60 text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase">
+              <div className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-10 bg-gradient-to-b from-ocean-900/60 to-transparent">
+                <div className="text-white/70 text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase">
                   {selectedProperty.title} <span className="mx-4 text-white/20">|</span> {activeImageIndex + 1} / {selectedProperty.images.length || 1}
                 </div>
                 <button
@@ -1210,65 +1276,40 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                 </button>
               </div>
 
-              <div className="relative w-full h-full flex items-center justify-center p-4 md:py-12 md:px-6" onClick={() => setIsLightboxOpen(false)}>
-                {/* Mobile Swipeable Gallery */}
-                <div 
-                  ref={lightboxScrollRef}
-                  className="md:hidden flex w-full h-[70vh] overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-4"
-                  onClick={(e) => e.stopPropagation()}
-                  onScroll={(e) => {
-                    const scrollLeft = e.currentTarget.scrollLeft;
-                    const width = e.currentTarget.clientWidth;
-                    if (width > 0) {
-                      const newIndex = Math.round(scrollLeft / width);
-                      if (activeImageIndex !== newIndex) {
-                        setActiveImageIndex(newIndex);
-                      }
-                    }
-                  }}
-                >
-                  {(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image]).map((img, i) => (
-                    <div key={i} className="min-w-full h-full snap-center shrink-0 flex items-center justify-center">
-                      <img 
-                        src={img} 
-                        className="max-w-full max-h-[65vh] object-contain shadow-2xl rounded-2xl" 
-                        referrerPolicy="no-referrer" 
-                        onClick={(e) => e.stopPropagation()} 
-                      />
-                    </div>
-                  ))}
-                </div>
+              <div 
+                className="relative w-full h-full flex items-center justify-center p-4 md:py-12 md:px-6" 
+                onClick={() => setIsLightboxOpen(false)}
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+              >
+                <div className="relative w-full h-full max-w-[1400px] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={activeImageIndex}
+                      initial={{ opacity: 0, scale: 0.98, x: 20 }}
+                      animate={{ opacity: 1, scale: 1, x: 0 }}
+                      exit={{ opacity: 0, scale: 0.98, x: -20 }}
+                      src={(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image])[activeImageIndex]}
+                      className="max-w-full max-h-[75vh] md:max-h-full object-contain shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] rounded-2xl bg-ocean-900/20"
+                      referrerPolicy="no-referrer"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </AnimatePresence>
 
-                {/* Desktop Clickable Gallery */}
-                <div className="hidden md:block relative w-full h-full" onClick={(e) => e.stopPropagation()}>
-                  <div className="w-full h-full flex items-center justify-center">
-                    <AnimatePresence mode="wait">
-                      <motion.img
-                        key={activeImageIndex}
-                        initial={{ opacity: 0, scale: 0.98, x: 20 }}
-                        animate={{ opacity: 1, scale: 1, x: 0 }}
-                        exit={{ opacity: 0, scale: 0.98, x: -20 }}
-                        src={(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image])[activeImageIndex]}
-                        className="max-w-full max-h-full object-contain shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] bg-ocean-900/20"
-                        referrerPolicy="no-referrer"
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                    </AnimatePresence>
-                  </div>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setActiveImageIndex(prev => Math.max(0, prev - 1)); }}
+                    className="absolute left-2 md:left-6 w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-ocean-900 transition-all group"
+                  >
+                    <ChevronDown size={28} className="rotate-90 group-hover:-translate-x-1 transition-transform" />
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setActiveImageIndex(prev => Math.min((selectedProperty.images.length || 1) - 1, prev + 1)); }}
+                    className="absolute right-2 md:right-6 w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-ocean-900 transition-all group"
+                  >
+                    <ChevronDown size={28} className="-rotate-90 group-hover:translate-x-1 transition-transform" />
+                  </button>
                 </div>
-
-                <button
-                  onClick={(e) => { e.stopPropagation(); setActiveImageIndex(prev => Math.max(0, prev - 1)); }}
-                  className="hidden md:flex absolute left-6 md:left-12 w-16 h-16 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 items-center justify-center text-white hover:bg-white hover:text-ocean-900 transition-all group"
-                >
-                  <ChevronDown size={32} className="rotate-90 group-hover:-translate-x-1 transition-transform" />
-                </button>
-                <button
-                  onClick={(e) => { e.stopPropagation(); setActiveImageIndex(prev => Math.min((selectedProperty.images.length || 1) - 1, prev + 1)); }}
-                  className="hidden md:flex absolute right-6 md:right-12 w-16 h-16 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 items-center justify-center text-white hover:bg-white hover:text-ocean-900 transition-all group"
-                >
-                  <ChevronDown size={32} className="-rotate-90 group-hover:translate-x-1 transition-transform" />
-                </button>
               </div>
 
               {/* Lightbox Thumbnails */}
