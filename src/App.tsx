@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   MapPin, Search, Users, Phone, Mail, Instagram, Facebook, Linkedin,
   ChevronRight, ChevronDown, Menu, X, Home, Award, ShieldCheck,
-  ArrowRight, ArrowLeft, Globe, Heart, Layout, Share, Shield, Settings2, RotateCcw
+  ArrowRight, ArrowLeft, Globe, Heart, Layout, Share, Shield, Settings2, RotateCcw,
+  Cpu, Landmark, LineChart, FileSignature, Eye, Euro
 } from 'lucide-react';
 import { XMLParser } from 'fast-xml-parser';
 
@@ -195,6 +196,58 @@ const getSharedProperties = (): Promise<Property[]> => {
   return cachedPropertiesPromise;
 };
 
+// --- Huspy Static Listings ---
+const huspySpecialListings: Property[] = [
+  {
+    id: "huspy-1",
+    ref: "HUSPY-E54",
+    title: "Villa in Monte Mayor",
+    location: "Monte Mayor, Benahavís, Málaga",
+    town: "Benahavís",
+    province: "Málaga",
+    price: "€4,400,000",
+    priceNumeric: 4400000,
+    beds: 5,
+    baths: 5,
+    sqft: "Contact for area",
+    sqftNumeric: 0,
+    image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000",
+    images: ["https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1000", "https://images.unsplash.com/photo-1613545325278-f24b0cae1224?auto=format&fit=crop&q=80&w=1000"],
+    tag: "Special Listing - Huspy",
+    type: "villa",
+    description: "Exclusive villa in Monte Mayor, Benahavís. Outstanding natural setting and premium features. Represented by Huspy.",
+    features: ["Private Pool", "Nature Views", "Exclusive Access"],
+    pool: true,
+    plans: [],
+    url: "https://www.huspy.es/comprar/--VILLA-villa-en-venta---benahav-s--m-laga-e54-e437c6da-17c4-411f-abb8-3e028b6e9e54",
+    developmentName: ""
+  },
+  {
+    id: "huspy-2",
+    ref: "HUSPY-E67",
+    title: "Chalet in Alto Urbanización Montemayor",
+    location: "Alto Urbanización Montemayor, Benahavís, Málaga",
+    town: "Benahavís",
+    province: "Málaga",
+    price: "€3,950,000",
+    priceNumeric: 3950000,
+    beds: 5,
+    baths: 5,
+    sqft: "932 m²",
+    sqftNumeric: 932,
+    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1000",
+    images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1000", "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000"],
+    tag: "Special Listing - Huspy",
+    type: "villa",
+    description: "Independent chalet in Alto Urbanización Montemayor. Expansive 2000m² plot with 932m² built area. Represented by Huspy.",
+    features: ["Large Plot", "Private Pool", "Exclusive Area"],
+    pool: true,
+    plans: [],
+    url: "https://www.huspy.es/comprar/--VILLA-villa-en-venta---benahav-s--m-laga-e67-de1a6040-e58c-4d45-80c9-d69672528e67",
+    developmentName: ""
+  }
+];
+
 // --- Custom Components ---
 
 const SmoothImage = ({ src, alt, className = "" }: any) => {
@@ -210,6 +263,68 @@ const SmoothImage = ({ src, alt, className = "" }: any) => {
         className={`${className} ${loaded ? 'opacity-100' : 'opacity-0'}`}
       />
     </>
+  );
+};
+
+const HuspyBenefits = () => {
+  return (
+    <section className="py-20 bg-white border-t border-ocean-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 className="text-sm font-bold text-ocean-900 uppercase tracking-[0.2em] mb-12 text-center md:text-left">
+          How Huspy Technology Elevates My Service
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+           {/* Card 1 */}
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1">
+             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+               <Cpu size={24} strokeWidth={1.5} />
+             </div>
+             <h3 className="font-bold text-ocean-900 text-lg mt-2">AI-powered search</h3>
+             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Smart matching to connect buyers with the right properties faster</p>
+           </div>
+           {/* Card 2 */}
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1">
+             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+               <Landmark size={24} strokeWidth={1.5} />
+             </div>
+             <h3 className="font-bold text-ocean-900 text-lg mt-2">Instant mortgage access</h3>
+             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Real-time pre-approvals via 25+ banks — at the moment you need them</p>
+           </div>
+           {/* Card 3 */}
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1">
+             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+               <LineChart size={24} strokeWidth={1.5} />
+             </div>
+             <h3 className="font-bold text-ocean-900 text-lg mt-2">Live market data</h3>
+             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Data-backed valuations and market trends — no guesswork</p>
+           </div>
+           {/* Card 4 */}
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1">
+             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+               <FileSignature size={24} strokeWidth={1.5} />
+             </div>
+             <h3 className="font-bold text-ocean-900 text-lg mt-2">Digital closing</h3>
+             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Streamlined, paperless transaction process from offer to signature</p>
+           </div>
+           {/* Card 5 */}
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1">
+             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+               <Eye size={24} strokeWidth={1.5} />
+             </div>
+             <h3 className="font-bold text-ocean-900 text-lg mt-2">Full transparency</h3>
+             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Clients track every step of their transaction in real time</p>
+           </div>
+           {/* Card 6 */}
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1">
+             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
+               <Euro size={24} strokeWidth={1.5} />
+             </div>
+             <h3 className="font-bold text-ocean-900 text-lg mt-2">Best financing rates</h3>
+             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Access to competitive mortgage products tailored for the Spanish market</p>
+           </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
@@ -365,7 +480,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
     const fetchHabiHubProperties = async () => {
       try {
         const parsedProperties = await getSharedProperties();
-        setProperties(parsedProperties);
+        setProperties([...huspySpecialListings, ...parsedProperties]);
       } catch (error) {
         console.error("Error fetching HabiHub feed:", error);
       } finally {
@@ -407,6 +522,10 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
 
     return matchArea && matchType && matchBeds && matchBaths && matchPriceMin && matchPriceMax && matchRef;
   }).sort((a, b) => {
+    // Ensure special listings are prioritized at the top
+    if (a.tag.includes("Special Listing") && !b.tag.includes("Special Listing")) return -1;
+    if (b.tag.includes("Special Listing") && !a.tag.includes("Special Listing")) return 1;
+
     if (filters.sortBy === 'price-asc') return a.priceNumeric - b.priceNumeric;
     if (filters.sortBy === 'price-desc') return b.priceNumeric - a.priceNumeric;
 
@@ -433,7 +552,9 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
     filteredProperties.forEach(prop => {
       // Since the feed doesn't provide explicit development names reliably, 
       // properties from the same development always share the exact same main image.
-      const key = prop.image && !prop.image.includes('unsplash') ? `img_${prop.image}_${prop.town}` : `id_${prop.id}`;
+      // We don't group special listings to ensure they show up as distinct.
+      const isSpecial = prop.tag.includes("Special Listing");
+      const key = (prop.image && !prop.image.includes('unsplash') && !isSpecial) ? `img_${prop.image}_${prop.town}` : `id_${prop.id}`;
       if (groupKeyToIndex.has(key)) {
         groupsList[groupKeyToIndex.get(key)!].push(prop);
       } else {
@@ -1357,12 +1478,13 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen font-sans">
+    <div className="bg-white min-h-screen font-sans selection:bg-ocean-900 selection:text-white">
       <Navbar onContactClick={() => setShowContactPopup(true)} currentRoute={currentRoute} />
 
       {currentRoute === 'home' ? (
         <>
           <Hero onContactClick={() => setShowContactPopup(true)} />
+          <HuspyBenefits />
           <Properties onContactClick={() => setShowContactPopup(true)} />
         </>
       ) : (
