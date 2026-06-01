@@ -269,13 +269,13 @@ const SmoothImage = ({ src, alt, className = "" }: any) => {
 const HuspyBenefits = () => {
   return (
     <section className="py-20 bg-white border-t border-ocean-50">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 overflow-hidden">
         <h2 className="text-sm font-bold text-ocean-900 uppercase tracking-[0.2em] mb-12 text-center md:text-left">
-          Collaborating with the best.
+          Collaborating with the best &mdash; HUSPY
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-2 lg:grid-cols-3 hide-scrollbar pb-6 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0">
            {/* Card 1 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1">
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Cpu size={24} strokeWidth={1.5} />
              </div>
@@ -283,7 +283,7 @@ const HuspyBenefits = () => {
              <p className="text-sm text-ocean-700 leading-relaxed font-medium">Smart matching to connect buyers with the right properties faster</p>
            </div>
            {/* Card 2 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1">
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Landmark size={24} strokeWidth={1.5} />
              </div>
@@ -291,7 +291,7 @@ const HuspyBenefits = () => {
              <p className="text-sm text-ocean-700 leading-relaxed font-medium">Real-time pre-approvals via 25+ banks — at the moment you need them</p>
            </div>
            {/* Card 3 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1">
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <LineChart size={24} strokeWidth={1.5} />
              </div>
@@ -299,7 +299,7 @@ const HuspyBenefits = () => {
              <p className="text-sm text-ocean-700 leading-relaxed font-medium">Data-backed valuations and market trends — no guesswork</p>
            </div>
            {/* Card 4 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1">
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <FileSignature size={24} strokeWidth={1.5} />
              </div>
@@ -307,7 +307,7 @@ const HuspyBenefits = () => {
              <p className="text-sm text-ocean-700 leading-relaxed font-medium">Streamlined, paperless transaction process from offer to signature</p>
            </div>
            {/* Card 5 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1">
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Eye size={24} strokeWidth={1.5} />
              </div>
@@ -315,7 +315,7 @@ const HuspyBenefits = () => {
              <p className="text-sm text-ocean-700 leading-relaxed font-medium">Clients track every step of their transaction in real time</p>
            </div>
            {/* Card 6 */}
-           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1">
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Euro size={24} strokeWidth={1.5} />
              </div>
@@ -997,37 +997,29 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                     </div>
 
                     {/* Mobile Carousel Layout */}
-                    <div className="md:hidden relative h-[45vh] w-full overflow-hidden">
-                      <motion.div
-                        className="flex h-full"
-                        animate={{ x: `-${(activeImageIndex || 0) * 100}%` }}
-                        transition={{ type: "spring", damping: 30, stiffness: 200 }}
+                    <div className="md:hidden relative h-[45vh] w-full">
+                      <div 
+                        className="flex h-full overflow-x-auto snap-x snap-mandatory hide-scrollbar"
+                        onScroll={(e) => {
+                          const scrollLeft = e.currentTarget.scrollLeft;
+                          const width = e.currentTarget.clientWidth;
+                          const newIndex = Math.round(scrollLeft / width);
+                          if (activeImageIndex !== newIndex) {
+                            setActiveImageIndex(newIndex);
+                          }
+                        }}
                       >
                         {(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image]).map((img, i) => (
-                          <div key={i} className="min-w-full h-full">
+                          <div key={i} className="min-w-full h-full snap-center shrink-0">
                             <img src={img} loading="lazy" decoding="async" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                           </div>
                         ))}
-                      </motion.div>
+                      </div>
 
                       {/* Carousel Controls */}
-                      <div className="absolute bottom-4 left-0 right-0 flex justify-between px-4 items-center pointer-events-none">
-                        <div className="bg-ocean-900/60 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white font-bold tracking-widest pointer-events-auto">
+                      <div className="absolute bottom-4 left-0 right-0 flex justify-center px-4 items-center pointer-events-none">
+                        <div className="bg-ocean-900/60 backdrop-blur-md px-4 py-1.5 rounded-full text-[11px] text-white font-bold tracking-widest pointer-events-auto">
                           {(activeImageIndex || 0) + 1} / {selectedProperty.images.length || 1}
-                        </div>
-                        <div className="flex gap-2 pointer-events-auto">
-                          <button
-                            onClick={(e) => { e.stopPropagation(); setActiveImageIndex(prev => Math.max(0, (prev || 0) - 1)); }}
-                            className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-ocean-900 shadow-lg"
-                          >
-                            <ChevronDown size={20} className="rotate-90" />
-                          </button>
-                          <button
-                            onClick={(e) => { e.stopPropagation(); setActiveImageIndex(prev => Math.min((selectedProperty.images.length || 1) - 1, (prev || 0) + 1)); }}
-                            className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-ocean-900 shadow-lg"
-                          >
-                            <ChevronDown size={20} className="-rotate-90" />
-                          </button>
                         </div>
                       </div>
                     </div>
@@ -1484,8 +1476,8 @@ export default function App() {
       {currentRoute === 'home' ? (
         <>
           <Hero onContactClick={() => setShowContactPopup(true)} />
-          <HuspyBenefits />
           <Properties onContactClick={() => setShowContactPopup(true)} />
+          <HuspyBenefits />
         </>
       ) : (
         <TeamPage />
