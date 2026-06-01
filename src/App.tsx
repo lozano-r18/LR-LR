@@ -894,11 +894,10 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                     {group.price}
                   </div>
                   <div className={`w-fit flex items-center rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-white font-medium shadow-sm ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[9px] md:px-4 md:py-1.5 md:text-sm'}`}>
-                    <span>{group.sqft}</span>
+                    {!isExpanded && <><span>{group.sqft}</span><span className="mx-2 text-white/60 font-light">|</span></>}
+                    <span>{group.bedsStr}<span className="ml-0.5 opacity-70">b</span></span>
                     <span className={`text-white/60 font-light ${!isExpanded ? 'mx-2' : 'mx-1.5 md:mx-2'}`}>|</span>
-                    <span>{group.bedsStr} <span className="md:hidden">{!isExpanded ? 'Bed.' : 'B'}</span><span className="hidden md:inline">Bed.</span></span>
-                    <span className={`text-white/60 font-light ${!isExpanded ? 'mx-2' : 'mx-1.5 md:mx-2'}`}>|</span>
-                    <span>{group.bathsStr} <span className="md:hidden">{!isExpanded ? 'Bath.' : 'B'}</span><span className="hidden md:inline">Bath.</span></span>
+                    <span>{group.bathsStr}<span className="ml-0.5 opacity-70">ba</span></span>
                   </div>
                 </div>
               </div>
@@ -1133,10 +1132,10 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                         {(selectedProperty.images.length > 0 ? selectedProperty.images : [selectedProperty.image]).map((img, i) => (
                           <div
                             key={i}
-                            className="min-w-full h-full snap-center shrink-0"
+                            className="min-w-full h-full snap-center shrink-0 flex items-center justify-center bg-ocean-950"
                             onClick={() => { setActiveImageIndex(i); setIsLightboxOpen(true); }}
                           >
-                            <img src={img} loading="lazy" decoding="async" className="w-full h-full object-cover cursor-zoom-in" referrerPolicy="no-referrer" />
+                            <img src={img} loading="lazy" decoding="async" className="max-w-full max-h-full object-contain cursor-zoom-in" referrerPolicy="no-referrer" />
                           </div>
                         ))}
                       </div>
@@ -1491,6 +1490,76 @@ const TeamPage = () => {
 
 
 
+const CTASection = ({ onContactClick }: { onContactClick: () => void }) => {
+  return (
+    <section className="py-12 md:py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="rounded-[2.5rem] overflow-hidden grid grid-cols-1 md:grid-cols-2 shadow-2xl">
+          {/* Left — Brand Panel */}
+          <div className="bg-ocean-900 p-10 md:p-16 flex flex-col justify-between min-h-[320px] md:min-h-[420px]">
+            <div className="flex items-center gap-3 mb-auto">
+              <svg viewBox="0 0 60 60" className="w-14 h-14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 48 L30 12 L50 48" stroke="white" strokeWidth="4" strokeLinejoin="round" fill="none"/>
+                <path d="M18 36 L42 36" stroke="white" strokeWidth="4"/>
+                <path d="M30 12 L30 0" stroke="white/30" strokeWidth="2"/>
+              </svg>
+              <div>
+                <div className="text-white font-bold text-lg tracking-wide leading-none">LOZANO</div>
+                <div className="text-white/50 text-xs tracking-[0.3em] uppercase">Realty</div>
+              </div>
+            </div>
+            <div>
+              <p className="text-white/60 text-base md:text-lg leading-relaxed font-light max-w-xs">
+                We connect discerning buyers with exceptional properties on the Costa del Sol — from Marbella to Estepona.
+              </p>
+            </div>
+          </div>
+
+          {/* Right — CTA Panel */}
+          <div className="bg-ocean-50/60 p-10 md:p-16 flex flex-col justify-center gap-8">
+            <div>
+              <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-ocean-400 mb-3">Ready to find your home?</p>
+              <h2 className="text-3xl md:text-4xl font-serif text-ocean-900 leading-tight">
+                Let's talk about your property.
+              </h2>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="tel:+34000000000"
+                className="flex items-center gap-3 bg-white border border-ocean-200 px-6 py-3.5 rounded-full text-ocean-900 text-sm font-bold tracking-wide hover:bg-ocean-900 hover:text-white hover:border-ocean-900 transition-all duration-300 shadow-sm"
+              >
+                <Phone size={16} />
+                <span>Call Us</span>
+              </a>
+              <a
+                href="https://wa.me/34000000000"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 bg-white border border-ocean-200 px-6 py-3.5 rounded-full text-ocean-900 text-sm font-bold tracking-wide hover:bg-ocean-900 hover:text-white hover:border-ocean-900 transition-all duration-300 shadow-sm"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span>WhatsApp</span>
+              </a>
+              <button
+                onClick={onContactClick}
+                className="flex items-center gap-3 bg-ocean-900 px-6 py-3.5 rounded-full text-white text-sm font-bold tracking-wide hover:bg-ocean-800 transition-all duration-300 shadow-sm"
+              >
+                <Mail size={16} />
+                <span>Email Us</span>
+              </button>
+            </div>
+
+            <p className="text-[10px] text-ocean-400 tracking-wide">
+              Free consultation · No commitment · Fluent in English, Spanish & more
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
   return (
     <footer className="bg-ocean-900 text-white">
@@ -1590,6 +1659,7 @@ export default function App() {
         <TeamPage />
       )}
 
+      <CTASection onContactClick={() => setShowContactPopup(true)} />
       <Footer onContactClick={() => setShowContactPopup(true)} />
 
       {/* Liquid Glass Contact Popup (Global) */}
