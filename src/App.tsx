@@ -275,64 +275,52 @@ const HuspyBenefits = () => {
         </h2>
         <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-2 lg:grid-cols-3 hide-scrollbar pb-6 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0">
            {/* Card 1 */}
-           <div className="min-w-[80vw] aspect-square p-8 rounded-[2rem] bg-white border border-ocean-100/60 shadow-[0_15px_45px_rgba(12,27,42,0.06)] hover:shadow-xl transition-all hover:-translate-y-1 snap-start shrink-0 flex flex-col justify-between md:min-w-0 md:aspect-auto md:h-auto md:shrink md:p-8">
-             <div className="w-12 h-12 rounded-2xl bg-ocean-50 flex items-center justify-center text-ocean-900 shadow-sm shrink-0">
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
+             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Cpu size={24} strokeWidth={1.5} />
              </div>
-             <div className="flex flex-col gap-2 mt-4">
-               <h3 className="font-bold text-ocean-900 text-lg tracking-tight leading-snug">AI-powered search</h3>
-               <p className="text-xs text-ocean-600 leading-relaxed font-light">Smart matching to connect buyers with the right properties faster</p>
-             </div>
+             <h3 className="font-bold text-ocean-900 text-lg mt-2">AI-powered search</h3>
+             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Smart matching to connect buyers with the right properties faster</p>
            </div>
            {/* Card 2 */}
-           <div className="min-w-[80vw] aspect-square p-8 rounded-[2rem] bg-white border border-ocean-100/60 shadow-[0_15px_45px_rgba(12,27,42,0.06)] hover:shadow-xl transition-all hover:-translate-y-1 snap-start shrink-0 flex flex-col justify-between md:min-w-0 md:aspect-auto md:h-auto md:shrink md:p-8">
-             <div className="w-12 h-12 rounded-2xl bg-ocean-50 flex items-center justify-center text-ocean-900 shadow-sm shrink-0">
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
+             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Landmark size={24} strokeWidth={1.5} />
              </div>
-             <div className="flex flex-col gap-2 mt-4">
-               <h3 className="font-bold text-ocean-900 text-lg tracking-tight leading-snug">Instant mortgage access</h3>
-               <p className="text-xs text-ocean-600 leading-relaxed font-light">Real-time pre-approvals via 25+ banks — at the moment you need them</p>
-             </div>
+             <h3 className="font-bold text-ocean-900 text-lg mt-2">Instant mortgage access</h3>
+             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Real-time pre-approvals via 25+ banks — at the moment you need them</p>
            </div>
            {/* Card 3 */}
-           <div className="min-w-[80vw] aspect-square p-8 rounded-[2rem] bg-white border border-ocean-100/60 shadow-[0_15px_45px_rgba(12,27,42,0.06)] hover:shadow-xl transition-all hover:-translate-y-1 snap-start shrink-0 flex flex-col justify-between md:min-w-0 md:aspect-auto md:h-auto md:shrink md:p-8">
-             <div className="w-12 h-12 rounded-2xl bg-ocean-50 flex items-center justify-center text-ocean-900 shadow-sm shrink-0">
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
+             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <LineChart size={24} strokeWidth={1.5} />
              </div>
-             <div className="flex flex-col gap-2 mt-4">
-               <h3 className="font-bold text-ocean-900 text-lg tracking-tight leading-snug">Live market data</h3>
-               <p className="text-xs text-ocean-600 leading-relaxed font-light">Data-backed valuations and market trends — no guesswork</p>
-             </div>
+             <h3 className="font-bold text-ocean-900 text-lg mt-2">Live market data</h3>
+             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Data-backed valuations and market trends — no guesswork</p>
            </div>
            {/* Card 4 */}
-           <div className="min-w-[80vw] aspect-square p-8 rounded-[2rem] bg-white border border-ocean-100/60 shadow-[0_15px_45px_rgba(12,27,42,0.06)] hover:shadow-xl transition-all hover:-translate-y-1 snap-start shrink-0 flex flex-col justify-between md:min-w-0 md:aspect-auto md:h-auto md:shrink md:p-8">
-             <div className="w-12 h-12 rounded-2xl bg-ocean-50 flex items-center justify-center text-ocean-900 shadow-sm shrink-0">
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
+             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <FileSignature size={24} strokeWidth={1.5} />
              </div>
-             <div className="flex flex-col gap-2 mt-4">
-               <h3 className="font-bold text-ocean-900 text-lg tracking-tight leading-snug">Digital closing</h3>
-               <p className="text-xs text-ocean-600 leading-relaxed font-light">Streamlined, paperless transaction process from offer to signature</p>
-             </div>
+             <h3 className="font-bold text-ocean-900 text-lg mt-2">Digital closing</h3>
+             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Streamlined, paperless transaction process from offer to signature</p>
            </div>
            {/* Card 5 */}
-           <div className="min-w-[80vw] aspect-square p-8 rounded-[2rem] bg-white border border-ocean-100/60 shadow-[0_15px_45px_rgba(12,27,42,0.06)] hover:shadow-xl transition-all hover:-translate-y-1 snap-start shrink-0 flex flex-col justify-between md:min-w-0 md:aspect-auto md:h-auto md:shrink md:p-8">
-             <div className="w-12 h-12 rounded-2xl bg-ocean-50 flex items-center justify-center text-ocean-900 shadow-sm shrink-0">
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
+             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Eye size={24} strokeWidth={1.5} />
              </div>
-             <div className="flex flex-col gap-2 mt-4">
-               <h3 className="font-bold text-ocean-900 text-lg tracking-tight leading-snug">Full transparency</h3>
-               <p className="text-xs text-ocean-600 leading-relaxed font-light">Clients track every step of their transaction in real time</p>
-             </div>
+             <h3 className="font-bold text-ocean-900 text-lg mt-2">Full transparency</h3>
+             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Clients track every step of their transaction in real time</p>
            </div>
            {/* Card 6 */}
-           <div className="min-w-[80vw] aspect-square p-8 rounded-[2rem] bg-white border border-ocean-100/60 shadow-[0_15px_45px_rgba(12,27,42,0.06)] hover:shadow-xl transition-all hover:-translate-y-1 snap-start shrink-0 flex flex-col justify-between md:min-w-0 md:aspect-auto md:h-auto md:shrink md:p-8">
-             <div className="w-12 h-12 rounded-2xl bg-ocean-50 flex items-center justify-center text-ocean-900 shadow-sm shrink-0">
+           <div className="bg-ocean-50/50 p-8 rounded-3xl border border-ocean-100 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 min-w-[85vw] snap-center shrink-0 md:min-w-0 md:shrink">
+             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
                <Euro size={24} strokeWidth={1.5} />
              </div>
-             <div className="flex flex-col gap-2 mt-4">
-               <h3 className="font-bold text-ocean-900 text-lg tracking-tight leading-snug">Best financing rates</h3>
-               <p className="text-xs text-ocean-600 leading-relaxed font-light">Access to competitive mortgage products tailored for the Spanish market</p>
-             </div>
+             <h3 className="font-bold text-ocean-900 text-lg mt-2">Best financing rates</h3>
+             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Access to competitive mortgage products tailored for the Spanish market</p>
            </div>
         </div>
       </div>
@@ -800,7 +788,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className={!isExpanded ? "flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-3 md:gap-10 hide-scrollbar pb-8 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0 md:overflow-visible md:snap-none" : "grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10"}>
           {displayedGroups.map((group, idx) => (
             <motion.div
               key={group.id}
@@ -808,7 +796,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "100px" }}
               transition={{ delay: (idx % 3) * 0.05 }}
-              className="group cursor-pointer relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all bg-ocean-50"
+              className={`group cursor-pointer relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all bg-ocean-50 ${!isExpanded ? "min-w-[85vw] aspect-[4/5] snap-center shrink-0 md:min-w-0 md:shrink md:snap-none" : "aspect-[3/4] md:aspect-[4/5]"}`}
               onClick={() => {
                 if (group.isDevelopment) {
                   setSelectedGroup(group);
@@ -823,28 +811,28 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                 className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
               />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
 
-              <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-md border border-white/50 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-widest font-bold text-white z-10 transition-colors group-hover:bg-white/30 shadow-sm">
+              <div className={`absolute top-4 right-4 md:top-6 md:right-6 bg-white/20 backdrop-blur-md border border-white/50 rounded-full uppercase tracking-widest font-bold text-white z-10 transition-colors group-hover:bg-white/30 shadow-sm flex items-center justify-center ${!isExpanded ? 'px-4 py-1.5 text-[10px]' : 'px-3 py-1 text-[8px] md:px-4 md:py-1.5 md:text-[10px]'}`}>
                 {group.tag}
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col justify-end z-10">
-                <h3 className="text-2xl md:text-3xl font-semibold font-sans text-white mb-1 line-clamp-1 drop-shadow-sm">{group.title}</h3>
-                <p className="text-white/90 text-sm md:text-base font-medium mb-5 drop-shadow-sm truncate">
+              <div className={`absolute bottom-0 left-0 right-0 flex flex-col justify-end z-10 ${!isExpanded ? 'p-6 md:p-8' : 'p-4 md:p-8'}`}>
+                <h3 className={`font-semibold font-sans text-white mb-1 line-clamp-1 drop-shadow-sm ${!isExpanded ? 'text-2xl md:text-3xl' : 'text-lg md:text-3xl'}`}>{group.title}</h3>
+                <p className={`text-white/90 font-medium drop-shadow-sm truncate ${!isExpanded ? 'mb-5 text-sm md:text-base' : 'mb-3 text-[10px] md:text-base md:mb-5'}`}>
                   {group.location}
                 </p>
 
-                <div className="flex flex-col gap-2">
-                  <div className="w-fit px-4 py-1.5 rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-sm text-white font-medium shadow-sm">
+                <div className={`flex flex-col ${!isExpanded ? 'gap-2' : 'gap-1.5 md:gap-2'}`}>
+                  <div className={`w-fit rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-white font-medium shadow-sm flex items-center justify-center ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[10px] md:px-4 md:py-1.5 md:text-sm'}`}>
                     {group.price}
                   </div>
-                  <div className="w-fit flex items-center px-4 py-1.5 rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-sm text-white font-medium shadow-sm">
+                  <div className={`w-fit flex items-center rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-white font-medium shadow-sm ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[9px] md:px-4 md:py-1.5 md:text-sm'}`}>
                     <span>{group.sqft}</span>
-                    <span className="mx-2 text-white/60 font-light">|</span>
-                    <span>{group.bedsStr} Bed.</span>
-                    <span className="mx-2 text-white/60 font-light">|</span>
-                    <span>{group.bathsStr} Bath.</span>
+                    <span className={`text-white/60 font-light ${!isExpanded ? 'mx-2' : 'mx-1.5 md:mx-2'}`}>|</span>
+                    <span>{group.bedsStr} <span className="md:hidden">{!isExpanded ? 'Bed.' : 'B'}</span><span className="hidden md:inline">Bed.</span></span>
+                    <span className={`text-white/60 font-light ${!isExpanded ? 'mx-2' : 'mx-1.5 md:mx-2'}`}>|</span>
+                    <span>{group.bathsStr} <span className="md:hidden">{!isExpanded ? 'Bath.' : 'B'}</span><span className="hidden md:inline">Bath.</span></span>
                   </div>
                 </div>
               </div>
