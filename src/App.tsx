@@ -269,62 +269,32 @@ const SmoothImage = ({ src, alt, className = "" }: any) => {
 };
 
 const HuspyBenefits = () => {
+  const benefits = [
+    { icon: <Cpu size={24} strokeWidth={1.5} />, title: "AI-powered search", desc: "Smart matching to connect buyers with the right properties faster" },
+    { icon: <Landmark size={24} strokeWidth={1.5} />, title: "Instant mortgage access", desc: "Real-time pre-approvals via 25+ banks — at the moment you need them" },
+    { icon: <LineChart size={24} strokeWidth={1.5} />, title: "Live market data", desc: "Data-backed valuations and market trends — no guesswork" },
+    { icon: <FileSignature size={24} strokeWidth={1.5} />, title: "Digital closing", desc: "Streamlined, paperless transaction process from offer to signature" },
+    { icon: <Eye size={24} strokeWidth={1.5} />, title: "Full transparency", desc: "Clients track every step of their transaction in real time" },
+    { icon: <Euro size={24} strokeWidth={1.5} />, title: "Best financing rates", desc: "Access to competitive mortgage products tailored for the Spanish market" },
+  ];
+
   return (
-    <section className="py-20 bg-white border-t border-ocean-50">
-      <div className="max-w-7xl mx-auto px-6 overflow-hidden">
-        <h2 className="text-sm font-bold text-ocean-900 uppercase tracking-[0.2em] mb-12 text-center md:text-left">
-          Collaborating with the best &mdash; HUSPY
+    <section className="py-24 bg-[#F5F4EF] border-t border-[#4A4B3A]/10">
+      <div className="max-w-[1400px] mx-auto px-6 overflow-hidden">
+        <h2 className="text-3xl md:text-5xl font-serif text-[#4A4B3A] mb-16 font-normal tracking-tight">
+          Powered by <span className="italic">Huspy</span>
         </h2>
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-           {/* Card 1 */}
-           <div className="bg-ocean-50/50 p-6 md:p-8 rounded-3xl border border-ocean-100/80 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 w-full">
-             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
-               <Cpu size={24} strokeWidth={1.5} />
-             </div>
-             <h3 className="font-bold text-ocean-900 text-lg mt-2">AI-powered search</h3>
-             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Smart matching to connect buyers with the right properties faster</p>
-           </div>
-           {/* Card 2 */}
-           <div className="bg-ocean-50/50 p-6 md:p-8 rounded-3xl border border-ocean-100/80 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 w-full">
-             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
-               <Landmark size={24} strokeWidth={1.5} />
-             </div>
-             <h3 className="font-bold text-ocean-900 text-lg mt-2">Instant mortgage access</h3>
-             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Real-time pre-approvals via 25+ banks — at the moment you need them</p>
-           </div>
-           {/* Card 3 */}
-           <div className="bg-ocean-50/50 p-6 md:p-8 rounded-3xl border border-ocean-100/80 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 w-full">
-             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
-               <LineChart size={24} strokeWidth={1.5} />
-             </div>
-             <h3 className="font-bold text-ocean-900 text-lg mt-2">Live market data</h3>
-             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Data-backed valuations and market trends — no guesswork</p>
-           </div>
-           {/* Card 4 */}
-           <div className="bg-ocean-50/50 p-6 md:p-8 rounded-3xl border border-ocean-100/80 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 w-full">
-             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
-               <FileSignature size={24} strokeWidth={1.5} />
-             </div>
-             <h3 className="font-bold text-ocean-900 text-lg mt-2">Digital closing</h3>
-             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Streamlined, paperless transaction process from offer to signature</p>
-           </div>
-           {/* Card 5 */}
-           <div className="bg-ocean-50/50 p-6 md:p-8 rounded-3xl border border-ocean-100/80 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 w-full">
-             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
-               <Eye size={24} strokeWidth={1.5} />
-             </div>
-             <h3 className="font-bold text-ocean-900 text-lg mt-2">Full transparency</h3>
-             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Clients track every step of their transaction in real time</p>
-           </div>
-           {/* Card 6 */}
-           <div className="bg-ocean-50/50 p-6 md:p-8 rounded-3xl border border-ocean-100/80 flex flex-col gap-4 hover:shadow-lg transition-all hover:-translate-y-1 w-full">
-             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-ocean-900 shadow-sm">
-               <Euro size={24} strokeWidth={1.5} />
-             </div>
-             <h3 className="font-bold text-ocean-900 text-lg mt-2">Best financing rates</h3>
-             <p className="text-sm text-ocean-700 leading-relaxed font-medium">Access to competitive mortgage products tailored for the Spanish market</p>
-           </div>
-         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+          {benefits.map((benefit, idx) => (
+            <div key={idx} className="group bg-white p-8 border border-[#4A4B3A]/10 hover:border-[#4A4B3A]/30 transition-all duration-300 hover:shadow-xl flex flex-col h-full w-full">
+              <div className="text-[#4A4B3A] mb-8 group-hover:scale-110 transition-transform origin-left">
+                {benefit.icon}
+              </div>
+              <h3 className="font-sans font-bold text-[#4A4B3A] text-lg mb-4 leading-tight uppercase tracking-wide">{benefit.title}</h3>
+              <p className="text-[#4A4B3A]/70 text-sm leading-relaxed mt-auto font-medium">{benefit.desc}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -407,51 +377,77 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
 
 const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
   return (
-    <section id="home" className="relative h-[85vh] flex items-center justify-center overflow-hidden">
+    <section id="home" className="relative h-[100vh] min-h-[800px] flex flex-col justify-between overflow-hidden">
       {/* High-End Villa Background */}
       <div className="absolute inset-0 z-0">
           <img
             src="/assets/hero-bg.jpg"
             alt="Luxury Beachside Villa Costa del Sol"
-            className="w-full h-full object-cover object-bottom scale-110"
+            className="w-full h-full object-cover object-bottom"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-ocean-900/60 via-ocean-900/20 to-transparent" />
-        </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-ocean-900/60 via-transparent to-ocean-900/80" />
+      </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full h-full flex flex-col justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="w-full flex flex-col items-center text-center pt-20"
-          >
-            <div className="mb-14">
-              <h1 className="text-[12vw] md:text-[8vw] font-serif text-white/95 tracking-[0.02em] leading-none uppercase select-none font-medium md:whitespace-nowrap drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)]">
-                LOZANO REALTY
-              </h1>
-              <div className="flex items-center justify-center gap-6 mt-4">
-                <span className="text-[10px] md:text-xs uppercase tracking-[0.6em] text-white/90 font-bold drop-shadow-md whitespace-nowrap">
-                  Costa del Sol Real Estate
-                </span>
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center gap-10">
-              <div className="max-w-md">
-                <p className="text-white/80 text-[11px] md:text-xs font-semibold uppercase tracking-[0.2em] leading-loose drop-shadow-lg">
-                  Premiering <span className="text-white/100">New Developments</span> & <br/> Exclusive Lifestyle properties.
-                </p>
-              </div>
-              <button
-                onClick={onContactClick}
-                className="group flex items-center gap-4 bg-white/20 backdrop-blur-xl border border-white/30 text-white px-10 py-5 rounded-xl hover:bg-white hover:text-ocean-900 transition-all duration-500 shadow-2xl"
-              >
-                <span className="text-sm font-bold tracking-widest uppercase text-nowrap">GET IN TOUCH</span>
-                <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
+      {/* Top Content: Main Title and Paragraph */}
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 w-full pt-40 flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="flex flex-col"
+        >
+          <h1 className="text-5xl md:text-7xl lg:text-[7rem] font-sans text-white uppercase tracking-tight leading-[0.9] font-normal mb-2">
+            LUXURY <br/> REAL ESTATE
+          </h1>
+          <div className="flex items-center gap-4 mt-2">
+            <span className="text-white/70 text-sm md:text-lg uppercase tracking-widest font-semibold mt-2">WITH</span>
+            <span className="text-4xl md:text-6xl font-serif text-white italic lowercase tracking-tight">full service support</span>
+          </div>
         </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="max-w-[280px] md:mb-6"
+        >
+          <p className="text-white/80 text-sm md:text-base font-medium leading-relaxed drop-shadow-sm text-right md:text-left">
+            We'll find and verify the property, handle the deal and post-sale service.
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Bottom Content: Trust Bar and CTA */}
+      <div className="relative z-10 w-full mt-auto mb-12">
+        <div className="max-w-[1400px] mx-auto px-6 border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-8">
+          
+          {/* Trust Indicators */}
+          <div className="flex flex-wrap items-center gap-8 md:gap-16">
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl md:text-4xl font-serif text-white italic">100+</span>
+              <span className="text-[10px] uppercase tracking-widest text-white/60 font-semibold max-w-[80px] leading-tight">successful deals</span>
+            </div>
+            <div className="w-px h-8 bg-white/20 hidden md:block" />
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl md:text-4xl font-serif text-white italic">15</span>
+              <span className="text-[10px] uppercase tracking-widest text-white/60 font-semibold max-w-[80px] leading-tight">legal experts</span>
+            </div>
+            <div className="w-px h-8 bg-white/20 hidden md:block" />
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl md:text-4xl font-serif text-white italic">87+</span>
+              <span className="text-[10px] uppercase tracking-widest text-white/60 font-semibold max-w-[80px] leading-tight">verified reviews</span>
+            </div>
+          </div>
+
+          {/* CTA Button */}
+          <button
+            onClick={onContactClick}
+            className="group flex items-center gap-4 bg-white text-ocean-900 px-8 py-5 hover:bg-ocean-50 transition-colors duration-300 shadow-xl min-w-[240px] justify-center"
+          >
+            <span className="text-xs font-bold tracking-[0.2em] uppercase">GET A CONSULTATION</span>
+          </button>
+        </div>
       </div>
     </section>
   );
@@ -723,59 +719,59 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-20">
 
-          <div className="bg-white/40 backdrop-blur-xl p-4 md:p-6 rounded-[2rem] shadow-2xl border border-white/50 -mt-16 relative z-20 mx-auto max-w-6xl">
+          <div className="bg-[#FAF9F5] p-4 md:p-6 shadow-xl border border-[#4A4B3A]/10 -mt-16 relative z-20 mx-auto max-w-[1400px] w-[calc(100%-3rem)]">
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
               <div className="relative group">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-[#4A4B3A]/10 outline-none text-[11px] uppercase tracking-widest font-bold text-[#4A4B3A] appearance-none cursor-pointer hover:border-[#4A4B3A]/30 transition-all"
                   value={filters.area}
                   onChange={(e) => setFilters({ ...filters, area: e.target.value })}
                 >
                   <option value="">Area</option>
                   {areas.map(a => <option key={a} value={a}>{a}</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#4A4B3A]/40 pointer-events-none" />
               </div>
 
               <div className="relative group">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-[#4A4B3A]/10 outline-none text-[11px] uppercase tracking-widest font-bold text-[#4A4B3A] appearance-none cursor-pointer hover:border-[#4A4B3A]/30 transition-all"
                   value={filters.type}
                   onChange={(e) => setFilters({ ...filters, type: e.target.value })}
                 >
                   <option value="">Type</option>
                   {types.map(t => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#4A4B3A]/40 pointer-events-none" />
               </div>
 
               <div className="relative group">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-[#4A4B3A]/10 outline-none text-[11px] uppercase tracking-widest font-bold text-[#4A4B3A] appearance-none cursor-pointer hover:border-[#4A4B3A]/30 transition-all"
                   value={filters.beds}
                   onChange={(e) => setFilters({ ...filters, beds: e.target.value })}
                 >
                   <option value="">Beds</option>
                   {[1, 2, 3, 4, 5, 6].map(n => <option key={n} value={n}>{n}+</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#4A4B3A]/40 pointer-events-none" />
               </div>
 
               <div className="relative group">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-[#4A4B3A]/10 outline-none text-[11px] uppercase tracking-widest font-bold text-[#4A4B3A] appearance-none cursor-pointer hover:border-[#4A4B3A]/30 transition-all"
                   value={filters.baths}
                   onChange={(e) => setFilters({ ...filters, baths: e.target.value })}
                 >
                   <option value="">Baths</option>
                   {[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}+</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#4A4B3A]/40 pointer-events-none" />
               </div>
 
               <div className="relative group">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-[#4A4B3A]/10 outline-none text-[11px] uppercase tracking-widest font-bold text-[#4A4B3A] appearance-none cursor-pointer hover:border-[#4A4B3A]/30 transition-all"
                   value={filters.priceMin}
                   onChange={(e) => setFilters({ ...filters, priceMin: e.target.value })}
                 >
@@ -784,12 +780,12 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                     <option key={p} value={p}>€{(p / 1000).toFixed(0)}k</option>
                   ))}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#4A4B3A]/40 pointer-events-none" />
               </div>
 
               <div className="relative group">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer shadow-sm group-hover:shadow-md transition-all"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-[#4A4B3A]/10 outline-none text-[11px] uppercase tracking-widest font-bold text-[#4A4B3A] appearance-none cursor-pointer hover:border-[#4A4B3A]/30 transition-all"
                   value={filters.priceMax}
                   onChange={(e) => setFilters({ ...filters, priceMax: e.target.value })}
                 >
@@ -798,7 +794,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                     <option key={p} value={p}>€{(p / 1000000).toFixed(1)}M</option>
                   ))}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-300 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#4A4B3A]/40 pointer-events-none" />
               </div>
 
               <div className="relative group lg:col-span-1">
@@ -866,7 +862,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "100px" }}
               transition={{ delay: (idx % 3) * 0.05 }}
-              className={`group cursor-pointer relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] shadow-md hover:shadow-2xl transition-all bg-ocean-50 ${!isExpanded ? "min-w-[80vw] aspect-[4/5] snap-center shrink-0 md:min-w-0 md:shrink md:snap-none" : "aspect-[3/4] md:aspect-[4/5]"}`}
+              className={`group cursor-pointer relative overflow-hidden rounded-none shadow-md hover:shadow-2xl transition-all bg-white border border-[#4A4B3A]/10 ${!isExpanded ? "min-w-[80vw] aspect-[4/5] snap-center shrink-0 md:min-w-0 md:shrink md:snap-none" : "aspect-[3/4] md:aspect-[4/5]"}`}
               onClick={() => {
                 if (group.isDevelopment) {
                   setSelectedGroup(group);
@@ -883,7 +879,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
 
-              <div className={`absolute top-4 right-4 md:top-6 md:right-6 bg-white/20 backdrop-blur-md border border-white/50 rounded-full uppercase tracking-widest font-bold text-white z-10 transition-colors group-hover:bg-white/30 shadow-sm flex items-center justify-center ${!isExpanded ? 'px-4 py-1.5 text-[10px]' : 'px-3 py-1 text-[8px] md:px-4 md:py-1.5 md:text-[10px]'}`}>
+              <div className={`absolute top-4 right-4 md:top-6 md:right-6 bg-black/40 backdrop-blur-md border border-white/20 rounded-none uppercase tracking-widest font-bold text-white z-10 transition-colors group-hover:bg-black/60 shadow-sm flex items-center justify-center ${!isExpanded ? 'px-4 py-1.5 text-[10px]' : 'px-3 py-1 text-[8px] md:px-4 md:py-1.5 md:text-[10px]'}`}>
                 {group.tag}
               </div>
 
@@ -894,10 +890,10 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                 </p>
 
                 <div className={`flex flex-col ${!isExpanded ? 'gap-2' : 'gap-1.5 md:gap-2'}`}>
-                  <div className={`w-fit rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-white font-medium shadow-sm flex items-center justify-center ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[10px] md:px-4 md:py-1.5 md:text-sm'}`}>
+                  <div className={`w-fit rounded-none border border-white/20 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm flex items-center justify-center ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[10px] md:px-4 md:py-1.5 md:text-sm'}`}>
                     {group.price}
                   </div>
-                  <div className={`w-fit flex items-center rounded-full border border-white/50 bg-white/20 backdrop-blur-md text-white font-medium shadow-sm ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[9px] md:px-4 md:py-1.5 md:text-sm'}`}>
+                  <div className={`w-fit flex items-center rounded-none border border-white/20 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[9px] md:px-4 md:py-1.5 md:text-sm'}`}>
                     {!isExpanded && <><span>{group.sqft}</span><span className="mx-2 text-white/60 font-light">|</span></>}
                     <span>{group.bedsStr}<span className="ml-0.5 opacity-70">b</span></span>
                     <span className={`text-white/60 font-light ${!isExpanded ? 'mx-2' : 'mx-1.5 md:mx-2'}`}>|</span>
@@ -1482,6 +1478,177 @@ const TeamPage = () => {
     </div>
   );
 };
+const ProcessSection = () => {
+  const steps = [
+    { num: '01', title: 'Consultation & Sourcing', desc: 'We analyze your needs and scan the entire Costa del Sol market, including off-market luxury listings.' },
+    { num: '02', title: 'Curated Viewings', desc: 'Virtual or in-person tours of handpicked properties that match your exact specifications.' },
+    { num: '03', title: 'Due Diligence', desc: 'Our legal partners conduct rigorous checks on ownership, debts, and developer reputation.' },
+    { num: '04', title: 'Acquisition', desc: 'We negotiate the best terms and handle all paperwork, ensuring a secure and transparent transaction.' },
+    { num: '05', title: 'Post-Sale Support', desc: 'From interior design to property management, our service continues long after you get the keys.' }
+  ];
+
+  return (
+    <section className="py-24 bg-ocean-50">
+      <div className="max-w-[1400px] mx-auto px-6">
+        <h2 className="text-3xl md:text-5xl font-serif text-ocean-900 mb-16 font-normal tracking-tight">
+          From Request to <span className="italic">Result</span>
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {steps.map((step, idx) => (
+            <div key={idx} className="group bg-white p-8 border border-ocean-100 hover:border-ocean-300 transition-all duration-300 hover:shadow-xl flex flex-col h-full">
+              <span className="text-ocean-300 font-serif text-4xl italic mb-6 block group-hover:text-ocean-900 transition-colors">{step.num}</span>
+              <h3 className="font-sans font-bold text-ocean-900 text-lg mb-4 leading-tight uppercase tracking-wide">{step.title}</h3>
+              <p className="text-ocean-700/80 text-sm leading-relaxed mt-auto font-medium">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const FAQSection = () => {
+  const [openIdx, setOpenIdx] = useState<number | null>(0);
+  const faqs = [
+    { q: "How can I be sure the property is legally verified?", a: "We only work with properties that have passed a full legal check: we verify ownership rights, debts, restrictions, developer reputation, and deal history. Each transaction is supervised by a lawyer with experience in 100+ deals." },
+    { q: "Can I buy property in Spain if I'm from the UK?", a: "Absolutely. UK buyers are some of the most active in the Costa del Sol. You will need an NIE (Foreigner Identity Number) and a Spanish bank account, both of which we assist you in obtaining effortlessly." },
+    { q: "Do I need to be present in person for the paperwork?", a: "No. With a Power of Attorney (POA) granted to your legal representative, the entire purchase process can be completed on your behalf without you having to travel to Spain." },
+    { q: "How long does the entire buying process take?", a: "Typically, from finding the right property to receiving the keys, the process takes between 4 to 8 weeks, depending on the complexity of the due diligence and financing." },
+    { q: "Can I rent out the property after I buy it?", a: "Yes, renting out your property is a great investment strategy. We can advise on areas with the best ROI and connect you with premium property management services." },
+    { q: "I don't understand Spanish legal details — who will explain everything?", a: "Our dedicated network of English-speaking legal experts will guide you through every contract, tax obligation, and legal nuance before you sign anything." }
+  ];
+
+  return (
+    <section className="py-24 bg-[#F5F4EF]">
+      <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+        {/* Left */}
+        <div className="flex flex-col">
+          <h2 className="text-4xl md:text-6xl font-sans text-[#4A4B3A] uppercase tracking-tighter leading-[0.9] font-medium mb-2">
+            GOT QUESTIONS?
+          </h2>
+          <h3 className="text-3xl md:text-5xl font-serif text-[#4A4B3A] italic lowercase tracking-tight mb-12">
+            we've got you
+          </h3>
+          <div className="rounded-xl overflow-hidden aspect-[4/3] w-full max-w-lg">
+            <img src="/assets/hero-bg.jpg" alt="Luxury Interior" className="w-full h-full object-cover" />
+          </div>
+          <p className="font-serif italic text-[#4A4B3A]/70 text-lg md:text-xl mt-8 max-w-sm">
+            « We believe real estate should feel simple. We make it that way »
+          </p>
+        </div>
+
+        {/* Right */}
+        <div className="flex flex-col justify-center">
+          <p className="text-right text-xs uppercase tracking-widest text-[#4A4B3A]/60 font-bold mb-12 hidden lg:block">
+            We've gathered answers to <br/> everything you might be <br/> wondering about
+          </p>
+          <div className="flex flex-col border-t border-[#4A4B3A]/20">
+            {faqs.map((faq, idx) => (
+              <div key={idx} className="border-b border-[#4A4B3A]/20 py-6">
+                <button 
+                  className="w-full flex items-center justify-between text-left group"
+                  onClick={() => setOpenIdx(openIdx === idx ? null : idx)}
+                >
+                  <span className="font-sans text-base md:text-lg font-medium text-[#4A4B3A] group-hover:text-black transition-colors pr-8">
+                    {faq.q}
+                  </span>
+                  <div className={`w-8 h-8 rounded-full border border-[#4A4B3A]/30 flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${openIdx === idx ? 'rotate-180' : ''}`}>
+                    <ChevronDown size={14} className="text-[#4A4B3A]" />
+                  </div>
+                </button>
+                <AnimatePresence>
+                  {openIdx === idx && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <p className="text-[#4A4B3A]/70 text-sm leading-relaxed mt-4 max-w-2xl font-medium">
+                        {faq.a}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
+  return (
+    <section className="relative min-h-[600px] flex items-center overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <img src="/assets/hero-bg.jpg" alt="Luxury Villa Exterior" className="w-full h-full object-cover brightness-50" />
+      </div>
+      
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 py-20 flex flex-col lg:flex-row justify-between items-center gap-16">
+        
+        {/* Left */}
+        <div className="flex-1 text-white">
+          <h2 className="text-4xl md:text-6xl lg:text-[5rem] font-sans uppercase tracking-tight leading-[0.9] font-normal mb-2">
+            LET'S TALK ABOUT
+          </h2>
+          <h3 className="text-3xl md:text-5xl lg:text-7xl font-serif italic lowercase tracking-tight mb-8">
+            your dream home
+          </h3>
+          <p className="text-white/80 text-sm md:text-base font-medium leading-relaxed max-w-md mb-12">
+            Leave your contact information and briefly describe what you're interested in — our specialist will contact you, clarify the details, and offer you the best options.
+          </p>
+          <div className="text-4xl md:text-6xl font-sans tracking-tight mb-4">
+            +34 672 119 634
+          </div>
+          <p className="text-[10px] uppercase tracking-widest text-white/50 font-bold max-w-[150px]">
+            We handle every step with care
+          </p>
+        </div>
+
+        {/* Right (Form Panel) */}
+        <div className="w-full max-w-md bg-[#FAF9F5] p-8 md:p-12 shadow-2xl">
+          <div className="flex justify-center mb-6">
+            <h4 className="font-serif italic text-3xl text-ocean-900">Lozano</h4>
+          </div>
+          <p className="text-center text-[10px] uppercase tracking-widest text-ocean-900/60 font-bold mb-10">
+            We'll call you, explain everything, and offer the best options
+          </p>
+
+          <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); onContactClick(); }}>
+            <input type="text" placeholder="Your name*" required className="bg-white border-none w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#4A4B3A]/30 text-ocean-900 placeholder:text-ocean-900/30" />
+            <input type="tel" placeholder="Your number*" required className="bg-white border-none w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#4A4B3A]/30 text-ocean-900 placeholder:text-ocean-900/30" />
+            
+            <div className="relative">
+              <select required className="bg-white border-none w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#4A4B3A]/30 text-ocean-900 appearance-none placeholder:text-ocean-900/30">
+                <option value="" disabled selected>Choose your goal</option>
+                <option value="buy">Buying a property</option>
+                <option value="sell">Selling a property</option>
+                <option value="invest">Investment</option>
+              </select>
+              <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
+            </div>
+
+            <button type="submit" className="mt-4 bg-[#5E6048] text-white uppercase text-xs tracking-[0.2em] font-bold py-5 hover:bg-[#4A4B3A] transition-colors">
+              SEND REQUEST
+            </button>
+            <div className="mt-4 text-center">
+              <a href="https://wa.me/34672119634" target="_blank" rel="noreferrer" className="text-[10px] text-ocean-900/50 hover:text-ocean-900 transition-colors uppercase tracking-widest font-bold underline">
+                Or contact via WhatsApp
+              </a>
+            </div>
+            <p className="text-[9px] text-ocean-900/40 text-center mt-4">
+              By clicking the button, you agree to our Privacy Policy and consent to be contacted
+            </p>
+          </form>
+        </div>
+
+      </div>
+    </section>
+  );
+};
 
 const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
   return (
@@ -1577,6 +1744,9 @@ export default function App() {
           <Hero onContactClick={() => setShowContactPopup(true)} />
           <Properties onContactClick={() => setShowContactPopup(true)} />
           <HuspyBenefits />
+          <ProcessSection />
+          <FAQSection />
+          <CTAFormSection onContactClick={() => setShowContactPopup(true)} />
         </>
       ) : (
         <TeamPage />
