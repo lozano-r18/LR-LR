@@ -279,19 +279,19 @@ const HuspyBenefits = () => {
   ];
 
   return (
-    <section className="py-24 bg-[#F5F4EF] border-t border-[#4A4B3A]/10">
+    <section className="py-24 bg-[#F5F4EF] border-t border-ocean-900/10">
       <div className="max-w-[1400px] mx-auto px-6 overflow-hidden">
-        <h2 className="text-3xl md:text-5xl font-serif text-[#4A4B3A] mb-16 font-normal tracking-tight">
+        <h2 className="text-3xl md:text-5xl font-serif text-ocean-900 mb-16 font-normal tracking-tight">
           Powered by <span className="italic">Huspy</span>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
           {benefits.map((benefit, idx) => (
-            <div key={idx} className="group bg-white p-8 border border-[#4A4B3A]/10 hover:border-[#4A4B3A]/30 transition-all duration-300 hover:shadow-xl flex flex-col h-full w-full">
-              <div className="text-[#4A4B3A] mb-8 group-hover:scale-110 transition-transform origin-left">
+            <div key={idx} className="group bg-white p-8 border border-ocean-900/10 hover:border-ocean-900/30 transition-all duration-300 hover:shadow-xl flex flex-col h-full w-full">
+              <div className="text-ocean-900 mb-8 group-hover:scale-110 transition-transform origin-left">
                 {benefit.icon}
               </div>
-              <h3 className="font-sans font-bold text-[#4A4B3A] text-lg mb-4 leading-tight uppercase tracking-wide">{benefit.title}</h3>
-              <p className="text-[#4A4B3A]/70 text-sm leading-relaxed mt-auto font-medium">{benefit.desc}</p>
+              <h3 className="font-sans font-bold text-ocean-900 text-lg mb-4 leading-tight uppercase tracking-wide">{benefit.title}</h3>
+              <p className="text-ocean-900/70 text-sm leading-relaxed mt-auto font-medium">{benefit.desc}</p>
             </div>
           ))}
         </div>
@@ -316,22 +316,22 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
   const forceDark = currentRoute === 'team';
   const navTextClass = forceDark || isScrolled ? 'text-ocean-900' : 'text-white';
   const logoSrc = forceDark || isScrolled ? "/assets/logo-blue.png" : "/assets/logo-white.png";
-  const navBgClass = forceDark && !isScrolled ? 'py-4 md:py-8 bg-transparent' : (isScrolled ? 'py-2 md:py-4 glass' : 'py-4 md:py-8 bg-transparent');
+  const navBgClass = forceDark && !isScrolled ? 'py-4 md:py-6 bg-transparent' : (isScrolled ? 'py-3 md:py-5 bg-white shadow-sm' : 'py-4 md:py-8 bg-transparent');
   const btnHover = forceDark || isScrolled ? 'hover:bg-ocean-900 hover:text-white' : 'hover:bg-white hover:text-ocean-900';
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${navBgClass}`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center relative z-[60]">
+      <div className="max-w-[1400px] mx-auto px-6 flex justify-between items-center relative z-[60]">
         <div className="flex items-center">
           <img
             src={logoSrc}
             alt="Lozano Realty Logo"
-            className="h-14 md:h-20 w-auto transition-all duration-300"
+            className="h-12 md:h-16 w-auto transition-all duration-300"
           />
         </div>
 
         {/* Desktop Menu */}
-        <div className={`hidden md:flex items-center gap-10 font-medium text-sm uppercase tracking-widest ${navTextClass}`}>
+        <div className={`hidden md:flex items-center gap-10 font-sans font-bold text-xs uppercase tracking-[0.2em] ${navTextClass}`}>
           <a href="#home" className="hover:opacity-70 transition-opacity">Home</a>
           <a href="#team" className="hover:opacity-70 transition-opacity whitespace-nowrap">Team</a>
           <button
@@ -355,12 +355,12 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-0 left-0 right-0 bg-white/95 backdrop-blur-xl shadow-2xl pt-32 pb-12 flex flex-col items-center gap-8 text-ocean-900 font-medium uppercase tracking-widest md:hidden z-50"
+            className="absolute top-0 left-0 right-0 bg-[#FAF9F5] shadow-2xl pt-32 pb-12 flex flex-col items-center gap-8 text-ocean-900 font-sans font-bold uppercase tracking-[0.2em] md:hidden z-50 border-b border-ocean-900/10"
           >
             <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
             <a href="#team" onClick={() => setIsMobileMenuOpen(false)}>Team</a>
             <button
-              className="text-center mt-4 px-12 py-4 bg-ocean-900 text-white border border-ocean-900 rounded-full text-sm font-bold transition-all active:scale-95 shadow-lg"
+              className="text-center mt-4 px-12 py-4 bg-ocean-900 text-white border border-ocean-900 rounded-full text-xs transition-all active:scale-95 shadow-lg"
               onClick={() => {
                 setIsMobileMenuOpen(false);
                 onContactClick();
@@ -389,20 +389,20 @@ const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
           <div className="absolute inset-0 bg-gradient-to-b from-ocean-900/60 via-transparent to-ocean-900/80" />
       </div>
 
-      {/* Top Content: Main Title and Paragraph */}
-      <div className="relative z-10 max-w-[1400px] mx-auto px-6 w-full pt-40 flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
+      {/* Content: Main Title and Paragraph */}
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 w-full pt-32 md:pt-48 flex flex-col md:flex-row justify-between items-start md:items-center gap-10 flex-1">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           className="flex flex-col"
         >
-          <h1 className="text-5xl md:text-7xl lg:text-[7rem] font-sans text-white uppercase tracking-tight leading-[0.9] font-normal mb-2">
+          <h1 className="text-5xl md:text-7xl lg:text-[7.5rem] font-sans text-white uppercase tracking-tight leading-[0.9] font-light mb-2 drop-shadow-sm">
             LUXURY <br/> REAL ESTATE
           </h1>
-          <div className="flex items-center gap-4 mt-2">
-            <span className="text-white/70 text-sm md:text-lg uppercase tracking-widest font-semibold mt-2">WITH</span>
-            <span className="text-4xl md:text-6xl font-serif text-white italic lowercase tracking-tight">full service support</span>
+          <div className="flex items-center gap-4 md:gap-6 mt-4">
+            <span className="text-white/80 text-xs md:text-sm uppercase tracking-[0.2em] font-bold mt-2">WITH</span>
+            <span className="text-4xl md:text-6xl lg:text-7xl font-serif text-white italic lowercase tracking-tight drop-shadow-sm">full service support</span>
           </div>
         </motion.div>
 
@@ -410,40 +410,20 @@ const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="max-w-[280px] md:mb-6"
+          className="max-w-[320px] md:-mt-20"
         >
-          <p className="text-white/80 text-sm md:text-base font-medium leading-relaxed drop-shadow-sm text-right md:text-left">
+          <p className="text-white/90 text-sm md:text-base font-medium leading-relaxed drop-shadow-md text-right md:text-left">
             We'll find and verify the property, handle the deal and post-sale service.
           </p>
         </motion.div>
       </div>
 
-      {/* Bottom Content: Trust Bar and CTA */}
+      {/* Bottom Content: CTA */}
       <div className="relative z-10 w-full mt-auto mb-12">
-        <div className="max-w-[1400px] mx-auto px-6 border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-8">
-          
-          {/* Trust Indicators */}
-          <div className="flex flex-wrap items-center gap-8 md:gap-16">
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl md:text-4xl font-serif text-white italic">100+</span>
-              <span className="text-[10px] uppercase tracking-widest text-white/60 font-semibold max-w-[80px] leading-tight">successful deals</span>
-            </div>
-            <div className="w-px h-8 bg-white/20 hidden md:block" />
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl md:text-4xl font-serif text-white italic">15</span>
-              <span className="text-[10px] uppercase tracking-widest text-white/60 font-semibold max-w-[80px] leading-tight">legal experts</span>
-            </div>
-            <div className="w-px h-8 bg-white/20 hidden md:block" />
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl md:text-4xl font-serif text-white italic">87+</span>
-              <span className="text-[10px] uppercase tracking-widest text-white/60 font-semibold max-w-[80px] leading-tight">verified reviews</span>
-            </div>
-          </div>
-
-          {/* CTA Button */}
+        <div className="max-w-[1400px] mx-auto px-6 border-t border-white/20 pt-8 flex justify-end">
           <button
             onClick={onContactClick}
-            className="group flex items-center gap-4 bg-white text-ocean-900 px-8 py-5 hover:bg-ocean-50 transition-colors duration-300 shadow-xl min-w-[240px] justify-center"
+            className="group flex items-center gap-4 bg-white text-ocean-900 px-8 py-5 hover:bg-[#FAF9F5] transition-colors duration-300 shadow-xl min-w-[240px] justify-center"
           >
             <span className="text-xs font-bold tracking-[0.2em] uppercase">GET A CONSULTATION</span>
           </button>
@@ -716,62 +696,62 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
 
   return (
     <section id="properties" className="pb-32 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-20">
+      <div className="max-w-[1400px] mx-auto px-6 pt-12">
+        <div className="mb-12">
 
-          <div className="bg-[#FAF9F5] p-4 md:p-6 shadow-xl border border-[#4A4B3A]/10 -mt-16 relative z-20 mx-auto max-w-[1400px] w-[calc(100%-3rem)]">
+          <div className="bg-white border-b border-ocean-900/10 pb-6 relative z-20 w-full">
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
               <div className="relative group">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-none border border-[#4A4B3A]/10 outline-none text-[11px] uppercase tracking-widest font-bold text-[#4A4B3A] appearance-none cursor-pointer hover:border-[#4A4B3A]/30 transition-all"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer hover:border-ocean-900/30 transition-all"
                   value={filters.area}
                   onChange={(e) => setFilters({ ...filters, area: e.target.value })}
                 >
                   <option value="">Area</option>
                   {areas.map(a => <option key={a} value={a}>{a}</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#4A4B3A]/40 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
               </div>
 
               <div className="relative group">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-none border border-[#4A4B3A]/10 outline-none text-[11px] uppercase tracking-widest font-bold text-[#4A4B3A] appearance-none cursor-pointer hover:border-[#4A4B3A]/30 transition-all"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer hover:border-ocean-900/30 transition-all"
                   value={filters.type}
                   onChange={(e) => setFilters({ ...filters, type: e.target.value })}
                 >
                   <option value="">Type</option>
                   {types.map(t => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#4A4B3A]/40 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
               </div>
 
               <div className="relative group">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-none border border-[#4A4B3A]/10 outline-none text-[11px] uppercase tracking-widest font-bold text-[#4A4B3A] appearance-none cursor-pointer hover:border-[#4A4B3A]/30 transition-all"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer hover:border-ocean-900/30 transition-all"
                   value={filters.beds}
                   onChange={(e) => setFilters({ ...filters, beds: e.target.value })}
                 >
                   <option value="">Beds</option>
                   {[1, 2, 3, 4, 5, 6].map(n => <option key={n} value={n}>{n}+</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#4A4B3A]/40 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
               </div>
 
               <div className="relative group">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-none border border-[#4A4B3A]/10 outline-none text-[11px] uppercase tracking-widest font-bold text-[#4A4B3A] appearance-none cursor-pointer hover:border-[#4A4B3A]/30 transition-all"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer hover:border-ocean-900/30 transition-all"
                   value={filters.baths}
                   onChange={(e) => setFilters({ ...filters, baths: e.target.value })}
                 >
                   <option value="">Baths</option>
                   {[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}+</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#4A4B3A]/40 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
               </div>
 
               <div className="relative group">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-none border border-[#4A4B3A]/10 outline-none text-[11px] uppercase tracking-widest font-bold text-[#4A4B3A] appearance-none cursor-pointer hover:border-[#4A4B3A]/30 transition-all"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer hover:border-ocean-900/30 transition-all"
                   value={filters.priceMin}
                   onChange={(e) => setFilters({ ...filters, priceMin: e.target.value })}
                 >
@@ -780,12 +760,12 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                     <option key={p} value={p}>€{(p / 1000).toFixed(0)}k</option>
                   ))}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#4A4B3A]/40 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
               </div>
 
               <div className="relative group">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-none border border-[#4A4B3A]/10 outline-none text-[11px] uppercase tracking-widest font-bold text-[#4A4B3A] appearance-none cursor-pointer hover:border-[#4A4B3A]/30 transition-all"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer hover:border-ocean-900/30 transition-all"
                   value={filters.priceMax}
                   onChange={(e) => setFilters({ ...filters, priceMax: e.target.value })}
                 >
@@ -794,7 +774,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                     <option key={p} value={p}>€{(p / 1000000).toFixed(1)}M</option>
                   ))}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#4A4B3A]/40 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
               </div>
 
               <div className="relative group lg:col-span-1">
@@ -862,7 +842,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "100px" }}
               transition={{ delay: (idx % 3) * 0.05 }}
-              className={`group cursor-pointer relative overflow-hidden rounded-none shadow-md hover:shadow-2xl transition-all bg-white border border-[#4A4B3A]/10 ${!isExpanded ? "min-w-[80vw] aspect-[4/5] snap-center shrink-0 md:min-w-0 md:shrink md:snap-none" : "aspect-[3/4] md:aspect-[4/5]"}`}
+              className={`group cursor-pointer relative overflow-hidden rounded-none shadow-md hover:shadow-2xl transition-all bg-white border border-ocean-900/10 ${!isExpanded ? "min-w-[80vw] aspect-[4/5] snap-center shrink-0 md:min-w-0 md:shrink md:snap-none" : "aspect-[3/4] md:aspect-[4/5]"}`}
               onClick={() => {
                 if (group.isDevelopment) {
                   setSelectedGroup(group);
@@ -1488,7 +1468,7 @@ const ProcessSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-ocean-50">
+    <section className="py-24 bg-[#F5F4EF]">
       <div className="max-w-[1400px] mx-auto px-6">
         <h2 className="text-3xl md:text-5xl font-serif text-ocean-900 mb-16 font-normal tracking-tight">
           From Request to <span className="italic">Result</span>
@@ -1496,7 +1476,7 @@ const ProcessSection = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           {steps.map((step, idx) => (
-            <div key={idx} className="group bg-white p-8 border border-ocean-100 hover:border-ocean-300 transition-all duration-300 hover:shadow-xl flex flex-col h-full">
+            <div key={idx} className="group bg-white p-8 border border-ocean-900/10 hover:border-ocean-900/30 transition-all duration-300 hover:shadow-xl flex flex-col h-full">
               <span className="text-ocean-300 font-serif text-4xl italic mb-6 block group-hover:text-ocean-900 transition-colors">{step.num}</span>
               <h3 className="font-sans font-bold text-ocean-900 text-lg mb-4 leading-tight uppercase tracking-wide">{step.title}</h3>
               <p className="text-ocean-700/80 text-sm leading-relaxed mt-auto font-medium">{step.desc}</p>
@@ -1524,37 +1504,37 @@ const FAQSection = () => {
       <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
         {/* Left */}
         <div className="flex flex-col">
-          <h2 className="text-4xl md:text-6xl font-sans text-[#4A4B3A] uppercase tracking-tighter leading-[0.9] font-medium mb-2">
+          <h2 className="text-4xl md:text-6xl font-sans text-ocean-900 uppercase tracking-tighter leading-[0.9] font-medium mb-2">
             GOT QUESTIONS?
           </h2>
-          <h3 className="text-3xl md:text-5xl font-serif text-[#4A4B3A] italic lowercase tracking-tight mb-12">
+          <h3 className="text-3xl md:text-5xl font-serif text-ocean-900 italic lowercase tracking-tight mb-12">
             we've got you
           </h3>
-          <div className="rounded-xl overflow-hidden aspect-[4/3] w-full max-w-lg">
+          <div className="overflow-hidden aspect-[4/3] w-full max-w-lg">
             <img src="/assets/hero-bg.jpg" alt="Luxury Interior" className="w-full h-full object-cover" />
           </div>
-          <p className="font-serif italic text-[#4A4B3A]/70 text-lg md:text-xl mt-8 max-w-sm">
+          <p className="font-serif italic text-ocean-900/70 text-lg md:text-xl mt-8 max-w-sm">
             « We believe real estate should feel simple. We make it that way »
           </p>
         </div>
 
         {/* Right */}
         <div className="flex flex-col justify-center">
-          <p className="text-right text-xs uppercase tracking-widest text-[#4A4B3A]/60 font-bold mb-12 hidden lg:block">
+          <p className="text-right text-xs uppercase tracking-widest text-ocean-900/60 font-bold mb-12 hidden lg:block">
             We've gathered answers to <br/> everything you might be <br/> wondering about
           </p>
-          <div className="flex flex-col border-t border-[#4A4B3A]/20">
+          <div className="flex flex-col border-t border-ocean-900/20">
             {faqs.map((faq, idx) => (
-              <div key={idx} className="border-b border-[#4A4B3A]/20 py-6">
+              <div key={idx} className="border-b border-ocean-900/20 py-6">
                 <button 
                   className="w-full flex items-center justify-between text-left group"
                   onClick={() => setOpenIdx(openIdx === idx ? null : idx)}
                 >
-                  <span className="font-sans text-base md:text-lg font-medium text-[#4A4B3A] group-hover:text-black transition-colors pr-8">
+                  <span className="font-sans text-base md:text-lg font-medium text-ocean-900 group-hover:text-black transition-colors pr-8">
                     {faq.q}
                   </span>
-                  <div className={`w-8 h-8 rounded-full border border-[#4A4B3A]/30 flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${openIdx === idx ? 'rotate-180' : ''}`}>
-                    <ChevronDown size={14} className="text-[#4A4B3A]" />
+                  <div className={`w-8 h-8 rounded-full border border-ocean-900/30 flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${openIdx === idx ? 'rotate-180' : ''}`}>
+                    <ChevronDown size={14} className="text-ocean-900" />
                   </div>
                 </button>
                 <AnimatePresence>
@@ -1565,7 +1545,7 @@ const FAQSection = () => {
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
-                      <p className="text-[#4A4B3A]/70 text-sm leading-relaxed mt-4 max-w-2xl font-medium">
+                      <p className="text-ocean-900/70 text-sm leading-relaxed mt-4 max-w-2xl font-medium">
                         {faq.a}
                       </p>
                     </motion.div>
@@ -1618,11 +1598,11 @@ const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
           </p>
 
           <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); onContactClick(); }}>
-            <input type="text" placeholder="Your name*" required className="bg-white border-none w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#4A4B3A]/30 text-ocean-900 placeholder:text-ocean-900/30" />
-            <input type="tel" placeholder="Your number*" required className="bg-white border-none w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#4A4B3A]/30 text-ocean-900 placeholder:text-ocean-900/30" />
+            <input type="text" placeholder="Your name*" required className="bg-white border border-ocean-900/10 w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-ocean-900/30 text-ocean-900 placeholder:text-ocean-900/30" />
+            <input type="tel" placeholder="Your number*" required className="bg-white border border-ocean-900/10 w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-ocean-900/30 text-ocean-900 placeholder:text-ocean-900/30" />
             
             <div className="relative">
-              <select required className="bg-white border-none w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#4A4B3A]/30 text-ocean-900 appearance-none placeholder:text-ocean-900/30">
+              <select required className="bg-white border border-ocean-900/10 w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-ocean-900/30 text-ocean-900 appearance-none placeholder:text-ocean-900/30">
                 <option value="" disabled selected>Choose your goal</option>
                 <option value="buy">Buying a property</option>
                 <option value="sell">Selling a property</option>
@@ -1631,7 +1611,7 @@ const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
               <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
             </div>
 
-            <button type="submit" className="mt-4 bg-[#5E6048] text-white uppercase text-xs tracking-[0.2em] font-bold py-5 hover:bg-[#4A4B3A] transition-colors">
+            <button type="submit" className="mt-4 bg-ocean-800 text-white uppercase text-xs tracking-[0.2em] font-bold py-5 hover:bg-ocean-900 transition-colors">
               SEND REQUEST
             </button>
             <div className="mt-4 text-center">
@@ -1653,59 +1633,57 @@ const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
 const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
   return (
     <footer className="bg-ocean-900 text-white">
-      {/* Top Rule */}
-      <div className="border-t border-white/10" />
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-10">
+      <div className="max-w-[1400px] mx-auto px-6 pt-20 pb-10">
 
         {/* Top Row: Brand + Nav */}
-        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-12 pb-14 border-b border-white/10">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-16 pb-16 border-b border-white/10">
 
           {/* Brand */}
-          <div className="flex flex-col gap-5 max-w-xs">
-            <img src="/assets/logo-white.png" alt="Lozano Realty" className="h-14 w-auto self-start" />
-            <p className="text-white/30 text-xs font-light leading-relaxed tracking-wide">
+          <div className="flex flex-col gap-6 max-w-xs">
+            <img src="/assets/logo-white.png" alt="Lozano Realty" className="h-16 w-auto self-start" />
+            <p className="text-white/40 text-xs font-light leading-relaxed tracking-wide">
               Exclusive property advisory across the Costa del Sol.
               Curated estates. Bespoke service.
             </p>
           </div>
 
           {/* Nav Columns */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-10 text-xs">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-12 text-xs">
 
-            <div className="flex flex-col gap-4">
-              <span className="text-white/20 uppercase tracking-[0.4em] text-[9px] font-bold border-b border-white/10 pb-3">Navigate</span>
-              <a href="#home" className="text-white/50 hover:text-white transition-colors uppercase tracking-widest">Home</a>
-              <a href="#properties" className="text-white/50 hover:text-white transition-colors uppercase tracking-widest">Properties</a>
-              <a href="#team" className="text-white/50 hover:text-white transition-colors uppercase tracking-widest">Team</a>
-              <button onClick={onContactClick} className="text-left text-white/50 hover:text-white transition-colors uppercase tracking-widest">Contact</button>
+            <div className="flex flex-col gap-5">
+              <span className="text-white/30 uppercase tracking-[0.4em] text-[9px] font-bold border-b border-white/10 pb-3">Navigate</span>
+              <a href="#home" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">Home</a>
+              <a href="#properties" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">Properties</a>
+              <a href="#team" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">Team</a>
+              <button onClick={onContactClick} className="text-left text-white/60 hover:text-white transition-colors uppercase tracking-widest">Contact</button>
             </div>
 
-            <div className="flex flex-col gap-4">
-              <span className="text-white/20 uppercase tracking-[0.4em] text-[9px] font-bold border-b border-white/10 pb-3">Contact</span>
-              <a href="tel:+34672119634" className="text-white/50 hover:text-white transition-colors tracking-wide">+34 672 119 634</a>
-              <a href="mailto:contact@lozanorealty.uk" className="text-white/50 hover:text-white transition-colors tracking-wide break-all">contact@lozanorealty.uk</a>
-              <span className="text-white/30 tracking-wide leading-relaxed">Marbella, Málaga<br />Costa del Sol</span>
+            <div className="flex flex-col gap-5">
+              <span className="text-white/30 uppercase tracking-[0.4em] text-[9px] font-bold border-b border-white/10 pb-3">Contact</span>
+              <a href="tel:+34672119634" className="text-white/60 hover:text-white transition-colors tracking-wide">+34 672 119 634</a>
+              <a href="mailto:contact@lozanorealty.uk" className="text-white/60 hover:text-white transition-colors tracking-wide break-all">contact@lozanorealty.uk</a>
+              <span className="text-white/40 tracking-wide leading-relaxed">Marbella, Málaga<br />Costa del Sol</span>
             </div>
 
-            <div className="flex flex-col gap-4">
-              <span className="text-white/20 uppercase tracking-[0.4em] text-[9px] font-bold border-b border-white/10 pb-3">Social</span>
-              <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="text-white/50 hover:text-white transition-colors uppercase tracking-widest">Instagram</a>
-              <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="text-white/50 hover:text-white transition-colors uppercase tracking-widest">LinkedIn</a>
-              <a href="mailto:contact@lozanorealty.uk" className="text-white/50 hover:text-white transition-colors uppercase tracking-widest">Email</a>
+            <div className="flex flex-col gap-5">
+              <span className="text-white/30 uppercase tracking-[0.4em] text-[9px] font-bold border-b border-white/10 pb-3">Social</span>
+              <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">Instagram</a>
+              <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">LinkedIn</a>
+              <a href="mailto:contact@lozanorealty.uk" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">Email</a>
             </div>
 
           </div>
         </div>
 
         {/* Bottom Row: Legal */}
-        <div className="pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[9px] text-white/20 uppercase tracking-[0.3em]">
+        <div className="pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[9px] text-white/25 uppercase tracking-[0.3em]">
           <span>© 2026 Lozano Realty®. All rights reserved.</span>
           <div className="flex gap-8">
-            <a href="/privacy" className="hover:text-white/50 transition-colors">Privacy</a>
-            <a href="/legal" className="hover:text-white/50 transition-colors">Legal</a>
-            <a href="/cookies" className="hover:text-white/50 transition-colors">Cookies</a>
+            <a href="/privacy" className="hover:text-white/60 transition-colors">Privacy</a>
+            <a href="/legal" className="hover:text-white/60 transition-colors">Legal</a>
+            <a href="/cookies" className="hover:text-white/60 transition-colors">Cookies</a>
           </div>
         </div>
 
