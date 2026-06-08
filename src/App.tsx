@@ -112,7 +112,7 @@ const parseJsonProperties = (data: any): Property[] => {
           priceNumeric: Number(priceVal) || 0,
           beds: parseInt(node.beds) || 0,
           baths: parseInt(node.baths) || 0,
-          sqft: builtArea !== '0' ? `${builtArea} m²` : 'Contact for area',
+          sqft: builtArea !== '0' && builtArea ? `${builtArea} m²` : '',
           sqftNumeric: Number(builtArea) || 0,
           image: mainImage,
           images: validImages.slice(0, 15),
@@ -209,7 +209,7 @@ const huspySpecialListings: Property[] = [
     priceNumeric: 4400000,
     beds: 5,
     baths: 5,
-    sqft: "Contact for area",
+    sqft: "",
     sqftNumeric: 0,
     image: "/assets/HUSPYVILLA1.webp",
     images: ["/assets/HUSPYVILLA1.webp", "/assets/HUSPYVILLA12.webp", "/assets/HUSPYVILLA13.webp", "/assets/HUSPYVILLA14.webp", "/assets/HUSPYVILLA15.webp", "/assets/HUSPYVILLA16.webp", "/assets/HUSPYVILLA17.webp"],
@@ -244,6 +244,111 @@ const huspySpecialListings: Property[] = [
     pool: true,
     plans: [],
     url: "https://www.huspy.es/comprar/--VILLA-villa-en-venta---benahav-s--m-laga-e67-de1a6040-e58c-4d45-80c9-d69672528e67",
+    developmentName: ""
+  },
+  {
+    id: "huspy-3",
+    ref: "HUSPY-C58",
+    title: "Luxury Villa in Eastern Marbella",
+    location: "East Marbella, Málaga",
+    town: "Marbella",
+    province: "Málaga",
+    price: "€1,895,000",
+    priceNumeric: 1895000,
+    beds: 4,
+    baths: 4,
+    sqft: "453 m²",
+    sqftNumeric: 453,
+    image: "https://docs-cdn.huspy.net/01KGJ7Y6SE3TSVQGGMRY28YCRV",
+    images: [
+      "https://docs-cdn.huspy.net/01KGJ7Y6SE3TSVQGGMRY28YCRV",
+      "https://docs-cdn.huspy.net/01KGJ7Y6S7E270ZBB571JJ9VEA",
+      "https://docs-cdn.huspy.net/01KGJ7Y6SN0K6PF7AGDBX8C872",
+      "https://docs-cdn.huspy.net/01KGJ7Y6SW6DC6PY7TS5SAJFVD",
+      "https://docs-cdn.huspy.net/01KGJ7Y6T3HRQP69N8ZZ45JKW9",
+      "https://docs-cdn.huspy.net/01KGJ7Y6TB0X3AXQZK2GZ10N3R",
+      "https://docs-cdn.huspy.net/01KGJ7Y6TMN5F45QJ4QAB58JGT",
+      "https://docs-cdn.huspy.net/01KGJ7Y6TWNNF8AJGZXNCZAAAV",
+      "https://docs-cdn.huspy.net/01KGJ7Y6V55VZ25FNS3S8CS5NY",
+      "https://docs-cdn.huspy.net/01KGJ7Y6VCM1AQ20HRCN8VYZ5T"
+    ],
+    tag: "Special Listing - Huspy",
+    type: "villa",
+    description: "A contemporary masterpiece in Eastern Marbella. This luxury villa delivers cutting-edge architecture, refined interiors, and sweeping Mediterranean views. Represented by Huspy.",
+    features: ["Private Pool", "Mediterranean Views", "Contemporary Architecture", "Landscaped Garden"],
+    pool: true,
+    plans: [],
+    url: "https://www.huspy.es/comprar/--VILLA-luxury-villa-in-eastern-marbella---a-contemporary-masterpiece-c58-a5e52f9a-d441-4c9f-b326-d6d063fbcc58",
+    developmentName: ""
+  },
+  {
+    id: "huspy-4",
+    ref: "HUSPY-C29",
+    title: "Villa Quinn",
+    location: "Marbella, Málaga",
+    town: "Marbella",
+    province: "Málaga",
+    price: "€2,495,000",
+    priceNumeric: 2495000,
+    beds: 5,
+    baths: 5,
+    sqft: "593 m²",
+    sqftNumeric: 593,
+    image: "https://docs-cdn.huspy.net/01KGJ9N15QWRPWT7KP6DS1W4RC",
+    images: [
+      "https://docs-cdn.huspy.net/01KGJ9N15QWRPWT7KP6DS1W4RC",
+      "https://docs-cdn.huspy.net/01KGJ9N15YB8R1NEFR26725FP1",
+      "https://docs-cdn.huspy.net/01KGJ9N165VAM841ESSA05MFGS",
+      "https://docs-cdn.huspy.net/01KGJ9N16BJT80F8HEAXKYSCNC",
+      "https://docs-cdn.huspy.net/01KGJ9N16JEX2VGCH514EZ2MEZ",
+      "https://docs-cdn.huspy.net/01KGJ9N1DNFFY6E601MGT6WPAY",
+      "https://docs-cdn.huspy.net/01KGJ9N1EE9SDR026GW5WGVA7E",
+      "https://docs-cdn.huspy.net/01KGJ9N17CW5FXDMS5F8Q1141M",
+      "https://docs-cdn.huspy.net/01KGJ9N17J9N3NKP9GTNQPV98N",
+      "https://docs-cdn.huspy.net/01KGJ9N18ZMY14SQ7TFGXA9B24"
+    ],
+    tag: "Special Listing - Huspy",
+    type: "villa",
+    description: "Villa Quinn is an exceptional residence in Marbella, offering generous living spaces, premium finishes, and private outdoor areas. Represented by Huspy.",
+    features: ["Private Pool", "Garden", "Panoramic Views", "Garage"],
+    pool: true,
+    plans: [],
+    url: "https://www.huspy.es/comprar/--VILLA-villa-quinn---m-laga--marbella-c29-80e9e39a-5df1-4c09-8e6c-287912a0ec29",
+    developmentName: ""
+  },
+  {
+    id: "huspy-5",
+    ref: "HUSPY-8FB",
+    title: "Villa de Lujo, Flamingos Golf",
+    location: "Flamingos Golf, Benahavís, Málaga",
+    town: "Benahavís",
+    province: "Málaga",
+    price: "Price on Request",
+    priceNumeric: 0,
+    beds: 5,
+    baths: 5,
+    sqft: "634 m²",
+    sqftNumeric: 634,
+    image: "https://docs-cdn.huspy.net/01KAK55XWY4E441H4BX42RHD16",
+    images: [
+      "https://docs-cdn.huspy.net/01KAK55XWY4E441H4BX42RHD16",
+      "https://docs-cdn.huspy.net/01KAK55Y6PRJ9G5XQR5VYZ8ZQW",
+      "https://docs-cdn.huspy.net/01KAK568BNYXEC1M8SG1K4FK8A",
+      "https://docs-cdn.huspy.net/01KAK568S6R1NA0D1N4PQQQR06",
+      "https://docs-cdn.huspy.net/01KAK5690H74RJDV9X7EGZMJTE",
+      "https://docs-cdn.huspy.net/01KAK5697R8GFY1EK5MJE48D1F",
+      "https://docs-cdn.huspy.net/01KAK569NN1B7EBNXJ84RDV6YG",
+      "https://docs-cdn.huspy.net/01KAK569EDVAJ139SMP72CWZ6A",
+      "https://docs-cdn.huspy.net/01KAK569TK8THR7ERZEPMT3KT1",
+      "https://docs-cdn.huspy.net/01KAK56A0AYGEPCBHHZTGJF18C"
+    ],
+    tag: "Special Listing - Huspy",
+    type: "villa",
+    description: "Luxury villa for rent in the prestigious Flamingos Golf community, Benahavís. Set on a private plot with panoramic golf and sea views. Represented by Huspy.",
+    features: ["Flamingos Golf", "Sea Views", "Private Pool", "Gated Community"],
+    pool: true,
+    plans: [],
+    url: "https://www.huspy.es/comprar/--VILLA-villa-de-lujo-en-alquiler---campo-de-golf-flamingos--benahav-s-8fb-60ebe19e-538f-4412-847f-0ef2106c58fb",
     developmentName: ""
   }
 ];
@@ -440,70 +545,66 @@ const FeaturedListings = ({ onContactClick, onPropertyClick }: { onContactClick:
   if (featuredProperties.length === 0) return null;
 
   return (
-    <section id="featured" className="bg-[#F5F4EF] py-20">
-      <div className="max-w-[1400px] mx-auto px-6">
+    <section id="featured" className="bg-[#F5F4EF] py-16 md:py-20">
+      <div className="max-w-[1400px] mx-auto">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4 px-6">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.4em] text-ocean-900/50 font-bold mb-3">Powered by Huspy</p>
+            <p className="text-[10px] uppercase tracking-[0.4em] text-ocean-900/50 mb-3">Powered by Huspy</p>
             <h2 className="text-3xl md:text-5xl font-serif text-ocean-900 font-normal tracking-tight">
               Featured <span className="italic">Listings</span>
             </h2>
           </div>
           <button
             onClick={() => document.getElementById('properties')?.scrollIntoView({ behavior: 'smooth' })}
-            className="text-xs font-bold uppercase tracking-[0.2em] text-ocean-900 border-b border-ocean-900 pb-1 hover:opacity-60 transition-opacity self-start md:self-end"
+            className="text-xs uppercase tracking-[0.2em] text-ocean-900 border-b border-ocean-900 pb-1 hover:opacity-60 transition-opacity self-start md:self-end"
           >
             View All Properties →
           </button>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Scrollable Cards Row */}
+        <div className="flex gap-4 overflow-x-auto pb-4 px-6 snap-x snap-mandatory hide-scrollbar">
           {featuredProperties.map((prop, idx) => (
             <motion.div
               key={prop.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="group relative overflow-hidden aspect-[4/3] cursor-pointer bg-ocean-900"
+              transition={{ delay: idx * 0.08 }}
+              className="group relative overflow-hidden flex-shrink-0 w-[80vw] md:w-[45vw] lg:w-[28vw] aspect-[3/4] cursor-pointer bg-ocean-900 snap-center"
               onClick={() => onPropertyClick(prop)}
             >
-              <SmoothImage
+              <img
                 src={prop.image}
                 alt={prop.title}
+                referrerPolicy="no-referrer"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-ocean-900/90 via-ocean-900/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
               {/* Huspy Badge */}
-              <div className="absolute top-6 left-6 flex items-center gap-2 bg-white px-3 py-1.5">
-                <img src="/assets/HUSPY-TECH.png.jpeg" alt="Huspy" className="h-4 w-auto" />
-                <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-ocean-900">Exclusive</span>
+              <div className="absolute top-5 left-5 flex items-center gap-2 bg-white px-2.5 py-1.5">
+                <img src="/assets/HUSPY-TECH.png.jpeg" alt="Huspy" className="h-3.5 w-auto" referrerPolicy="no-referrer" />
+                <span className="text-[8px] uppercase tracking-[0.15em] text-ocean-900">Exclusive</span>
               </div>
 
               {/* Content */}
-              <div className="absolute bottom-0 left-0 right-0 p-8 flex flex-col justify-end z-10">
-                <p className="text-white/60 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">{prop.location}</p>
-                <h3 className="text-2xl md:text-4xl font-serif text-white italic mb-4 leading-tight">{prop.title}</h3>
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-3">
-                    <span className="bg-white/10 border border-white/20 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5">{prop.beds} Bed</span>
-                    <span className="bg-white/10 border border-white/20 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5">{prop.baths} Bath</span>
-                    <span className="bg-white/10 border border-white/20 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5">{prop.sqft}</span>
-                  </div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end z-10">
+                <p className="text-white/50 text-[9px] uppercase tracking-[0.25em] mb-1.5">{prop.location}</p>
+                <h3 className="text-xl md:text-2xl font-serif text-white italic mb-5 leading-tight">{prop.title}</h3>
+                <div className="flex items-end justify-between">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onContactClick(); }}
+                    className="bg-white/10 border border-white/20 text-white px-5 py-2.5 text-[9px] uppercase tracking-[0.15em] hover:bg-white hover:text-ocean-900 transition-all"
+                  >
+                    Enquire
+                  </button>
                   <div className="text-right">
-                    <div className="text-white font-serif italic text-sm mb-1">from</div>
-                    <div className="text-white font-sans font-bold text-xl tracking-tight">{prop.price}</div>
+                    {prop.priceNumeric > 0 && <div className="text-white/50 font-serif italic text-xs mb-0.5">from</div>}
+                    <div className="text-white text-base tracking-tight font-light">{prop.price}</div>
                   </div>
                 </div>
-                <button
-                  onClick={(e) => { e.stopPropagation(); onContactClick(); }}
-                  className="mt-6 self-end bg-white text-ocean-900 px-8 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#FAF9F5] transition-colors relative z-20"
-                >
-                  Enquire About Property
-                </button>
               </div>
             </motion.div>
           ))}
@@ -956,7 +1057,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                     {group.price}
                   </div>
                   <div className={`w-fit flex items-center rounded-none border border-white/20 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[9px] md:px-4 md:py-1.5 md:text-sm'}`}>
-                    {!isExpanded && <><span>{group.sqft}</span><span className="mx-2 text-white/60 font-light">|</span></>}
+                    {!isExpanded && group.sqft && <><span>{group.sqft}</span><span className="mx-2 text-white/60 font-light">|</span></>}
                     <span>{group.bedsStr}<span className="ml-0.5 opacity-70">b</span></span>
                     <span className={`text-white/60 font-light ${!isExpanded ? 'mx-2' : 'mx-1.5 md:mx-2'}`}>|</span>
                     <span>{group.bathsStr}<span className="ml-0.5 opacity-70">ba</span></span>
@@ -1069,8 +1170,12 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                                <span>{prop.beds} Beds</span>
                                <span className="w-1 h-1 rounded-full bg-ocean-200" />
                                <span>{prop.baths} Baths</span>
-                               <span className="w-1 h-1 rounded-full bg-ocean-200" />
-                               <span>{prop.sqft}</span>
+                               {prop.sqft && (
+                                 <>
+                                   <span className="w-1 h-1 rounded-full bg-ocean-200" />
+                                   <span>{prop.sqft}</span>
+                                 </>
+                               )}
                              </div>
                            </div>
                            <button className="w-full py-4 bg-[#F5F4EF] text-ocean-900 rounded-none font-bold uppercase tracking-[0.2em] text-[10px] group-hover:bg-ocean-900 group-hover:text-white transition-colors border border-ocean-900/10">
@@ -1226,10 +1331,12 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                         </div>
 
                         <div className="flex gap-8 md:gap-12 flex-wrap">
-                          <div>
-                            <div className="text-2xl md:text-5xl font-light text-ocean-900">{selectedProperty.sqftNumeric} <span className="text-xs md:text-base text-ocean-300">m²</span></div>
-                            <div className="text-[9px] md:text-[10px] text-ocean-400 uppercase tracking-widest font-bold mt-1 md:mt-2">Surface</div>
-                          </div>
+                          {selectedProperty.sqftNumeric > 0 && (
+                            <div>
+                              <div className="text-2xl md:text-5xl font-light text-ocean-900">{selectedProperty.sqftNumeric} <span className="text-xs md:text-base text-ocean-300">m²</span></div>
+                              <div className="text-[9px] md:text-[10px] text-ocean-400 uppercase tracking-widest font-bold mt-1 md:mt-2">Surface</div>
+                            </div>
+                          )}
                           <div>
                             <div className="text-2xl md:text-5xl font-light text-ocean-900">{selectedProperty.beds}</div>
                             <div className="text-[9px] md:text-[10px] text-ocean-400 uppercase tracking-widest font-bold mt-1 md:mt-2">Bedrooms</div>
