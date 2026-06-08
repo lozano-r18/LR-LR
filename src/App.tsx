@@ -1056,12 +1056,18 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                   <div className={`w-fit rounded-none border border-white/20 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm flex items-center justify-center ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[10px] md:px-4 md:py-1.5 md:text-sm'}`}>
                     {group.price}
                   </div>
-                  <div className={`w-fit flex items-center rounded-none border border-white/20 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[9px] md:px-4 md:py-1.5 md:text-sm'}`}>
-                    {!isExpanded && group.sqft && <><span>{group.sqft}</span><span className="mx-2 text-white/60 font-light">|</span></>}
-                    <span>{group.bedsStr}<span className="ml-0.5 opacity-70">b</span></span>
-                    <span className={`text-white/60 font-light ${!isExpanded ? 'mx-2' : 'mx-1.5 md:mx-2'}`}>|</span>
-                    <span>{group.bathsStr}<span className="ml-0.5 opacity-70">ba</span></span>
-                  </div>
+                  {!group.isDevelopment ? (
+                    <div className={`w-fit flex items-center rounded-none border border-white/20 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[9px] md:px-4 md:py-1.5 md:text-sm'}`}>
+                      {!isExpanded && group.sqft && <><span>{group.sqft}</span><span className="mx-2 text-white/60 font-light">|</span></>}
+                      <span>{group.bedsStr}<span className="ml-0.5 opacity-70">b</span></span>
+                      <span className={`text-white/60 font-light ${!isExpanded ? 'mx-2' : 'mx-1.5 md:mx-2'}`}>|</span>
+                      <span>{group.bathsStr}<span className="ml-0.5 opacity-70">ba</span></span>
+                    </div>
+                  ) : (
+                    <div className={`w-fit flex items-center rounded-none border border-white/20 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[9px] md:px-4 md:py-1.5 md:text-sm'}`}>
+                      <span>{group.properties.length} Available Units</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -1125,26 +1131,30 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 100 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="relative w-full h-[100vh] bg-ocean-50 overflow-y-auto"
+                className="relative w-full h-[100vh] bg-[#F5F4EF] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header Actions */}
-                <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-ocean-50 px-6 py-4 flex justify-between items-center">
-                  <div className="text-xl font-serif text-ocean-900 line-clamp-1">
-                    {selectedGroup.title}
+                <div className="sticky top-0 z-40 bg-[#F5F4EF]/90 backdrop-blur-xl px-6 py-4 flex justify-between items-center border-b border-ocean-900/10">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-ocean-900/50">
+                    Development Overview
                   </div>
                   <button
                     onClick={() => setSelectedGroup(null)}
-                    className="w-10 h-10 rounded-full bg-ocean-50 flex items-center justify-center text-ocean-900 hover:bg-ocean-900 hover:text-white transition-all shrink-0"
+                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-ocean-900 hover:bg-ocean-900 hover:text-white transition-all shrink-0 shadow-sm"
                   >
                     <X size={20} />
                   </button>
                 </div>
                 
-                <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-12 font-sans">
-                   <div className="mb-12">
-                     <h2 className="text-4xl md:text-6xl font-serif text-ocean-900 mb-4">{selectedGroup.title}</h2>
-                     <p className="text-ocean-600 text-lg">{selectedGroup.location} • {selectedGroup.properties.length} Available Units</p>
+                <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-16 md:py-24 font-sans">
+                   <div className="mb-16 md:mb-24 flex flex-col items-center text-center">
+                     <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-ocean-400 mb-4">
+                       {selectedGroup.location} • {selectedGroup.properties.length} Available Units
+                     </p>
+                     <h2 className="text-4xl md:text-6xl lg:text-[5rem] font-serif text-ocean-900 mb-4 leading-tight">
+                       {selectedGroup.title}
+                     </h2>
                    </div>
                    
                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -1159,13 +1169,10 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                        >
                          <div className="relative aspect-[4/3] overflow-hidden">
                            <SmoothImage src={prop.image} alt={prop.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                           <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-none text-[10px] font-bold tracking-widest uppercase text-ocean-900 shadow-sm border border-ocean-900/10">
-                             REF: {prop.ref}
-                           </div>
                          </div>
                          <div className="p-6 flex-1 flex flex-col justify-between">
                            <div>
-                             <div className="text-2xl font-serif text-ocean-900 mb-2 italic">{prop.price}</div>
+                             <div className="text-xl font-sans text-ocean-900 mb-4 font-light tracking-tight">{prop.price}</div>
                              <div className="flex items-center gap-4 text-xs tracking-widest uppercase font-bold text-ocean-400 mb-6">
                                <span>{prop.beds} Beds</span>
                                <span className="w-1 h-1 rounded-full bg-ocean-200" />
@@ -1194,7 +1201,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
         {/* Property Detail Modal */}
         <AnimatePresence>
           {selectedProperty && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center">
+            <div className="fixed inset-0 z-[110] flex items-center justify-center">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
