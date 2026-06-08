@@ -434,17 +434,8 @@ const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
 };
 
 // Featured Huspy Listings Section (between Hero and Properties)
-const FeaturedListings = ({ onContactClick }: { onContactClick: () => void }) => {
-  const [featuredProperties, setFeaturedProperties] = useState<any[]>([]);
-
-  useEffect(() => {
-    getSharedProperties().then(props => {
-      const featured = props.filter(p =>
-        p.tag === 'New Build' || p.type === 'Villa'
-      ).slice(0, 2);
-      setFeaturedProperties(featured);
-    }).catch(() => {});
-  }, []);
+const FeaturedListings = ({ onContactClick, onPropertyClick }: { onContactClick: () => void, onPropertyClick: (p: any) => void }) => {
+  const featuredProperties = huspySpecialListings;
 
   if (featuredProperties.length === 0) return null;
 
@@ -477,6 +468,7 @@ const FeaturedListings = ({ onContactClick }: { onContactClick: () => void }) =>
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
               className="group relative overflow-hidden aspect-[4/3] cursor-pointer bg-ocean-900"
+              onClick={() => onPropertyClick(prop)}
             >
               <SmoothImage
                 src={prop.image}
@@ -507,8 +499,8 @@ const FeaturedListings = ({ onContactClick }: { onContactClick: () => void }) =>
                   </div>
                 </div>
                 <button
-                  onClick={onContactClick}
-                  className="mt-6 self-end bg-white text-ocean-900 px-8 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#FAF9F5] transition-colors"
+                  onClick={(e) => { e.stopPropagation(); onContactClick(); }}
+                  className="mt-6 self-end bg-white text-ocean-900 px-8 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#FAF9F5] transition-colors relative z-20"
                 >
                   Enquire About Property
                 </button>
@@ -521,7 +513,7 @@ const FeaturedListings = ({ onContactClick }: { onContactClick: () => void }) =>
   );
 };
 
-const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
+const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: { onContactClick: () => void, selectedProperty: Property | null, setSelectedProperty: (p: Property | null) => void }) => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<SearchFilters>({
@@ -537,7 +529,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const itemsPerPage = isExpanded ? 30 : 9;
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  // Main state
   const [selectedGroup, setSelectedGroup] = useState<PropertyGroup | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -628,7 +620,9 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
     const fetchHabiHubProperties = async () => {
       try {
         const parsedProperties = await getSharedProperties();
-        setProperties([...huspySpecialListings, ...parsedProperties]);
+        const combined = [...huspySpecialListings, ...parsedProperties];
+        const unique = combined.filter((v,i,a)=>a.findIndex(t=>(t.ref === v.ref || t.title === v.title))===i);
+        setProperties(unique);
       } catch (error) {
         console.error("Error fetching HabiHub feed:", error);
       } finally {
@@ -1226,7 +1220,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                     <div className="lg:col-span-8">
                       <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
                         <div>
-                          <h2 className="text-4xl md:text-6xl lg:text-[5rem] font-serif text-ocean-900 mb-2 leading-none tracking-tight font-light">
+                          <h2 className="text-4xl md:text-6xl lg:text-[5rem] font-sans text-ocean-900 mb-2 leading-none tracking-tight font-light">
                             {selectedProperty.price}
                           </h2>
                         </div>
@@ -1781,8 +1775,9 @@ const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
 };
 
 export default function App() {
-  const [showContactPopup, setShowContactPopup] = useState(false);
   const [currentRoute, setCurrentRoute] = useState('home');
+  const [showContactPopup, setShowContactPopup] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -1808,8 +1803,8 @@ export default function App() {
       {currentRoute === 'home' ? (
         <>
           <Hero onContactClick={() => setShowContactPopup(true)} />
-          <FeaturedListings onContactClick={() => setShowContactPopup(true)} />
-          <Properties onContactClick={() => setShowContactPopup(true)} />
+          <FeaturedListings onContactClick={() => setShowContactPopup(true)} onPropertyClick={setSelectedProperty} />
+          <Properties onContactClick={() => setShowContactPopup(true)} selectedProperty={selectedProperty} setSelectedProperty={setSelectedProperty} />
           <HuspyBenefits />
           <ProcessSection />
           <FAQSection />
