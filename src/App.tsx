@@ -333,6 +333,8 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
         {/* Desktop Menu */}
         <div className={`hidden md:flex items-center gap-10 font-sans font-bold text-xs uppercase tracking-[0.2em] ${navTextClass}`}>
           <a href="#home" className="hover:opacity-70 transition-opacity">Home</a>
+          <a href="#featured" className="hover:opacity-70 transition-opacity whitespace-nowrap">Featured</a>
+          <a href="#properties" className="hover:opacity-70 transition-opacity whitespace-nowrap">Properties</a>
           <a href="#team" className="hover:opacity-70 transition-opacity whitespace-nowrap">Team</a>
           <button
             onClick={onContactClick}
@@ -358,6 +360,8 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
             className="absolute top-0 left-0 right-0 bg-[#FAF9F5] shadow-2xl pt-32 pb-12 flex flex-col items-center gap-8 text-ocean-900 font-sans font-bold uppercase tracking-[0.2em] md:hidden z-50 border-b border-ocean-900/10"
           >
             <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
+            <a href="#featured" onClick={() => setIsMobileMenuOpen(false)}>Featured</a>
+            <a href="#properties" onClick={() => setIsMobileMenuOpen(false)}>Properties</a>
             <a href="#team" onClick={() => setIsMobileMenuOpen(false)}>Team</a>
             <button
               className="text-center mt-4 px-12 py-4 bg-ocean-900 text-white border border-ocean-900 rounded-full text-xs transition-all active:scale-95 shadow-lg"
@@ -377,56 +381,138 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
 
 const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
   return (
-    <section id="home" className="relative h-[100vh] min-h-[800px] flex flex-col justify-between overflow-hidden">
-      {/* High-End Villa Background */}
+    <section id="home" className="relative h-[85vh] flex items-center justify-center overflow-hidden">
+      {/* Background Image */}
       <div className="absolute inset-0 z-0">
-          <img
-            src="/assets/hero-bg.jpg"
-            alt="Luxury Beachside Villa Costa del Sol"
-            className="w-full h-full object-cover object-bottom"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-ocean-900/60 via-transparent to-ocean-900/80" />
+        <img
+          src="/assets/hero-bg.jpg"
+          alt="Luxury Beachside Villa Costa del Sol"
+          className="w-full h-full object-cover object-bottom scale-110"
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-ocean-900/60 via-ocean-900/20 to-transparent" />
       </div>
 
-      {/* Content: Main Title and Paragraph */}
-      <div className="relative z-10 max-w-[1400px] mx-auto px-6 w-full pt-32 md:pt-48 flex flex-col md:flex-row justify-between items-start md:items-center gap-10 flex-1">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 w-full h-full flex flex-col justify-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="flex flex-col"
+          className="w-full flex flex-col items-center text-center pt-20"
         >
-          <h1 className="text-5xl md:text-7xl lg:text-[7.5rem] font-sans text-white uppercase tracking-tight leading-[0.9] font-light mb-2 drop-shadow-sm">
-            LUXURY <br/> REAL ESTATE
-          </h1>
-          <div className="flex items-center gap-4 md:gap-6 mt-4">
-            <span className="text-white/80 text-xs md:text-sm uppercase tracking-[0.2em] font-bold mt-2">WITH</span>
-            <span className="text-4xl md:text-6xl lg:text-7xl font-serif text-white italic lowercase tracking-tight drop-shadow-sm">full service support</span>
+          <div className="mb-14">
+            <h1 className="text-[12vw] md:text-[8vw] font-serif text-white/95 tracking-[0.02em] leading-none uppercase select-none font-medium md:whitespace-nowrap drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)]">
+              LOZANO REALTY
+            </h1>
+            <div className="flex items-center justify-center gap-6 mt-4">
+              <span className="text-[10px] md:text-xs uppercase tracking-[0.6em] text-white/90 font-bold drop-shadow-md whitespace-nowrap">
+                Costa del Sol Real Estate
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center gap-10">
+            <div className="max-w-md">
+              <p className="text-white/80 text-[11px] md:text-xs font-semibold uppercase tracking-[0.2em] leading-loose drop-shadow-lg">
+                Premiering <span className="text-white">New Developments</span> &amp; <br/> Exclusive Lifestyle properties.
+              </p>
+            </div>
+            <button
+              onClick={onContactClick}
+              className="group flex items-center gap-4 bg-white/20 backdrop-blur-xl border border-white/30 text-white px-10 py-5 rounded-xl hover:bg-white hover:text-ocean-900 transition-all duration-500 shadow-2xl"
+            >
+              <span className="text-sm font-bold tracking-widest uppercase text-nowrap">GET IN TOUCH</span>
+              <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            </button>
           </div>
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="max-w-[320px] md:-mt-20"
-        >
-          <p className="text-white/90 text-sm md:text-base font-medium leading-relaxed drop-shadow-md text-right md:text-left">
-            We'll find and verify the property, handle the deal and post-sale service.
-          </p>
-        </motion.div>
       </div>
+    </section>
+  );
+};
 
-      {/* Bottom Content: CTA */}
-      <div className="relative z-10 w-full mt-auto mb-12">
-        <div className="max-w-[1400px] mx-auto px-6 border-t border-white/20 pt-8 flex justify-end">
+// Featured Huspy Listings Section (between Hero and Properties)
+const FeaturedListings = ({ onContactClick }: { onContactClick: () => void }) => {
+  const [featuredProperties, setFeaturedProperties] = useState<any[]>([]);
+
+  useEffect(() => {
+    getSharedProperties().then(props => {
+      const featured = props.filter(p =>
+        p.tag === 'New Build' || p.type === 'Villa'
+      ).slice(0, 2);
+      setFeaturedProperties(featured);
+    }).catch(() => {});
+  }, []);
+
+  if (featuredProperties.length === 0) return null;
+
+  return (
+    <section id="featured" className="bg-[#F5F4EF] py-20">
+      <div className="max-w-[1400px] mx-auto px-6">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.4em] text-ocean-900/50 font-bold mb-3">Powered by Huspy</p>
+            <h2 className="text-3xl md:text-5xl font-serif text-ocean-900 font-normal tracking-tight">
+              Featured <span className="italic">Listings</span>
+            </h2>
+          </div>
           <button
-            onClick={onContactClick}
-            className="group flex items-center gap-4 bg-white text-ocean-900 px-8 py-5 hover:bg-[#FAF9F5] transition-colors duration-300 shadow-xl min-w-[240px] justify-center"
+            onClick={() => document.getElementById('properties')?.scrollIntoView({ behavior: 'smooth' })}
+            className="text-xs font-bold uppercase tracking-[0.2em] text-ocean-900 border-b border-ocean-900 pb-1 hover:opacity-60 transition-opacity self-start md:self-end"
           >
-            <span className="text-xs font-bold tracking-[0.2em] uppercase">GET A CONSULTATION</span>
+            View All Properties →
           </button>
+        </div>
+
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {featuredProperties.map((prop, idx) => (
+            <motion.div
+              key={prop.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="group relative overflow-hidden aspect-[4/3] cursor-pointer bg-ocean-900"
+            >
+              <SmoothImage
+                src={prop.image}
+                alt={prop.title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ocean-900/90 via-ocean-900/30 to-transparent" />
+
+              {/* Huspy Badge */}
+              <div className="absolute top-6 left-6 flex items-center gap-2 bg-white px-3 py-1.5">
+                <img src="/assets/HUSPY-TECH.png.jpeg" alt="Huspy" className="h-4 w-auto" />
+                <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-ocean-900">Exclusive</span>
+              </div>
+
+              {/* Content */}
+              <div className="absolute bottom-0 left-0 right-0 p-8 flex flex-col justify-end z-10">
+                <p className="text-white/60 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">{prop.location}</p>
+                <h3 className="text-2xl md:text-4xl font-serif text-white italic mb-4 leading-tight">{prop.title}</h3>
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-3">
+                    <span className="bg-white/10 border border-white/20 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5">{prop.beds} Bed</span>
+                    <span className="bg-white/10 border border-white/20 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5">{prop.baths} Bath</span>
+                    <span className="bg-white/10 border border-white/20 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5">{prop.sqft}</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-white font-serif italic text-sm mb-1">from</div>
+                    <div className="text-white font-sans font-bold text-xl tracking-tight">{prop.price}</div>
+                  </div>
+                </div>
+                <button
+                  onClick={onContactClick}
+                  className="mt-6 self-end bg-white text-ocean-900 px-8 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#FAF9F5] transition-colors"
+                >
+                  Enquire About Property
+                </button>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -1511,7 +1597,7 @@ const FAQSection = () => {
             we've got you
           </h3>
           <div className="overflow-hidden aspect-[4/3] w-full max-w-lg">
-            <img src="/assets/hero-bg.jpg" alt="Luxury Interior" className="w-full h-full object-cover" />
+            <img src="/assets/faq-night.jpg" alt="Luxury Villa at Night" className="w-full h-full object-cover" />
           </div>
           <p className="font-serif italic text-ocean-900/70 text-lg md:text-xl mt-8 max-w-sm">
             « We believe real estate should feel simple. We make it that way »
@@ -1564,7 +1650,7 @@ const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
   return (
     <section className="relative min-h-[600px] flex items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img src="/assets/hero-bg.jpg" alt="Luxury Villa Exterior" className="w-full h-full object-cover brightness-50" />
+        <img src="/assets/cta-day.jpg" alt="Luxury Villa with Pool" className="w-full h-full object-cover brightness-50" />
       </div>
       
       <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 py-20 flex flex-col lg:flex-row justify-between items-center gap-16">
@@ -1591,7 +1677,7 @@ const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
         {/* Right (Form Panel) */}
         <div className="w-full max-w-md bg-[#FAF9F5] p-8 md:p-12 shadow-2xl">
           <div className="flex justify-center mb-6">
-            <h4 className="font-serif italic text-3xl text-ocean-900">Lozano</h4>
+            <h4 className="font-serif italic text-3xl text-ocean-900">Lozano Realty</h4>
           </div>
           <p className="text-center text-[10px] uppercase tracking-widest text-ocean-900/60 font-bold mb-10">
             We'll call you, explain everything, and offer the best options
@@ -1599,6 +1685,7 @@ const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
 
           <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); onContactClick(); }}>
             <input type="text" placeholder="Your name*" required className="bg-white border border-ocean-900/10 w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-ocean-900/30 text-ocean-900 placeholder:text-ocean-900/30" />
+            <input type="email" placeholder="Your email*" required className="bg-white border border-ocean-900/10 w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-ocean-900/30 text-ocean-900 placeholder:text-ocean-900/30" />
             <input type="tel" placeholder="Your number*" required className="bg-white border border-ocean-900/10 w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-ocean-900/30 text-ocean-900 placeholder:text-ocean-900/30" />
             
             <div className="relative">
@@ -1720,6 +1807,7 @@ export default function App() {
       {currentRoute === 'home' ? (
         <>
           <Hero onContactClick={() => setShowContactPopup(true)} />
+          <FeaturedListings onContactClick={() => setShowContactPopup(true)} />
           <Properties onContactClick={() => setShowContactPopup(true)} />
           <HuspyBenefits />
           <ProcessSection />
@@ -1732,80 +1820,74 @@ export default function App() {
 
       <Footer onContactClick={() => setShowContactPopup(true)} />
 
-      {/* Liquid Glass Contact Popup (Global) */}
+      {/* Editorial Contact Popup */}
       <AnimatePresence>
         {showContactPopup && (
-          <div className="fixed inset-0 z-[110] flex items-center justify-center p-6">
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 md:p-6">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowContactPopup(false)}
-              className="absolute inset-0 bg-ocean-900/40 backdrop-blur-md"
+              className="absolute inset-0 bg-ocean-950/70 backdrop-blur-sm"
             />
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-lg md:max-w-4xl bg-white/30 backdrop-blur-[40px] border border-white/40 p-10 md:p-16 rounded-[2.5rem] md:rounded-[4rem] shadow-[0_32px_100px_-20px_rgba(4,47,85,0.4)] overflow-hidden"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 30 }}
+              className="relative w-full max-w-lg md:max-w-3xl bg-[#FAF9F5] shadow-2xl overflow-hidden flex flex-col md:flex-row"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Liquid Highlight Effect Overlay */}
-              <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/20 blur-[100px] rounded-full" />
-              <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-ocean-200/20 blur-[100px] rounded-full" />
-
-              <button
-                onClick={() => setShowContactPopup(false)}
-                className="absolute top-4 right-4 md:top-8 md:right-8 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 flex items-center justify-center text-ocean-900 hover:bg-white transition-all shadow-sm z-20"
-              >
-                <X size={20} />
-              </button>
-
-              <div className="relative z-10 flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20">
-                {/* Profile Section */}
-                <div className="flex-1 text-center md:text-left flex flex-col justify-center">
-                  <div className="w-20 h-20 md:w-28 md:h-28 bg-white/40 backdrop-blur-xl rounded-3xl mb-8 md:mb-10 flex items-center justify-center shadow-lg border border-white/50 mx-auto md:mx-0">
-                    <img src="/assets/logo-blue.png" className="w-12 md:w-16 h-auto" />
-                  </div>
-
-                  <h2 className="text-3xl md:text-5xl font-serif text-ocean-900 mb-6 md:mb-8 tracking-tight leading-tight">
-                    Luis Felipe <br />
-                    <span className="text-ocean-900 font-semibold">Lozano</span>
-                  </h2>
-
-                  <div className="pt-6 md:pt-10 border-t border-ocean-900/5 hidden md:block">
-                    <span className="text-[10px] uppercase tracking-[0.5em] text-ocean-300">Bespoke Advisory</span>
-                  </div>
+              {/* Left: Image Panel */}
+              <div className="hidden md:block md:w-2/5 relative">
+                <img src="/assets/logo-blue.png" alt="" className="absolute top-8 left-8 h-10 w-auto z-10" />
+                <img src="/assets/faq-night.jpg" alt="Lozano Realty" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-ocean-900/40" />
+                <div className="absolute bottom-8 left-8 right-8">
+                  <p className="text-white/60 text-[9px] uppercase tracking-[0.4em] font-bold mb-2">Bespoke Advisory</p>
+                  <h2 className="text-2xl font-serif text-white italic leading-tight">Luis Felipe<br/>Lozano</h2>
                 </div>
+              </div>
 
-                {/* Contacts Section */}
-                <div className="flex-1 w-full space-y-4 text-xs md:text-sm tracking-[0.2em] font-bold text-ocean-900 flex flex-col justify-center">
-                  <a href="tel:+34672119634" className="flex items-center justify-center md:justify-start gap-6 py-6 px-8 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group">
-                    <Phone size={18} className="text-ocean-400 group-hover:text-ocean-900 transition-colors" />
+              {/* Right: Contact Panel */}
+              <div className="flex-1 p-8 md:p-12 flex flex-col justify-center">
+                <button
+                  onClick={() => setShowContactPopup(false)}
+                  className="absolute top-5 right-5 w-9 h-9 flex items-center justify-center text-ocean-900/50 hover:text-ocean-900 transition-colors"
+                >
+                  <X size={20} />
+                </button>
+
+                <p className="text-[9px] uppercase tracking-[0.4em] text-ocean-900/50 font-bold mb-8">Get in Touch</p>
+
+                <div className="space-y-4 text-xs md:text-sm font-bold text-ocean-900 tracking-[0.15em] uppercase">
+                  <a href="tel:+34672119634" className="flex items-center gap-4 py-5 px-6 bg-white border border-ocean-900/10 hover:border-ocean-900/30 hover:shadow-md transition-all group">
+                    <Phone size={16} className="text-ocean-900/40 group-hover:text-ocean-900 transition-colors flex-shrink-0" />
                     +34 672 119 634
                   </a>
-                  <a href="mailto:contact@lozanorealty.uk" className="flex items-center justify-center md:justify-start gap-6 py-6 px-8 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group text-[10px] md:text-xs">
-                    <Mail size={18} className="text-ocean-400 group-hover:text-ocean-900 transition-colors flex-shrink-0" />
+                  <a href="mailto:contact@lozanorealty.uk" className="flex items-center gap-4 py-5 px-6 bg-white border border-ocean-900/10 hover:border-ocean-900/30 hover:shadow-md transition-all group text-[10px]">
+                    <Mail size={16} className="text-ocean-900/40 group-hover:text-ocean-900 transition-colors flex-shrink-0" />
                     CONTACT@LOZANOREALTY.UK
                   </a>
-                  <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="flex items-center justify-center md:justify-start gap-6 py-6 px-8 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group">
-                    <Instagram size={18} className="text-ocean-400 group-hover:text-ocean-900 transition-colors" />
+                  <a href="https://wa.me/34672119634" target="_blank" rel="noreferrer" className="flex items-center gap-4 py-5 px-6 bg-ocean-900 text-white hover:bg-ocean-800 transition-all group">
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 flex-shrink-0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    WHATSAPP
+                  </a>
+                  <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="flex items-center gap-4 py-5 px-6 bg-white border border-ocean-900/10 hover:border-ocean-900/30 hover:shadow-md transition-all group">
+                    <Instagram size={16} className="text-ocean-900/40 group-hover:text-ocean-900 transition-colors flex-shrink-0" />
                     INSTAGRAM
                   </a>
-                  <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="flex items-center justify-center md:justify-start gap-6 py-6 px-8 rounded-[1.5rem] bg-white/50 border border-white/60 hover:bg-white active:scale-[0.98] transition-all shadow-[0_15px_40px_-15px_rgba(4,47,85,0.1)] group">
-                    <Linkedin size={18} className="text-ocean-400 group-hover:text-ocean-900 transition-colors" />
+                  <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="flex items-center gap-4 py-5 px-6 bg-white border border-ocean-900/10 hover:border-ocean-900/30 hover:shadow-md transition-all group">
+                    <Linkedin size={16} className="text-ocean-900/40 group-hover:text-ocean-900 transition-colors flex-shrink-0" />
                     LINKEDIN
                   </a>
-
-                  <div className="mt-8 pt-6 border-t border-ocean-900/5 md:hidden text-center">
-                    <span className="text-[9px] uppercase tracking-[0.5em] text-ocean-300">Bespoke Advisory</span>
-                  </div>
                 </div>
               </div>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
+
     </div>
   );
 }
