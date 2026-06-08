@@ -42,3 +42,16 @@
 .text-gradient {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-ocean-900 via-ocean-700 to-sand-500;
 }
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 0.75rem)); } /* -50% minus half the gap */
+}
+
+.animate-scroll {
+  animation: scroll 40s linear infinite;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}

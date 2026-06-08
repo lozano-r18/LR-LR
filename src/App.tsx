@@ -564,50 +564,48 @@ const FeaturedListings = ({ onContactClick, onPropertyClick }: { onContactClick:
         </div>
 
         {/* Scrollable Cards Row */}
-        <div className="flex gap-4 overflow-x-auto pb-4 px-6 snap-x snap-mandatory hide-scrollbar">
-          {featuredProperties.map((prop, idx) => (
-            <motion.div
-              key={prop.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.08 }}
-              className="group relative overflow-hidden flex-shrink-0 w-[80vw] md:w-[45vw] lg:w-[28vw] aspect-[3/4] cursor-pointer bg-ocean-900 snap-center"
-              onClick={() => onPropertyClick(prop)}
-            >
-              <img
-                src={prop.image}
-                alt={prop.title}
-                referrerPolicy="no-referrer"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="relative overflow-hidden py-10 px-0">
+          <div className="flex w-max animate-scroll gap-6 px-6">
+            {[...featuredProperties, ...featuredProperties].map((prop, idx) => (
+              <div
+                key={`${prop.id}-${idx}`}
+                className="group relative overflow-hidden flex-shrink-0 w-[80vw] md:w-[45vw] lg:w-[28vw] aspect-[3/4] cursor-pointer bg-ocean-900 shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.3)] transition-all duration-500 rounded-none border border-ocean-900/10"
+                onClick={() => onPropertyClick(prop)}
+              >
+                <img
+                  src={prop.image}
+                  alt={prop.title}
+                  referrerPolicy="no-referrer"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
-              {/* Huspy Badge */}
-              <div className="absolute top-5 left-5 flex items-center gap-2 bg-white px-2.5 py-1.5">
-                <img src="/assets/HUSPY-TECH.png.jpeg" alt="Huspy" className="h-3.5 w-auto" referrerPolicy="no-referrer" />
-                <span className="text-[8px] uppercase tracking-[0.15em] text-ocean-900">Exclusive</span>
-              </div>
+                {/* Huspy Badge */}
+                <div className="absolute top-5 left-5 flex items-center gap-2 bg-white px-2.5 py-1.5 z-10 shadow-sm border border-ocean-900/10">
+                  <img src="/assets/HUSPY-TECH.png.jpeg" alt="Huspy" className="h-3.5 w-auto" referrerPolicy="no-referrer" />
+                  <span className="text-[8px] uppercase tracking-[0.15em] text-ocean-900 font-bold">Exclusive</span>
+                </div>
 
-              {/* Content */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end z-10">
-                <p className="text-white/50 text-[9px] uppercase tracking-[0.25em] mb-1.5">{prop.location}</p>
-                <h3 className="text-xl md:text-2xl font-serif text-white italic mb-5 leading-tight">{prop.title}</h3>
-                <div className="flex items-end justify-between">
-                  <button
-                    onClick={(e) => { e.stopPropagation(); onContactClick(); }}
-                    className="bg-white/10 border border-white/20 text-white px-5 py-2.5 text-[9px] uppercase tracking-[0.15em] hover:bg-white hover:text-ocean-900 transition-all"
-                  >
-                    Enquire
-                  </button>
-                  <div className="text-right">
-                    {prop.priceNumeric > 0 && <div className="text-white/50 font-serif italic text-xs mb-0.5">from</div>}
-                    <div className="text-white text-base tracking-tight font-light">{prop.price}</div>
+                {/* Content */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end z-10 pointer-events-none">
+                  <p className="text-white/70 text-[9px] uppercase tracking-[0.25em] mb-1.5 font-bold">{prop.location}</p>
+                  <h3 className="text-xl md:text-2xl font-serif text-white italic mb-5 leading-tight drop-shadow-md">{prop.title}</h3>
+                  <div className="flex items-end justify-between pointer-events-auto">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); onContactClick(); }}
+                      className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-5 py-2.5 text-[9px] uppercase tracking-[0.15em] font-bold hover:bg-white hover:text-ocean-900 transition-all shadow-sm"
+                    >
+                      Enquire
+                    </button>
+                    <div className="text-right">
+                      {prop.priceNumeric > 0 && <div className="text-white/70 font-serif italic text-xs mb-0.5">from</div>}
+                      <div className="text-white text-base tracking-tight font-light drop-shadow-md">{prop.price}</div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1264,7 +1262,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
 
                 <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-6 md:py-8 font-sans">
                   {/* Image Gallery - Carousel on Mobile, Grid on Desktop */}
-                  <div className="relative mb-8 md:mb-12 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden group/gallery">
+                  <div className="relative mb-8 md:mb-12 rounded-none overflow-hidden group/gallery shadow-xl">
                     {/* Desktop Grid Layout */}
                     <div className="hidden md:grid grid-cols-12 gap-2 h-[55vh]">
                       <div className="col-span-12 md:col-span-6 h-full relative overflow-hidden">
@@ -1392,7 +1390,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                             <a
                               href={selectedProperty.plans[0]}
                               target="_blank"
-                              className="px-10 py-5 bg-white text-ocean-900 rounded-xl text-xs font-bold tracking-[0.2em] uppercase hover:bg-ocean-50/50 transition-all shadow-xl"
+                              className="px-10 py-5 bg-white text-ocean-900 rounded-none text-xs font-bold tracking-[0.2em] uppercase hover:bg-ocean-50/50 transition-all shadow-xl"
                             >
                               Get Floor Plans
                             </a>
@@ -1403,22 +1401,33 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
 
                     {/* Contact Sidebar */}
                     <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit">
-                      <div className="bg-ocean-50/50 rounded-[2.5rem] p-10 border border-ocean-50">
-                        <div className="flex items-center gap-6 mb-10">
-                          <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center shadow-sm">
+                      <div className="bg-[#F5F4EF] rounded-none p-10 border border-ocean-900/10 shadow-lg">
+                        <div className="flex items-center gap-6 mb-10 pb-10 border-b border-ocean-900/10">
+                          <div className="w-16 h-16 rounded-none bg-white flex items-center justify-center shadow-sm border border-ocean-900/10">
                             <img src="/assets/logo-blue.png" className="w-10 h-auto" />
                           </div>
                           <div>
-                            <div className="text-[10px] text-ocean-400 uppercase tracking-widest font-bold mb-1">Estate Agency</div>
-                            <div className="text-lg font-serif">Lozano Realty</div>
+                            <div className="text-[10px] text-ocean-400 uppercase tracking-[0.3em] font-bold mb-1.5">Listed By</div>
+                            <div className="text-xl font-serif text-ocean-900 italic">Lozano Realty</div>
                           </div>
+                        </div>
+                        
+                        <div className="space-y-6 mb-10">
+                           <div className="flex flex-col gap-1">
+                             <div className="text-[9px] text-ocean-400 uppercase tracking-widest font-bold">Contact Number</div>
+                             <a href="tel:+34600000000" className="text-lg font-sans text-ocean-900 font-light hover:opacity-60 transition-opacity tracking-tight">+34 666 845 282</a>
+                           </div>
+                           <div className="flex flex-col gap-1">
+                             <div className="text-[9px] text-ocean-400 uppercase tracking-widest font-bold">Email Address</div>
+                             <a href="mailto:contact@lozanorealty.uk" className="text-sm font-sans text-ocean-900 hover:opacity-60 transition-opacity">contact@lozanorealty.uk</a>
+                           </div>
                         </div>
 
                         <button
                           onClick={onContactClick}
-                          className="w-full py-6 bg-ocean-900 text-white rounded-2xl font-bold tracking-[0.3em] uppercase hover:bg-ocean-800 transition-all shadow-xl mb-4"
+                          className="w-full py-5 bg-ocean-900 text-white rounded-none font-bold tracking-[0.2em] uppercase text-[10px] hover:bg-white hover:text-ocean-900 hover:border-ocean-900 transition-all shadow-xl border border-transparent"
                         >
-                          Contact Agent
+                          Enquire Now
                         </button>
                       </div>
                     </div>
