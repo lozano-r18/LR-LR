@@ -271,8 +271,8 @@ const SmoothImage = ({ src, alt, className = "" }: any) => {
 const HuspyBenefits = () => {
   const benefits = [
     { icon: <Cpu size={24} strokeWidth={1.5} />, title: "AI-powered search", desc: "Smart matching to connect buyers with the right properties faster" },
-    { icon: <Landmark size={24} strokeWidth={1.5} />, title: "Instant mortgage access", desc: "Real-time pre-approvals via 25+ banks — at the moment you need them" },
-    { icon: <LineChart size={24} strokeWidth={1.5} />, title: "Live market data", desc: "Data-backed valuations and market trends — no guesswork" },
+    { icon: <Landmark size={24} strokeWidth={1.5} />, title: "Instant mortgage access", desc: "Real-time pre-approvals via 25+ banks, at the moment you need them" },
+    { icon: <LineChart size={24} strokeWidth={1.5} />, title: "Live market data", desc: "Data-backed valuations and market trends, no guesswork" },
     { icon: <FileSignature size={24} strokeWidth={1.5} />, title: "Digital closing", desc: "Streamlined, paperless transaction process from offer to signature" },
     { icon: <Eye size={24} strokeWidth={1.5} />, title: "Full transparency", desc: "Clients track every step of their transaction in real time" },
     { icon: <Euro size={24} strokeWidth={1.5} />, title: "Best financing rates", desc: "Access to competitive mortgage products tailored for the Spanish market" },
@@ -403,7 +403,7 @@ const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
           className="w-full flex flex-col items-center text-center pt-20"
         >
           <div className="mb-14">
-            <h1 className="text-[12vw] md:text-[8vw] font-serif text-white/95 tracking-[0.02em] leading-none uppercase select-none font-medium md:whitespace-nowrap drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)]">
+            <h1 className="text-[12vw] md:text-[8vw] font-serif text-white/95 tracking-[0.02em] leading-none uppercase select-none font-medium md:whitespace-nowrap drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)] py-2">
               LOZANO REALTY
             </h1>
             <div className="flex items-center justify-center gap-6 mt-4">
@@ -1059,19 +1059,19 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                          initial={{ opacity: 0, y: 20 }}
                          animate={{ opacity: 1, y: 0 }}
                          transition={{ delay: idx * 0.05 }}
-                         className="group cursor-pointer bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all flex flex-col"
+                         className="group cursor-pointer bg-white rounded-none border border-ocean-900/10 shadow-sm hover:shadow-xl transition-all flex flex-col overflow-hidden"
                          onClick={() => setSelectedProperty(prop)}
                        >
                          <div className="relative aspect-[4/3] overflow-hidden">
                            <SmoothImage src={prop.image} alt={prop.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                           <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase text-ocean-900 shadow-sm">
+                           <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-none text-[10px] font-bold tracking-widest uppercase text-ocean-900 shadow-sm border border-ocean-900/10">
                              REF: {prop.ref}
                            </div>
                          </div>
                          <div className="p-6 flex-1 flex flex-col justify-between">
                            <div>
-                             <div className="text-2xl font-serif text-ocean-900 mb-2">{prop.price}</div>
-                             <div className="flex items-center gap-4 text-sm text-ocean-600 mb-4">
+                             <div className="text-2xl font-serif text-ocean-900 mb-2 italic">{prop.price}</div>
+                             <div className="flex items-center gap-4 text-xs tracking-widest uppercase font-bold text-ocean-400 mb-6">
                                <span>{prop.beds} Beds</span>
                                <span className="w-1 h-1 rounded-full bg-ocean-200" />
                                <span>{prop.baths} Baths</span>
@@ -1079,7 +1079,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                                <span>{prop.sqft}</span>
                              </div>
                            </div>
-                           <button className="w-full py-3 bg-ocean-50 text-ocean-900 rounded-xl font-bold uppercase tracking-widest text-xs group-hover:bg-ocean-900 group-hover:text-white transition-colors">
+                           <button className="w-full py-4 bg-[#F5F4EF] text-ocean-900 rounded-none font-bold uppercase tracking-[0.2em] text-[10px] group-hover:bg-ocean-900 group-hover:text-white transition-colors border border-ocean-900/10">
                              View Details
                            </button>
                          </div>
@@ -1226,7 +1226,7 @@ const Properties = ({ onContactClick }: { onContactClick: () => void }) => {
                     <div className="lg:col-span-8">
                       <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
                         <div>
-                          <h2 className="text-5xl md:text-8xl font-serif text-ocean-900 mb-2 leading-none">
+                          <h2 className="text-4xl md:text-6xl lg:text-[5rem] font-serif text-ocean-900 mb-2 leading-none tracking-tight font-light">
                             {selectedProperty.price}
                           </h2>
                         </div>
@@ -1582,9 +1582,8 @@ const FAQSection = () => {
     { q: "How can I be sure the property is legally verified?", a: "We only work with properties that have passed a full legal check: we verify ownership rights, debts, restrictions, developer reputation, and deal history. Each transaction is supervised by a lawyer with experience in 100+ deals." },
     { q: "Can I buy property in Spain if I'm from the UK?", a: "Absolutely. UK buyers are some of the most active in the Costa del Sol. You will need an NIE (Foreigner Identity Number) and a Spanish bank account, both of which we assist you in obtaining effortlessly." },
     { q: "Do I need to be present in person for the paperwork?", a: "No. With a Power of Attorney (POA) granted to your legal representative, the entire purchase process can be completed on your behalf without you having to travel to Spain." },
-    { q: "How long does the entire buying process take?", a: "Typically, from finding the right property to receiving the keys, the process takes between 4 to 8 weeks, depending on the complexity of the due diligence and financing." },
     { q: "Can I rent out the property after I buy it?", a: "Yes, renting out your property is a great investment strategy. We can advise on areas with the best ROI and connect you with premium property management services." },
-    { q: "I don't understand Spanish legal details — who will explain everything?", a: "Our dedicated network of English-speaking legal experts will guide you through every contract, tax obligation, and legal nuance before you sign anything." }
+    { q: "I don't understand Spanish legal details, who will explain everything?", a: "Our dedicated network of English-speaking legal experts will guide you through every contract, tax obligation, and legal nuance before you sign anything." }
   ];
 
   return (
@@ -1666,7 +1665,7 @@ const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
             your dream home
           </h3>
           <p className="text-white/80 text-sm md:text-base font-medium leading-relaxed max-w-md mb-12">
-            Leave your contact information and briefly describe what you're interested in — our specialist will contact you, clarify the details, and offer you the best options.
+            Leave your contact information and briefly describe what you're interested in, our specialist will contact you, clarify the details, and offer you the best options.
           </p>
           <div className="text-4xl md:text-6xl font-sans tracking-tight mb-4">
             +34 672 119 634
@@ -1758,7 +1757,7 @@ const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
 
             <div className="flex flex-col gap-5">
               <span className="text-white/30 uppercase tracking-[0.4em] text-[9px] font-bold border-b border-white/10 pb-3">Social</span>
-              <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">Instagram</a>
+              <a href="https://www.instagram.com/luis_lozano_realty?igsh=aDkwNGsyMmw5cHcz" target="_blank" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">Instagram</a>
               <a href="https://www.linkedin.com/in/luislozanolozada/" target="_blank" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">LinkedIn</a>
               <a href="mailto:contact@lozanorealty.uk" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">Email</a>
             </div>
@@ -1875,7 +1874,7 @@ export default function App() {
                     <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 flex-shrink-0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                     WHATSAPP
                   </a>
-                  <a href="https://instagram.com/lozanorealty.uk" target="_blank" className="flex items-center gap-4 py-5 px-6 bg-white border border-ocean-900/10 hover:border-ocean-900/30 hover:shadow-md transition-all group">
+                  <a href="https://www.instagram.com/luis_lozano_realty?igsh=aDkwNGsyMmw5cHcz" target="_blank" className="flex items-center gap-4 py-5 px-6 bg-white border border-ocean-900/10 hover:border-ocean-900/30 hover:shadow-md transition-all group">
                     <Instagram size={16} className="text-ocean-900/40 group-hover:text-ocean-900 transition-colors flex-shrink-0" />
                     INSTAGRAM
                   </a>
