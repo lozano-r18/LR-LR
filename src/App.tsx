@@ -564,48 +564,50 @@ const FeaturedListings = ({ onContactClick, onPropertyClick }: { onContactClick:
         </div>
 
         {/* Scrollable Cards Row */}
-        <div className="relative overflow-hidden py-10 px-0">
-          <div className="flex w-max animate-scroll gap-6 px-6">
-            {[...featuredProperties, ...featuredProperties].map((prop, idx) => (
-              <div
-                key={`${prop.id}-${idx}`}
-                className="group relative overflow-hidden flex-shrink-0 w-[80vw] md:w-[45vw] lg:w-[28vw] aspect-[3/4] cursor-pointer bg-ocean-900 shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.3)] transition-all duration-500 rounded-none border border-ocean-900/10"
-                onClick={() => onPropertyClick(prop)}
-              >
-                <img
-                  src={prop.image}
-                  alt={prop.title}
-                  referrerPolicy="no-referrer"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+        <div className="flex gap-4 overflow-x-auto pb-10 px-6 snap-x snap-mandatory hide-scrollbar pt-4">
+          {featuredProperties.map((prop, idx) => (
+            <motion.div
+              key={prop.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.08 }}
+              className="group relative overflow-hidden flex-shrink-0 w-[80vw] md:w-[45vw] lg:w-[28vw] aspect-[3/4] cursor-pointer bg-ocean-900 shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.3)] transition-all duration-500 rounded-none border border-ocean-900/10 snap-center"
+              onClick={() => onPropertyClick(prop)}
+            >
+              <img
+                src={prop.image}
+                alt={prop.title}
+                referrerPolicy="no-referrer"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
-                {/* Huspy Badge */}
-                <div className="absolute top-5 left-5 flex items-center gap-2 bg-white px-2.5 py-1.5 z-10 shadow-sm border border-ocean-900/10">
-                  <img src="/assets/HUSPY-TECH.png.jpeg" alt="Huspy" className="h-3.5 w-auto" referrerPolicy="no-referrer" />
-                  <span className="text-[8px] uppercase tracking-[0.15em] text-ocean-900 font-bold">Exclusive</span>
-                </div>
+              {/* Huspy Badge */}
+              <div className="absolute top-5 left-5 flex items-center gap-2 bg-white px-2.5 py-1.5 z-10 shadow-sm border border-ocean-900/10">
+                <img src="/assets/HUSPY-TECH.png.jpeg" alt="Huspy" className="h-3.5 w-auto" referrerPolicy="no-referrer" />
+                <span className="text-[8px] uppercase tracking-[0.15em] text-ocean-900 font-bold">Exclusive</span>
+              </div>
 
-                {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end z-10 pointer-events-none">
-                  <p className="text-white/70 text-[9px] uppercase tracking-[0.25em] mb-1.5 font-bold">{prop.location}</p>
-                  <h3 className="text-xl md:text-2xl font-serif text-white italic mb-5 leading-tight drop-shadow-md">{prop.title}</h3>
-                  <div className="flex items-end justify-between pointer-events-auto">
-                    <button
-                      onClick={(e) => { e.stopPropagation(); onContactClick(); }}
-                      className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-5 py-2.5 text-[9px] uppercase tracking-[0.15em] font-bold hover:bg-white hover:text-ocean-900 transition-all shadow-sm"
-                    >
-                      Enquire
-                    </button>
-                    <div className="text-right">
-                      {prop.priceNumeric > 0 && <div className="text-white/70 font-serif italic text-xs mb-0.5">from</div>}
-                      <div className="text-white text-base tracking-tight font-light drop-shadow-md">{prop.price}</div>
-                    </div>
+              {/* Content */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end z-10">
+                <p className="text-white/70 text-[9px] uppercase tracking-[0.25em] mb-1.5 font-bold">{prop.location}</p>
+                <h3 className="text-xl md:text-2xl font-serif text-white italic mb-5 leading-tight drop-shadow-md">{prop.title}</h3>
+                <div className="flex items-end justify-between">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onContactClick(); }}
+                    className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-5 py-2.5 text-[9px] uppercase tracking-[0.15em] font-bold hover:bg-white hover:text-ocean-900 transition-all shadow-sm"
+                  >
+                    Enquire
+                  </button>
+                  <div className="text-right">
+                    {prop.priceNumeric > 0 && <div className="text-white/70 font-serif italic text-xs mb-0.5">from</div>}
+                    <div className="text-white text-base tracking-tight font-light drop-shadow-md">{prop.price}</div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -763,10 +765,6 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
 
     return matchArea && matchType && matchBeds && matchBaths && matchPriceMin && matchPriceMax && matchRef;
   }).sort((a, b) => {
-    // Ensure special listings are prioritized at the top
-    if (a.tag.includes("Special Listing") && !b.tag.includes("Special Listing")) return -1;
-    if (b.tag.includes("Special Listing") && !a.tag.includes("Special Listing")) return 1;
-
     // Favorited properties appear just below special listings
     const aFav = favorites.has(String(a.id));
     const bFav = favorites.has(String(b.id));
@@ -1054,16 +1052,12 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                   <div className={`w-fit rounded-none border border-white/20 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm flex items-center justify-center ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[10px] md:px-4 md:py-1.5 md:text-sm'}`}>
                     {group.price}
                   </div>
-                  {!group.isDevelopment ? (
+                  {!group.isDevelopment && (
                     <div className={`w-fit flex items-center rounded-none border border-white/20 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[9px] md:px-4 md:py-1.5 md:text-sm'}`}>
                       {!isExpanded && group.sqft && <><span>{group.sqft}</span><span className="mx-2 text-white/60 font-light">|</span></>}
                       <span>{group.bedsStr}<span className="ml-0.5 opacity-70">b</span></span>
                       <span className={`text-white/60 font-light ${!isExpanded ? 'mx-2' : 'mx-1.5 md:mx-2'}`}>|</span>
                       <span>{group.bathsStr}<span className="ml-0.5 opacity-70">ba</span></span>
-                    </div>
-                  ) : (
-                    <div className={`w-fit flex items-center rounded-none border border-white/20 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[9px] md:px-4 md:py-1.5 md:text-sm'}`}>
-                      <span>{group.properties.length} Available Units</span>
                     </div>
                   )}
                 </div>
