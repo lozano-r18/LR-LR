@@ -279,19 +279,21 @@ const HuspyBenefits = () => {
   ];
 
   return (
-    <section className="py-24 bg-[#F5F4EF] border-t border-ocean-900/10">
+    <section className="py-16 md:py-24 bg-[#F5F4EF] border-t border-ocean-900/10">
       <div className="max-w-[1400px] mx-auto px-6 overflow-hidden">
-        <h2 className="text-3xl md:text-5xl font-serif text-ocean-900 mb-16 font-normal tracking-tight">
+        <h2 className="text-3xl md:text-5xl font-serif text-ocean-900 mb-10 md:mb-16 font-normal tracking-tight">
           Powered by <span className="italic">Huspy</span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 w-full">
           {benefits.map((benefit, idx) => (
-            <div key={idx} className="group bg-white p-8 border border-ocean-900/10 hover:border-ocean-900/30 transition-all duration-300 hover:shadow-xl flex flex-col h-full w-full">
-              <div className="text-ocean-900 mb-8 group-hover:scale-110 transition-transform origin-left">
+            <div key={idx} className="group bg-white p-4 md:p-8 border border-ocean-900/10 hover:border-ocean-900/30 transition-all duration-300 hover:shadow-xl flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-0 h-full w-full">
+              <div className="text-ocean-900 mb-0 md:mb-8 group-hover:scale-110 transition-transform origin-left flex-shrink-0">
                 {benefit.icon}
               </div>
-              <h3 className="font-sans font-bold text-ocean-900 text-lg mb-4 leading-tight uppercase tracking-wide">{benefit.title}</h3>
-              <p className="text-ocean-900/70 text-sm leading-relaxed mt-auto font-medium">{benefit.desc}</p>
+              <div className="flex flex-col flex-1">
+                <h3 className="font-sans font-bold text-ocean-900 text-[13px] md:text-lg mb-1 md:mb-4 leading-tight uppercase tracking-wide">{benefit.title}</h3>
+                <p className="text-ocean-900/70 text-[11px] md:text-sm leading-relaxed mt-auto font-medium">{benefit.desc}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -1554,7 +1556,7 @@ const ProcessSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-[#F5F4EF]">
+    <section className="hidden md:block py-24 bg-[#F5F4EF]">
       <div className="max-w-[1400px] mx-auto px-6">
         <h2 className="text-3xl md:text-5xl font-serif text-ocean-900 mb-16 font-normal tracking-tight">
           From Request to <span className="italic">Result</span>
