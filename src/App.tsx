@@ -722,7 +722,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
       try {
         const parsedProperties = await getSharedProperties();
         const combined = [...huspySpecialListings, ...parsedProperties];
-        const unique = combined.filter((v,i,a)=>a.findIndex(t=>(t.ref === v.ref || t.title === v.title))===i);
+        const unique = combined.filter((v,i,a)=>a.findIndex(t=>t.ref === v.ref)===i);
         setProperties(unique);
       } catch (error) {
         console.error("Error fetching HabiHub feed:", error);
