@@ -960,7 +960,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                 <input
                   type="text"
                   placeholder="REF"
-                  className="w-full py-4 px-6 bg-white rounded-full border-none outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 shadow-sm focus:shadow-md transition-all placeholder:text-ocean-200"
+                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none focus:border-ocean-900/30 transition-all placeholder:text-ocean-900/30"
                   value={filters.ref}
                   onChange={(e) => setFilters({ ...filters, ref: e.target.value })}
                 />
@@ -968,7 +968,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
 
               <div className="relative group lg:col-span-1 flex gap-2">
                 <button
-                  className="w-full h-full py-4 bg-ocean-900 text-white rounded-full flex items-center justify-center hover:bg-ocean-800 transition-all shadow-lg"
+                  className="w-full h-full py-4 bg-ocean-900 text-white rounded-none flex items-center justify-center hover:bg-ocean-800 transition-all border border-ocean-900 shadow-sm"
                   onClick={() => {
                     const el = document.getElementById('properties');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -978,7 +978,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                   <Search size={18} />
                 </button>
                 <button
-                  className="w-14 h-full py-4 bg-ocean-50 text-ocean-900 rounded-full flex items-center justify-center hover:bg-ocean-100 transition-all shadow-sm"
+                  className="w-14 h-full py-4 bg-white text-ocean-900 rounded-none flex items-center justify-center hover:bg-ocean-50 border border-ocean-900/10 transition-all shadow-sm"
                   onClick={() => setFilters({ area: '', type: '', beds: '', baths: '', priceMin: '', priceMax: '', ref: '', sortBy: 'newest' })}
                   title="Clear Filters"
                 >
@@ -1770,12 +1770,10 @@ const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
         
         {/* Left */}
         <div className="flex-1 text-white">
-          <h2 className="text-4xl md:text-6xl lg:text-[5rem] font-sans uppercase tracking-tight leading-none font-normal mb-2">
-            START YOUR
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-tight tracking-tight mb-12 font-normal">
+            Finding a new home isn't easy.<br/>
+            <span className="italic text-white/90">We know that.</span>
           </h2>
-          <h3 className="text-3xl md:text-5xl lg:text-7xl font-serif italic lowercase tracking-tight mb-12 text-white/90">
-            journey
-          </h3>
           <div className="text-3xl md:text-5xl font-sans tracking-tight font-light mb-4">
             +34 666 845 282
           </div>
