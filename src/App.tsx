@@ -441,7 +441,7 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
         <div className={`hidden md:flex items-center gap-10 font-sans font-bold text-xs uppercase tracking-[0.2em] ${navTextClass}`}>
           <a href="#home" className="hover:opacity-70 transition-opacity">Home</a>
           <a href="#featured" className="hover:opacity-70 transition-opacity whitespace-nowrap">Featured</a>
-          <a href="#properties" className="hover:opacity-70 transition-opacity whitespace-nowrap">Properties</a>
+          <a href="#properties" className="hover:opacity-70 transition-opacity whitespace-nowrap" onClick={(e) => { e.preventDefault(); const el = document.getElementById('properties'); if (el) window.scrollTo({ top: el.offsetTop - 120, behavior: 'smooth' }); }}>Properties</a>
           <a href="#team" className="hover:opacity-70 transition-opacity whitespace-nowrap">Team</a>
           <button
             onClick={onContactClick}
@@ -468,7 +468,7 @@ const Navbar = ({ onContactClick, currentRoute }: { onContactClick: () => void, 
           >
             <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
             <a href="#featured" onClick={() => setIsMobileMenuOpen(false)}>Featured</a>
-            <a href="#properties" onClick={() => setIsMobileMenuOpen(false)}>Properties</a>
+            <a href="#properties" onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); const el = document.getElementById('properties'); if (el) window.scrollTo({ top: el.offsetTop - 120, behavior: 'smooth' }); }}>Properties</a>
             <a href="#team" onClick={() => setIsMobileMenuOpen(false)}>Team</a>
             <button
               className="text-center mt-4 px-12 py-4 bg-ocean-900 text-white border border-ocean-900 rounded-full text-xs transition-all active:scale-95 shadow-lg"
@@ -556,7 +556,7 @@ const FeaturedListings = ({ onContactClick, onPropertyClick }: { onContactClick:
             </h2>
           </div>
           <button
-            onClick={() => document.getElementById('properties')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => { const el = document.getElementById('properties'); if (el) window.scrollTo({ top: el.offsetTop - 120, behavior: 'smooth' }); }}
             className="text-xs uppercase tracking-[0.2em] text-ocean-900 border-b border-ocean-900 pb-1 hover:opacity-60 transition-opacity self-start md:self-end"
           >
             View All Properties →
@@ -980,7 +980,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                   className="flex-1 lg:w-32 h-full bg-ocean-900 text-white flex items-center justify-center hover:bg-ocean-800 transition-colors uppercase text-[10px] tracking-[0.2em] font-bold"
                   onClick={() => {
                     const el = document.getElementById('properties');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    if (el) window.scrollTo({ top: el.offsetTop - 120, behavior: 'smooth' });
                   }}
                   title="Search Properties"
                 >
@@ -1091,7 +1091,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
             <button
               onClick={() => {
                 setCurrentPage(p => Math.max(1, p - 1));
-                setTimeout(() => document.getElementById('properties')?.scrollIntoView({ behavior: 'smooth' }), 50);
+                setTimeout(() => { const el = document.getElementById('properties'); if (el) window.scrollTo({ top: el.offsetTop - 120, behavior: 'smooth' }); }, 50);
               }}
               disabled={currentPage === 1}
               className="w-12 h-12 md:w-auto md:px-8 md:py-4 bg-white/60 backdrop-blur-xl border border-ocean-200 text-ocean-900 md:text-sm font-bold tracking-widest uppercase hover:bg-ocean-900 hover:text-white transition-all duration-500 flex items-center justify-center gap-3 rounded-full flex-shrink-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] disabled:opacity-40 disabled:cursor-not-allowed group"
@@ -1105,7 +1105,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
             <button
               onClick={() => {
                 setCurrentPage(p => Math.min(totalPages, p + 1));
-                setTimeout(() => document.getElementById('properties')?.scrollIntoView({ behavior: 'smooth' }), 50);
+                setTimeout(() => { const el = document.getElementById('properties'); if (el) window.scrollTo({ top: el.offsetTop - 120, behavior: 'smooth' }); }, 50);
               }}
               disabled={currentPage === totalPages}
               className="w-12 h-12 md:w-auto md:px-8 md:py-4 bg-white/60 backdrop-blur-xl border border-ocean-200 text-ocean-900 md:text-sm font-bold tracking-widest uppercase hover:bg-ocean-900 hover:text-white transition-all duration-500 flex items-center justify-center gap-3 rounded-full flex-shrink-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] disabled:opacity-40 disabled:cursor-not-allowed group"
@@ -1844,7 +1844,7 @@ const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
             <div className="flex flex-col gap-5">
               <span className="text-white/30 uppercase tracking-[0.4em] text-[9px] font-bold border-b border-white/10 pb-3">Navigate</span>
               <a href="#home" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">Home</a>
-              <a href="#properties" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">Properties</a>
+              <a href="#properties" onClick={(e) => { e.preventDefault(); const el = document.getElementById('properties'); if (el) window.scrollTo({ top: el.offsetTop - 120, behavior: 'smooth' }); }} className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">Properties</a>
               <a href="#team" className="text-white/60 hover:text-white transition-colors uppercase tracking-widest">Team</a>
               <button onClick={onContactClick} className="text-left text-white/60 hover:text-white transition-colors uppercase tracking-widest">Contact</button>
             </div>
