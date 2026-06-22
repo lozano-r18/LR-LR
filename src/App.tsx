@@ -878,59 +878,65 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
       <div className="max-w-[1400px] mx-auto px-6 pt-12">
         <div className="mb-12">
 
-          <div className="bg-white border-b border-ocean-900/10 pb-6 relative z-20 w-full">
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-              <div className="relative group">
+          <div className="bg-white pb-10 relative z-20 w-full pt-2">
+            <div className="flex flex-wrap lg:flex-nowrap items-stretch bg-white border border-ocean-900/10 shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
+              
+              {/* Area */}
+              <div className="relative group flex-1 min-w-[120px] border-b lg:border-b-0 lg:border-r border-ocean-900/10">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer hover:border-ocean-900/30 transition-all"
+                  className="w-full h-full py-5 px-6 bg-transparent outline-none text-[10px] uppercase tracking-[0.15em] font-bold text-ocean-900 appearance-none cursor-pointer hover:bg-ocean-50/30 transition-colors"
                   value={filters.area}
                   onChange={(e) => setFilters({ ...filters, area: e.target.value })}
                 >
                   <option value="">Area</option>
                   {areas.map(a => <option key={a} value={a}>{a}</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/30 pointer-events-none" />
               </div>
 
-              <div className="relative group">
+              {/* Type */}
+              <div className="relative group flex-1 min-w-[120px] border-b lg:border-b-0 lg:border-r border-ocean-900/10">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer hover:border-ocean-900/30 transition-all"
+                  className="w-full h-full py-5 px-6 bg-transparent outline-none text-[10px] uppercase tracking-[0.15em] font-bold text-ocean-900 appearance-none cursor-pointer hover:bg-ocean-50/30 transition-colors"
                   value={filters.type}
                   onChange={(e) => setFilters({ ...filters, type: e.target.value })}
                 >
                   <option value="">Type</option>
                   {types.map(t => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/30 pointer-events-none" />
               </div>
 
-              <div className="relative group">
+              {/* Beds */}
+              <div className="relative group flex-1 min-w-[100px] border-b lg:border-b-0 lg:border-r border-ocean-900/10">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer hover:border-ocean-900/30 transition-all"
+                  className="w-full h-full py-5 px-6 bg-transparent outline-none text-[10px] uppercase tracking-[0.15em] font-bold text-ocean-900 appearance-none cursor-pointer hover:bg-ocean-50/30 transition-colors"
                   value={filters.beds}
                   onChange={(e) => setFilters({ ...filters, beds: e.target.value })}
                 >
                   <option value="">Beds</option>
                   {[1, 2, 3, 4, 5, 6].map(n => <option key={n} value={n}>{n}+</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/30 pointer-events-none" />
               </div>
 
-              <div className="relative group">
+              {/* Baths */}
+              <div className="relative group flex-1 min-w-[100px] border-b lg:border-b-0 lg:border-r border-ocean-900/10">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer hover:border-ocean-900/30 transition-all"
+                  className="w-full h-full py-5 px-6 bg-transparent outline-none text-[10px] uppercase tracking-[0.15em] font-bold text-ocean-900 appearance-none cursor-pointer hover:bg-ocean-50/30 transition-colors"
                   value={filters.baths}
                   onChange={(e) => setFilters({ ...filters, baths: e.target.value })}
                 >
                   <option value="">Baths</option>
                   {[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}+</option>)}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/30 pointer-events-none" />
               </div>
 
-              <div className="relative group">
+              {/* Min € */}
+              <div className="relative group flex-1 min-w-[120px] border-b lg:border-b-0 lg:border-r border-ocean-900/10">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer hover:border-ocean-900/30 transition-all"
+                  className="w-full h-full py-5 px-6 bg-transparent outline-none text-[10px] uppercase tracking-[0.15em] font-bold text-ocean-900 appearance-none cursor-pointer hover:bg-ocean-50/30 transition-colors"
                   value={filters.priceMin}
                   onChange={(e) => setFilters({ ...filters, priceMin: e.target.value })}
                 >
@@ -939,12 +945,13 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                     <option key={p} value={p}>€{(p / 1000).toFixed(0)}k</option>
                   ))}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/30 pointer-events-none" />
               </div>
 
-              <div className="relative group">
+              {/* Max € */}
+              <div className="relative group flex-1 min-w-[120px] border-b lg:border-b-0 lg:border-r border-ocean-900/10">
                 <select
-                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none cursor-pointer hover:border-ocean-900/30 transition-all"
+                  className="w-full h-full py-5 px-6 bg-transparent outline-none text-[10px] uppercase tracking-[0.15em] font-bold text-ocean-900 appearance-none cursor-pointer hover:bg-ocean-50/30 transition-colors"
                   value={filters.priceMax}
                   onChange={(e) => setFilters({ ...filters, priceMax: e.target.value })}
                 >
@@ -953,32 +960,34 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                     <option key={p} value={p}>€{(p / 1000000).toFixed(1)}M</option>
                   ))}
                 </select>
-                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/30 pointer-events-none" />
               </div>
 
-              <div className="relative group lg:col-span-1">
+              {/* REF */}
+              <div className="relative group flex-1 min-w-[120px] border-b lg:border-b-0 lg:border-r border-ocean-900/10">
                 <input
                   type="text"
                   placeholder="REF"
-                  className="w-full py-4 px-6 bg-white rounded-none border border-ocean-900/10 outline-none text-[11px] uppercase tracking-widest font-bold text-ocean-900 appearance-none focus:border-ocean-900/30 transition-all placeholder:text-ocean-900/30"
+                  className="w-full h-full py-5 px-6 bg-transparent outline-none text-[10px] uppercase tracking-[0.15em] font-bold text-ocean-900 placeholder:text-ocean-900/30 hover:bg-ocean-50/30 focus:bg-ocean-50/30 transition-colors"
                   value={filters.ref}
                   onChange={(e) => setFilters({ ...filters, ref: e.target.value })}
                 />
               </div>
 
-              <div className="relative group lg:col-span-1 flex gap-2">
+              {/* Action Buttons */}
+              <div className="flex w-full lg:w-auto h-[60px] lg:h-auto">
                 <button
-                  className="w-full h-full py-4 bg-ocean-900 text-white rounded-none flex items-center justify-center hover:bg-ocean-800 transition-all border border-ocean-900 shadow-sm"
+                  className="flex-1 lg:w-32 h-full bg-ocean-900 text-white flex items-center justify-center hover:bg-ocean-800 transition-colors uppercase text-[10px] tracking-[0.2em] font-bold"
                   onClick={() => {
                     const el = document.getElementById('properties');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
                   title="Search Properties"
                 >
-                  <Search size={18} />
+                  <Search size={16} className="mr-2" /> Search
                 </button>
                 <button
-                  className="w-14 h-full py-4 bg-white text-ocean-900 rounded-none flex items-center justify-center hover:bg-ocean-50 border border-ocean-900/10 transition-all shadow-sm"
+                  className="w-16 h-full bg-ocean-50 text-ocean-900 flex items-center justify-center hover:bg-ocean-100 transition-colors border-l border-ocean-900/10"
                   onClick={() => setFilters({ area: '', type: '', beds: '', baths: '', priceMin: '', priceMax: '', ref: '', sortBy: 'newest' })}
                   title="Clear Filters"
                 >
