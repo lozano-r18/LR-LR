@@ -567,12 +567,12 @@ const FeaturedListings = ({ onContactClick, onPropertyClick }: { onContactClick:
         <div className="flex gap-4 overflow-x-auto pb-10 px-6 snap-x snap-mandatory hide-scrollbar pt-4">
           {featuredProperties.map((prop, idx) => (
             <motion.div
-              key={prop.id}
+              key={`${prop.id}-${idx}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.08 }}
-              className="group relative overflow-hidden flex-shrink-0 w-[80vw] md:w-[45vw] lg:w-[28vw] aspect-[3/4] cursor-pointer bg-ocean-900 shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.3)] transition-all duration-500 rounded-none border border-ocean-900/10 snap-center"
+              className="group relative overflow-hidden flex-shrink-0 w-[80vw] md:w-[45vw] lg:w-[28vw] aspect-[3/4] cursor-pointer bg-[#EBEAE5] shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.3)] transition-all duration-500 rounded-none snap-center"
               onClick={() => onPropertyClick(prop)}
             >
               <img
@@ -1760,67 +1760,50 @@ const FAQSection = () => {
 
 const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
   return (
-    <section className="relative min-h-[600px] flex items-center overflow-hidden">
+    <section className="relative min-h-[600px] flex items-center overflow-hidden bg-ocean-950">
       <div className="absolute inset-0 z-0">
-        <img src="/assets/cta-day.jpg" alt="Luxury Villa with Pool" className="w-full h-full object-cover brightness-50" />
+        <img src="/assets/cta-day.jpg" alt="Luxury Villa" className="w-full h-full object-cover opacity-60 mix-blend-overlay" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ocean-950 via-ocean-950/80 to-transparent" />
       </div>
       
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 py-20 flex flex-col lg:flex-row justify-between items-center gap-16">
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 py-24 flex flex-col lg:flex-row justify-between items-center gap-16">
         
         {/* Left */}
         <div className="flex-1 text-white">
-          <h2 className="text-4xl md:text-6xl lg:text-[5rem] font-sans uppercase tracking-tight leading-[0.9] font-normal mb-2">
-            LET'S TALK ABOUT
+          <h2 className="text-4xl md:text-6xl lg:text-[5rem] font-sans uppercase tracking-tight leading-none font-normal mb-2">
+            START YOUR
           </h2>
-          <h3 className="text-3xl md:text-5xl lg:text-7xl font-serif italic lowercase tracking-tight mb-8">
-            your dream home
+          <h3 className="text-3xl md:text-5xl lg:text-7xl font-serif italic lowercase tracking-tight mb-12 text-white/90">
+            journey
           </h3>
-          <p className="text-white/80 text-sm md:text-base font-medium leading-relaxed max-w-md mb-12">
-            Leave your contact information and briefly describe what you're interested in, our specialist will contact you, clarify the details, and offer you the best options.
-          </p>
-          <div className="text-4xl md:text-6xl font-sans tracking-tight mb-4">
-            +34 672 119 634
+          <div className="text-3xl md:text-5xl font-sans tracking-tight font-light mb-4">
+            +34 666 845 282
           </div>
-          <p className="text-[10px] uppercase tracking-widest text-white/50 font-bold max-w-[150px]">
-            We handle every step with care
+          <p className="text-[10px] uppercase tracking-[0.3em] text-white/50 font-bold">
+            Contact us directly or leave a request
           </p>
         </div>
 
         {/* Right (Form Panel) */}
-        <div className="w-full max-w-md bg-[#FAF9F5] p-8 md:p-12 shadow-2xl">
-          <div className="flex justify-center mb-6">
-            <h4 className="font-serif italic text-3xl text-ocean-900">Lozano Realty</h4>
+        <div className="w-full max-w-md bg-white/95 backdrop-blur-xl p-8 md:p-12 shadow-2xl rounded-none">
+          <div className="flex flex-col mb-8">
+            <h4 className="font-serif italic text-3xl text-ocean-900 mb-2">Lozano Realty</h4>
+            <div className="w-12 h-px bg-ocean-900/20" />
           </div>
-          <p className="text-center text-[10px] uppercase tracking-widest text-ocean-900/60 font-bold mb-10">
-            We'll call you, explain everything, and offer the best options
-          </p>
 
-          <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); onContactClick(); }}>
-            <input type="text" placeholder="Your name*" required className="bg-white border border-ocean-900/10 w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-ocean-900/30 text-ocean-900 placeholder:text-ocean-900/30" />
-            <input type="email" placeholder="Your email*" required className="bg-white border border-ocean-900/10 w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-ocean-900/30 text-ocean-900 placeholder:text-ocean-900/30" />
-            <input type="tel" placeholder="Your number*" required className="bg-white border border-ocean-900/10 w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-ocean-900/30 text-ocean-900 placeholder:text-ocean-900/30" />
+          <form className="flex flex-col gap-5" onSubmit={(e) => { e.preventDefault(); onContactClick(); }}>
+            <input type="text" placeholder="Full Name" required className="bg-transparent border-b border-ocean-900/20 w-full px-0 py-3 text-sm focus:outline-none focus:border-ocean-900 text-ocean-900 placeholder:text-ocean-900/40 transition-colors" />
+            <input type="email" placeholder="Email Address" required className="bg-transparent border-b border-ocean-900/20 w-full px-0 py-3 text-sm focus:outline-none focus:border-ocean-900 text-ocean-900 placeholder:text-ocean-900/40 transition-colors" />
+            <input type="tel" placeholder="Phone Number" required className="bg-transparent border-b border-ocean-900/20 w-full px-0 py-3 text-sm focus:outline-none focus:border-ocean-900 text-ocean-900 placeholder:text-ocean-900/40 transition-colors" />
             
-            <div className="relative">
-              <select required className="bg-white border border-ocean-900/10 w-full px-5 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-ocean-900/30 text-ocean-900 appearance-none placeholder:text-ocean-900/30">
-                <option value="" disabled selected>Choose your goal</option>
-                <option value="buy">Buying a property</option>
-                <option value="sell">Selling a property</option>
-                <option value="invest">Investment</option>
-              </select>
-              <ChevronDown size={14} className="absolute right-5 top-1/2 -translate-y-1/2 text-ocean-900/40 pointer-events-none" />
-            </div>
-
-            <button type="submit" className="mt-4 bg-ocean-800 text-white uppercase text-xs tracking-[0.2em] font-bold py-5 hover:bg-ocean-900 transition-colors">
+            <button type="submit" className="mt-6 bg-ocean-900 text-white uppercase text-[10px] tracking-[0.2em] font-bold py-5 hover:bg-ocean-800 transition-colors shadow-lg">
               SEND REQUEST
             </button>
-            <div className="mt-4 text-center">
-              <a href="https://wa.me/34672119634" target="_blank" rel="noreferrer" className="text-[10px] text-ocean-900/50 hover:text-ocean-900 transition-colors uppercase tracking-widest font-bold underline">
-                Or contact via WhatsApp
+            <div className="mt-2 text-center">
+              <a href="https://wa.me/34666845282" target="_blank" rel="noreferrer" className="text-[10px] text-ocean-900/50 hover:text-ocean-900 transition-colors uppercase tracking-[0.2em] font-bold underline">
+                WhatsApp Us
               </a>
             </div>
-            <p className="text-[9px] text-ocean-900/40 text-center mt-4">
-              By clicking the button, you agree to our Privacy Policy and consent to be contacted
-            </p>
           </form>
         </div>
 
@@ -1923,8 +1906,6 @@ export default function App() {
           <FeaturedListings onContactClick={() => setShowContactPopup(true)} onPropertyClick={setSelectedProperty} />
           <Properties onContactClick={() => setShowContactPopup(true)} selectedProperty={selectedProperty} setSelectedProperty={setSelectedProperty} />
           <HuspyBenefits />
-          <ProcessSection />
-          <FAQSection />
           <CTAFormSection onContactClick={() => setShowContactPopup(true)} />
         </>
       ) : (
