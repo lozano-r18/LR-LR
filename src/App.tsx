@@ -1418,7 +1418,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                         <div className="space-y-6 mb-10">
                            <div className="flex flex-col gap-1">
                              <div className="text-[9px] text-ocean-400 uppercase tracking-widest font-bold">Contact Number</div>
-                             <a href="tel:+34600000000" className="text-lg font-sans text-ocean-900 font-light hover:opacity-60 transition-opacity tracking-tight">+34 666 845 282</a>
+                             <a href="tel:+34672119634" className="text-lg font-sans text-ocean-900 font-light hover:opacity-60 transition-opacity tracking-tight">+34 672 11 96 34</a>
                            </div>
                            <div className="flex flex-col gap-1">
                              <div className="text-[9px] text-ocean-400 uppercase tracking-widest font-bold">Email Address</div>
@@ -1784,7 +1784,7 @@ const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
             <span className="italic text-white/90">We know that.</span>
           </h2>
           <div className="text-3xl md:text-5xl font-sans tracking-tight font-light mb-4">
-            +34 666 845 282
+            +34 672 11 96 34
           </div>
           <p className="text-[10px] uppercase tracking-[0.3em] text-white/50 font-bold">
             Contact us directly or leave a request
@@ -1807,7 +1807,7 @@ const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
               SEND REQUEST
             </button>
             <div className="mt-2 text-center">
-              <a href="https://wa.me/34666845282" target="_blank" rel="noreferrer" className="text-[10px] text-ocean-900/50 hover:text-ocean-900 transition-colors uppercase tracking-[0.2em] font-bold underline">
+              <a href="https://wa.me/34672119634" target="_blank" rel="noreferrer" className="text-[10px] text-ocean-900/50 hover:text-ocean-900 transition-colors uppercase tracking-[0.2em] font-bold underline">
                 WhatsApp Us
               </a>
             </div>
@@ -1851,7 +1851,7 @@ const Footer = ({ onContactClick }: { onContactClick: () => void }) => {
 
             <div className="flex flex-col gap-5">
               <span className="text-white/30 uppercase tracking-[0.4em] text-[9px] font-bold border-b border-white/10 pb-3">Contact</span>
-              <a href="tel:+34672119634" className="text-white/60 hover:text-white transition-colors tracking-wide">+34 672 119 634</a>
+              <a href="tel:+34672119634" className="text-white/60 hover:text-white transition-colors tracking-wide">+34 672 11 96 34</a>
               <a href="mailto:contact@lozanorealty.uk" className="text-white/60 hover:text-white transition-colors tracking-wide break-all">contact@lozanorealty.uk</a>
               <span className="text-white/40 tracking-wide leading-relaxed">Marbella, Málaga<br />Costa del Sol</span>
             </div>
@@ -1964,7 +1964,7 @@ export default function App() {
                 <div className="space-y-4 text-xs md:text-sm font-bold text-ocean-900 tracking-[0.15em] uppercase">
                   <a href="tel:+34672119634" className="flex items-center gap-4 py-5 px-6 bg-white border border-ocean-900/10 hover:border-ocean-900/30 hover:shadow-md transition-all group">
                     <Phone size={16} className="text-ocean-900/40 group-hover:text-ocean-900 transition-colors flex-shrink-0" />
-                    +34 672 119 634
+                    +34 672 11 96 34
                   </a>
                   <a href="mailto:contact@lozanorealty.uk" className="flex items-center gap-4 py-5 px-6 bg-white border border-ocean-900/10 hover:border-ocean-900/30 hover:shadow-md transition-all group text-[10px]">
                     <Mail size={16} className="text-ocean-900/40 group-hover:text-ocean-900 transition-colors flex-shrink-0" />
