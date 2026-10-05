@@ -519,9 +519,9 @@ const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
           </div>
 
           <div className="flex flex-col items-center gap-10">
-            <div className="max-w-md">
+            <div className="max-w-xl">
               <p className="text-white/80 text-[11px] md:text-xs font-semibold uppercase tracking-[0.2em] leading-loose drop-shadow-lg">
-                Premiering <span className="text-white">New Developments</span> &amp; <br/> Exclusive Lifestyle properties.
+                Personal Shopper with direct access to new developments, exclusive listings and off market properties
               </p>
             </div>
             <button
@@ -1779,10 +1779,14 @@ const CTAFormSection = ({ onContactClick }: { onContactClick: () => void }) => {
         
         {/* Left */}
         <div className="flex-1 text-white">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-tight tracking-tight mb-12 font-normal">
-            Finding a new home isn't easy.<br/>
-            <span className="italic text-white/90">We know that.</span>
-          </h2>
+          <div className="mb-12">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif text-white leading-tight tracking-tight mb-4 font-normal">
+              Finding the right property is only the start.
+            </h2>
+            <p className="text-white/80 text-sm md:text-base font-light leading-relaxed max-w-lg">
+              Our role is to verify the facts, flag the risks, and guide you through each decision.
+            </p>
+          </div>
           <div className="text-3xl md:text-5xl font-sans tracking-tight font-light mb-4">
             +34 672 11 96 34
           </div>
