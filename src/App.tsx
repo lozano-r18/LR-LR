@@ -199,6 +199,43 @@ const getSharedProperties = (): Promise<Property[]> => {
 // --- Huspy Static Listings ---
 const huspySpecialListings: Property[] = [
   {
+    id: "rgz-nikki-living",
+    ref: "RGZ-NIKKI",
+    title: "Nikki Living",
+    location: "Nueva Andalucía, Marbella, Málaga",
+    town: "Marbella",
+    province: "Málaga",
+    price: "€450,000",
+    priceNumeric: 450000,
+    beds: 3,
+    baths: 2,
+    sqft: "46 - 395 m²",
+    sqftNumeric: 180,
+    image: "https://rgzdevelopers.com/wp-content/uploads/2025/11/exterior-villa-01-nikki-living-marbella-developed-by-rgz.jpg",
+    images: [
+      "https://rgzdevelopers.com/wp-content/uploads/2025/11/exterior-villa-01-nikki-living-marbella-developed-by-rgz.jpg",
+      "https://rgzdevelopers.com/wp-content/uploads/2025/11/villa-upper-view-nikki-living-marbella-developed-by-rgz.jpg",
+      "https://rgzdevelopers.com/wp-content/uploads/2025/11/exterior-villa-02-nikki-living-marbella-developed-by-rgz.jpg",
+      "https://rgzdevelopers.com/wp-content/uploads/2025/11/apts3-min-nikki-living-marbella-developed-by-rgz.jpg",
+      "https://rgzdevelopers.com/wp-content/uploads/2025/11/interior-villa-02-nikki-living-marbella-developed-by-rgz.jpg",
+      "https://rgzdevelopers.com/wp-content/uploads/2025/11/front-villa-01-nikki-living-marbella-developed-by-rgz.jpg",
+      "https://rgzdevelopers.com/wp-content/uploads/2025/11/interior-villa-nikki-living-marbella-developed-by-rgz.jpg",
+      "https://rgzdevelopers.com/wp-content/uploads/2025/11/spa-01-nikki-living-marbella-developed-by-rgz.jpg",
+      "https://rgzdevelopers.com/wp-content/uploads/2025/11/spa-02-nikki-living-marbella-developed-by-rgz.jpg",
+      "https://rgzdevelopers.com/wp-content/uploads/2025/11/bedroom-02-nikki-living-marbella-developed-by-rgz.jpg",
+      "https://rgzdevelopers.com/wp-content/uploads/2025/11/bathroom-01-nikki-living-marbella-developed-by-rgz.jpg",
+      "https://rgzdevelopers.com/wp-content/uploads/2025/11/coworking-01-nikki-living-marbella-developed-by-rgz.jpg"
+    ],
+    tag: "Special Listing - New Development",
+    type: "residence",
+    description: "Nikki Living in Nueva Andalucía, Marbella, features 43 luxury resort residences blending prime ownership with a flexible investment model. Minutes from Puerto Banús and surrounded by 14 championship golf courses. Includes on-site spa & wellness center, gym, restaurant, co-working spaces, and 24/7 concierge service. Developed by RGZ Developers.",
+    features: ["Spa & Wellness Centre", "Equipped Gym", "On-site Restaurant", "Co-working Spaces", "24/7 Concierge", "Surrounded by 14 Golf Courses", "9 min to Puerto Banús"],
+    pool: true,
+    plans: [],
+    url: "https://rgzdevelopers.com/projects/nikki-living/",
+    developmentName: "Nikki Living"
+  },
+  {
     id: "huspy-1",
     ref: "HUSPY-E54",
     title: "Villa in Monte Mayor",
@@ -550,7 +587,7 @@ const FeaturedListings = ({ onContactClick, onPropertyClick }: { onContactClick:
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4 px-6">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.4em] text-ocean-900/50 mb-3">Powered by Huspy</p>
+            <p className="text-[10px] uppercase tracking-[0.4em] text-ocean-900/50 mb-3">Featured Developments &amp; Exclusives</p>
             <h2 className="text-3xl md:text-5xl font-serif text-ocean-900 font-normal tracking-tight">
               Featured <span className="italic">Listings</span>
             </h2>
@@ -583,10 +620,16 @@ const FeaturedListings = ({ onContactClick, onPropertyClick }: { onContactClick:
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
-              {/* Huspy Badge */}
+              {/* Badge */}
               <div className="absolute top-5 left-5 flex items-center gap-2 bg-white px-2.5 py-1.5 z-10 shadow-sm border border-ocean-900/10">
-                <img src="/assets/HUSPY-TECH.png.jpeg" alt="Huspy" className="h-3.5 w-auto" referrerPolicy="no-referrer" />
-                <span className="text-[8px] uppercase tracking-[0.15em] text-ocean-900 font-bold">Exclusive</span>
+                {prop.tag.includes("Huspy") ? (
+                  <>
+                    <img src="/assets/HUSPY-TECH.png.jpeg" alt="Huspy" className="h-3.5 w-auto" referrerPolicy="no-referrer" />
+                    <span className="text-[8px] uppercase tracking-[0.15em] text-ocean-900 font-bold">Exclusive</span>
+                  </>
+                ) : (
+                  <span className="text-[8px] uppercase tracking-[0.15em] text-ocean-900 font-bold">New Development</span>
+                )}
               </div>
 
               {/* Content */}
