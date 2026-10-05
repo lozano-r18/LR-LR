@@ -578,50 +578,74 @@ const Hero = ({ onContactClick }: { onContactClick: () => void }) => {
 // Featured Huspy Listings Section (between Hero and Properties)
 const FeaturedListings = ({ onContactClick, onPropertyClick }: { onContactClick: () => void, onPropertyClick: (p: any) => void }) => {
   const featuredProperties = huspySpecialListings;
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   if (featuredProperties.length === 0) return null;
 
+  const scroll = (direction: 'left' | 'right') => {
+    if (carouselRef.current) {
+      const scrollAmount = carouselRef.current.clientWidth * 0.75;
+      carouselRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section id="featured" className="bg-[#F5F4EF] py-16 md:py-20">
+    <section id="featured" className="bg-[#F5F4EF] py-16 md:py-24 overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4 px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 px-6">
           <div>
             <p className="text-[10px] uppercase tracking-[0.4em] text-ocean-900/50 mb-3">Featured Developments &amp; Exclusives</p>
             <h2 className="text-3xl md:text-5xl font-serif text-ocean-900 font-normal tracking-tight">
               Featured <span className="italic">Listings</span>
             </h2>
           </div>
-          <button
-            onClick={() => { const el = document.getElementById('properties'); if (el) window.scrollTo({ top: el.offsetTop - 120, behavior: 'smooth' }); }}
-            className="text-xs uppercase tracking-[0.2em] text-ocean-900 border-b border-ocean-900 pb-1 hover:opacity-60 transition-opacity self-start md:self-end"
-          >
-            View All Properties →
-          </button>
+          <div className="flex items-center gap-6 self-start md:self-end">
+            <button
+              onClick={() => { const el = document.getElementById('properties'); if (el) window.scrollTo({ top: el.offsetTop - 120, behavior: 'smooth' }); }}
+              className="text-xs uppercase tracking-[0.2em] text-ocean-900 border-b border-ocean-900 pb-1 hover:opacity-60 transition-opacity whitespace-nowrap"
+            >
+              View All Properties →
+            </button>
+            <div className="hidden md:flex items-center gap-2">
+              <button
+                onClick={() => scroll('left')}
+                className="w-10 h-10 rounded-full border border-ocean-900/20 bg-white/80 hover:bg-ocean-900 hover:text-white flex items-center justify-center text-ocean-900 transition-all shadow-sm active:scale-95"
+                aria-label="Previous"
+              >
+                <ArrowLeft size={16} />
+              </button>
+              <button
+                onClick={() => scroll('right')}
+                className="w-10 h-10 rounded-full border border-ocean-900/20 bg-white/80 hover:bg-ocean-900 hover:text-white flex items-center justify-center text-ocean-900 transition-all shadow-sm active:scale-95"
+                aria-label="Next"
+              >
+                <ArrowRight size={16} />
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Scrollable Cards Row */}
-        <div className="flex gap-4 overflow-x-auto pb-10 px-6 snap-x snap-mandatory hide-scrollbar pt-4">
+        <div
+          ref={carouselRef}
+          className="flex gap-6 overflow-x-auto py-6 px-6 snap-x snap-mandatory hide-scrollbar -my-2"
+        >
           {featuredProperties.map((prop, idx) => (
-            <motion.div
+            <div
               key={`${prop.id}-${idx}`}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.08 }}
-              className="group relative overflow-hidden flex-shrink-0 w-[80vw] md:w-[45vw] lg:w-[28vw] aspect-[3/4] cursor-pointer bg-[#EBEAE5] shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.3)] transition-all duration-500 rounded-none snap-center"
+              className="group relative overflow-hidden flex-shrink-0 w-[82vw] md:w-[46vw] lg:w-[29vw] aspect-[3/4] cursor-pointer bg-ocean-100/50 rounded-[2.2rem] shadow-[0_20px_50px_-15px_rgba(23,43,77,0.18)] hover:shadow-[0_30px_70px_-15px_rgba(23,43,77,0.28)] hover:-translate-y-2 transition-all duration-500 snap-center border border-white/60"
               onClick={() => onPropertyClick(prop)}
             >
-              <img
+              <SmoothImage
                 src={prop.image}
                 alt={prop.title}
-                referrerPolicy="no-referrer"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
 
               {/* Badge */}
-              <div className="absolute top-5 left-5 flex items-center gap-2 bg-white px-2.5 py-1.5 z-10 shadow-sm border border-ocean-900/10">
+              <div className="absolute top-5 left-5 flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-1.5 z-10 shadow-md rounded-full border border-white/80">
                 {prop.tag.includes("Huspy") ? (
                   <>
                     <img src="/assets/HUSPY-TECH.png.jpeg" alt="Huspy" className="h-3.5 w-auto" referrerPolicy="no-referrer" />
@@ -633,23 +657,23 @@ const FeaturedListings = ({ onContactClick, onPropertyClick }: { onContactClick:
               </div>
 
               {/* Content */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end z-10">
-                <p className="text-white/70 text-[9px] uppercase tracking-[0.25em] mb-1.5 font-bold">{prop.location}</p>
+              <div className="absolute bottom-0 left-0 right-0 p-7 md:p-8 flex flex-col justify-end z-10">
+                <p className="text-white/75 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold drop-shadow-sm">{prop.location}</p>
                 <h3 className="text-xl md:text-2xl font-serif text-white italic mb-5 leading-tight drop-shadow-md">{prop.title}</h3>
-                <div className="flex items-end justify-between">
+                <div className="flex items-end justify-between gap-4">
                   <button
                     onClick={(e) => { e.stopPropagation(); onContactClick(); }}
-                    className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-5 py-2.5 text-[9px] uppercase tracking-[0.15em] font-bold hover:bg-white hover:text-ocean-900 transition-all shadow-sm"
+                    className="bg-white/20 hover:bg-white text-white hover:text-ocean-900 border border-white/30 backdrop-blur-md px-5 py-2.5 rounded-full text-[9px] uppercase tracking-[0.15em] font-bold transition-all duration-300 shadow-md active:scale-95"
                   >
                     Enquire
                   </button>
                   <div className="text-right">
                     {prop.priceNumeric > 0 && <div className="text-white/70 font-serif italic text-xs mb-0.5">from</div>}
-                    <div className="text-white text-base tracking-tight font-light drop-shadow-md">{prop.price}</div>
+                    <div className="text-white text-base md:text-lg tracking-tight font-light drop-shadow-md">{prop.price}</div>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
