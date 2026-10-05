@@ -1087,7 +1087,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
           layout
           ref={propertyCarouselRef}
           onScroll={handleCarouselScroll}
-          className={!isExpanded ? "flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-3 md:gap-10 hide-scrollbar pb-8 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0 md:overflow-visible md:snap-none" : "grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10"}
+          className={!isExpanded ? "flex overflow-x-auto snap-x snap-mandatory gap-6 md:grid md:grid-cols-3 md:gap-10 hide-scrollbar py-6 -my-2 pb-8 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0 md:overflow-visible md:snap-none" : "grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10 py-6 -my-2"}
         >
           {(!isExpanded ? carouselGroups : displayedGroups).map((group, idx) => (
             <motion.div
@@ -1097,7 +1097,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "100px" }}
               transition={{ delay: (idx % 3) * 0.05 }}
-              className={`group cursor-pointer relative overflow-hidden rounded-none shadow-md hover:shadow-2xl transition-all bg-white border border-ocean-900/10 ${!isExpanded ? "min-w-[80vw] aspect-[4/5] snap-center shrink-0 md:min-w-0 md:shrink md:snap-none" : "aspect-[3/4] md:aspect-[4/5]"}`}
+              className={`group cursor-pointer relative overflow-hidden rounded-[2.2rem] shadow-[0_20px_50px_-15px_rgba(23,43,77,0.18)] hover:shadow-[0_30px_70px_-15px_rgba(23,43,77,0.28)] hover:-translate-y-2 transition-all duration-500 bg-ocean-100/50 border border-white/60 ${!isExpanded ? "min-w-[80vw] aspect-[4/5] snap-center shrink-0 md:min-w-0 md:shrink md:snap-none" : "aspect-[3/4] md:aspect-[4/5]"}`}
               onClick={() => {
                 if (group.isDevelopment) {
                   setSelectedGroup(group);
@@ -1112,9 +1112,9 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                 className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
               />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
 
-              <div className={`absolute top-4 right-4 md:top-6 md:right-6 bg-black/40 backdrop-blur-md border border-white/20 rounded-none uppercase tracking-widest font-bold text-white z-10 transition-colors group-hover:bg-black/60 shadow-sm flex items-center justify-center ${!isExpanded ? 'px-4 py-1.5 text-[10px]' : 'px-3 py-1 text-[8px] md:px-4 md:py-1.5 md:text-[10px]'}`}>
+              <div className={`absolute top-4 right-4 md:top-6 md:right-6 bg-white/95 backdrop-blur-md border border-white/80 rounded-full uppercase tracking-widest font-bold text-ocean-900 z-10 transition-colors shadow-md flex items-center justify-center ${!isExpanded ? 'px-3.5 py-1.5 text-[9px] md:text-[10px]' : 'px-3 py-1 text-[8px] md:px-3.5 md:py-1.5 md:text-[9px]'}`}>
                 {group.tag}
               </div>
 
@@ -1125,11 +1125,11 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                 </p>
 
                 <div className={`flex flex-col ${!isExpanded ? 'gap-2' : 'gap-1.5 md:gap-2'}`}>
-                  <div className={`w-fit rounded-none border border-white/20 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm flex items-center justify-center ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[10px] md:px-4 md:py-1.5 md:text-sm'}`}>
+                  <div className={`w-fit rounded-full border border-white/30 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm flex items-center justify-center ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-3 py-1 text-[10px] md:px-4 md:py-1.5 md:text-sm'}`}>
                     {group.price}
                   </div>
                   {!group.isDevelopment && (
-                    <div className={`w-fit flex items-center rounded-none border border-white/20 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-2.5 py-1 text-[9px] md:px-4 md:py-1.5 md:text-sm'}`}>
+                    <div className={`w-fit flex items-center rounded-full border border-white/30 bg-black/40 backdrop-blur-md text-white font-medium shadow-sm ${!isExpanded ? 'px-4 py-1.5 text-sm' : 'px-3 py-1 text-[9px] md:px-4 md:py-1.5 md:text-sm'}`}>
                       {!isExpanded && group.sqft && <><span>{group.sqft}</span><span className="mx-2 text-white/60 font-light">|</span></>}
                       <span>{group.bedsStr}<span className="ml-0.5 opacity-70">b</span></span>
                       <span className={`text-white/60 font-light ${!isExpanded ? 'mx-2' : 'mx-1.5 md:mx-2'}`}>|</span>
@@ -1232,7 +1232,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                          initial={{ opacity: 0, y: 20 }}
                          animate={{ opacity: 1, y: 0 }}
                          transition={{ delay: idx * 0.05 }}
-                         className="group cursor-pointer bg-white rounded-none border border-ocean-900/10 shadow-sm hover:shadow-xl transition-all flex flex-col overflow-hidden"
+                         className="group cursor-pointer bg-white rounded-[2rem] border border-white/80 shadow-[0_15px_40px_-15px_rgba(23,43,77,0.15)] hover:shadow-[0_25px_60px_-15px_rgba(23,43,77,0.25)] hover:-translate-y-1.5 transition-all duration-500 flex flex-col overflow-hidden"
                          onClick={() => setSelectedProperty(prop)}
                        >
                          <div className="relative aspect-[4/3] overflow-hidden">
@@ -1253,7 +1253,7 @@ const Properties = ({ onContactClick, selectedProperty, setSelectedProperty }: {
                                )}
                              </div>
                            </div>
-                           <button className="w-full py-4 bg-[#F5F4EF] text-ocean-900 rounded-none font-bold uppercase tracking-[0.2em] text-[10px] group-hover:bg-ocean-900 group-hover:text-white transition-colors border border-ocean-900/10">
+                           <button className="w-full py-4 bg-[#F5F4EF] text-ocean-900 rounded-full font-bold uppercase tracking-[0.2em] text-[10px] group-hover:bg-ocean-900 group-hover:text-white transition-all duration-300 border border-ocean-900/10 shadow-sm hover:shadow-md">
                              View Details
                            </button>
                          </div>
